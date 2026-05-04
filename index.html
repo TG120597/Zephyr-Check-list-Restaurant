@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mise en Place — Pachamama Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir:    #09090B;
+    --noir2:   #111114;
+    --noir3:   #18181C;
+    --rouge:   #C8102E;
+    --rouge-dim: rgba(200,16,46,0.18);
+    --rouge-border: rgba(200,16,46,0.35);
+    --or:      #D4AF5A;
+    --or-dim:  rgba(212,175,90,0.15);
+    --or-border: rgba(212,175,90,0.3);
+    --blanc:   #F4F4F5;
+    --gris:    #71717A;
+    --gris2:   #3F3F46;
+    --vert:    #22C55E;
+    --radius:  10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--noir);
+    color: var(--blanc);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 50% -10%, rgba(200,16,46,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 100% 100%, rgba(212,175,90,0.07) 0%, transparent 60%);
+  }
+  header {
+    text-align: center;
+    padding: 40px 20px 22px;
+    position: relative;
+    border-bottom: 1px solid var(--gris2);
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--rouge), transparent);
+  }
+  header::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 2px;
+    background: var(--rouge);
+    margin: 14px auto 0;
+    border-radius: 2px;
+  }
+  .logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 5vw, 34px);
+    color: var(--blanc);
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .logo-text span { color: var(--rouge); }
+  .restaurant-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(13px, 3vw, 16px);
+    color: var(--or);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    font-weight: 400;
+  }
+  .subtitle {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-top: 5px;
+    font-weight: 400;
+  }
+  .global-progress {
+    padding: 22px 20px 0;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .progress-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gris);
+    font-weight: 500;
+  }
+  .progress-count {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--or);
+    font-weight: 600;
+  }
+  .progress-bar-bg {
+    background: var(--noir3);
+    border-radius: 99px;
+    height: 5px;
+    overflow: hidden;
+    border: 1px solid var(--gris2);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rouge), #FF2D55);
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+    box-shadow: 0 0 10px rgba(200,16,46,0.5);
+  }
+  .tabs {
+    display: flex;
+    gap: 8px;
+    padding: 20px 20px 0;
+    max-width: 700px;
+    margin: 0 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: var(--noir2);
+    border: 1px solid var(--gris2);
+    color: var(--gris);
+    padding: 10px 18px;
+    border-radius: 99px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tab-btn .tab-badge {
+    background: rgba(255,255,255,0.06);
+    border-radius: 99px;
+    font-size: 10px;
+    padding: 1px 7px;
+    color: var(--gris);
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--rouge);
+    border-color: var(--rouge);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 0 16px rgba(200,16,46,0.4);
+  }
+  .tab-btn.active .tab-badge {
+    background: rgba(0,0,0,0.25);
+    color: rgba(255,255,255,0.8);
+  }
+  .tab-btn.done { border-color: var(--vert); color: var(--vert); }
+  .tab-btn.done .tab-badge { background: rgba(34,197,94,0.1); color: var(--vert); }
+  .sections {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 16px 20px 50px;
+  }
+  .section { display: none; animation: fadeIn 0.22s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0 14px;
+    border-bottom: 1px solid var(--gris2);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--blanc);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .section-icon { font-size: 20px; }
+  .section-progress { font-size: 12px; color: var(--gris); letter-spacing: 0.1em; }
+  .reset-btn {
+    background: none;
+    border: 1px solid var(--gris2);
+    color: var(--gris);
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { border-color: var(--rouge); color: var(--rouge); }
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    margin-bottom: 6px;
+    background: var(--noir2);
+    border: 1px solid var(--gris2);
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .checklist li:hover { background: var(--noir3); border-color: var(--rouge-border); }
+  .checklist li.checked { background: rgba(34,197,94,0.04); border-color: rgba(34,197,94,0.25); }
+  .checklist li.checked .item-text {
+    color: var(--gris);
+    text-decoration: line-through;
+    text-decoration-color: rgba(34,197,94,0.4);
+  }
+  .check-circle {
+    width: 22px; height: 22px; min-width: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--gris2);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+    transition: all 0.18s;
+    background: transparent;
+  }
+  .checklist li:hover .check-circle { border-color: var(--rouge); }
+  .checklist li.checked .check-circle {
+    background: var(--vert);
+    border-color: var(--vert);
+    box-shadow: 0 0 8px rgba(34,197,94,0.4);
+  }
+  .check-circle svg { opacity: 0; transform: scale(0.5); transition: all 0.2s cubic-bezier(.34,1.56,.64,1); }
+  .checklist li.checked .check-circle svg { opacity: 1; transform: scale(1); }
+  .item-text { font-size: 14px; line-height: 1.55; color: var(--blanc); font-weight: 400; transition: color 0.2s; }
+  .item-priority {
+    display: inline-block;
+    background: var(--rouge-dim);
+    color: var(--rouge);
+    border: 1px solid var(--rouge-border);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .all-done { text-align: center; padding: 30px 20px; display: none; }
+  .all-done.visible { display: block; }
+  .all-done-icon { font-size: 40px; margin-bottom: 12px; animation: pop 0.4s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+  .all-done h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--vert); margin-bottom: 6px; font-weight: 600; }
+  .all-done p { font-size: 13px; color: var(--gris); }
+  .group-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    padding: 16px 4px 6px;
+    font-weight: 600;
+    opacity: 0.85;
+  }
+  .name-field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--noir2);
+    border: 1px solid var(--gris2);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    transition: border-color 0.2s;
+  }
+  .name-field:focus-within { border-color: var(--rouge-border); }
+  .name-field label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gris); font-weight: 500; white-space: nowrap; flex-shrink: 0; }
+  .name-field label span { color: var(--rouge); margin-right: 4px; }
+  .name-field input {
+    background: transparent; border: none; outline: none;
+    color: var(--blanc); font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 500; width: 100%; caret-color: var(--rouge);
+  }
+  .name-field input::placeholder { color: var(--gris2); font-weight: 400; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-text">Pachamama <span>Group</span></div>
+  <div class="restaurant-name">Zephyr — Monaco</div>
+  <div class="subtitle">Checklist Mise en Place</div>
+</header>
+
+<div class="global-progress">
+  <div class="progress-header">
+    <span class="progress-label">Progression globale</span>
+    <span class="progress-count" id="globalCount">0 / 0</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="globalBar"></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('console')" id="tab-console">🍽️ Console <span class="tab-badge" id="badge-console">0/13</span></button>
+  <button class="tab-btn" onclick="showTab('pass')" id="tab-pass">☕ Pass <span class="tab-badge" id="badge-pass">0/12</span></button>
+  <button class="tab-btn" onclick="showTab('toilettes')" id="tab-toilettes">🚿 Toilettes <span class="tab-badge" id="badge-toilettes">0/8</span></button>
+  <button class="tab-btn" onclick="showTab('plonge')" id="tab-plonge">🫧 Plonge <span class="tab-badge" id="badge-plonge">0/12</span></button>
+</div>
+
+<div class="sections">
+
+  <!-- CONSOLE -->
+  <div class="section active" id="section-console">
+    <div class="section-header">
+      <div class="section-title"><span class="section-icon">🍽️</span> Console</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="section-progress" id="prog-console">0 / 13</span>
+        <button class="reset-btn" onclick="resetSection('console')">Réinitialiser</button>
+      </div>
+    </div>
+    <div class="name-field">
+      <label><span>👤</span> Responsable</label>
+      <input type="text" id="name-console" placeholder="Votre prénom..." oninput="saveName('console', this.value)" autocomplete="off">
+    </div>
+    <ul class="checklist" id="list-console">
+      <div class="group-label">Priorité — En premier</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-priority">⭐ En premier</div><div class="item-text">Remplir la vasque à vin avec glace pilée</div></div>
+      </li>
+      <div class="group-label">Vaisselle & verrerie</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Remplir les assiettes de mise en place et assiettes à dessert</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Remplir de verre à eau et verres à Alsace</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier les assiettes portefeuille ×3 par console</div>
+      </li>
+      <div class="group-label">Linge & accessoires</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Remplir les spray d'eau pour les nappes</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Remplir de nappes 13×13 et de serviettes</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Assurer qu'il y ait des cure-dents, des pailles et des serviettes noires</div>
+      </li>
+      <div class="group-label">Couverts & condiments</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Remplir les couverts bien répartis : fourchettes → couteaux → couteaux à viande → cuillères</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier que les sels et poivre soient remplis</div>
+      </li>
+      <div class="group-label">Caisse & équipement</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Assurer que les TPE soient bien mis en charge</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Ports addition propres avec cartes visites Pachamama Group</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier les plateaux (propreté dessus/dessous) — 1 retourné prêt à utilisation</div>
+      </li>
+      <div class="group-label">Fin de service</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vider la vasque à vin</div>
+      </li>
+    </ul>
+    <div class="all-done" id="done-console"><div class="all-done-icon">✅</div><h3>Console complète !</h3><p>Toutes les tâches ont été effectuées.</p></div>
+  </div>
+
+  <!-- PASS -->
+  <div class="section" id="section-pass">
+    <div class="section-header">
+      <div class="section-title"><span class="section-icon">☕</span> Pass</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="section-progress" id="prog-pass">0 / 12</span>
+        <button class="reset-btn" onclick="resetSection('pass')">Réinitialiser</button>
+      </div>
+    </div>
+    <div class="name-field">
+      <label><span>👤</span> Responsable</label>
+      <input type="text" id="name-pass" placeholder="Votre prénom..." oninput="saveName('pass', this.value)" autocomplete="off">
+    </div>
+    <ul class="checklist" id="list-pass">
+      <div class="group-label">Vaisselle & couverts</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Remplir les assiettes portefeuilles de pinces (3)</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Une assiette portefeuille de cuillères</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Remplir les petites cuillères</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Préparer les assiettes à desserts avec les serviettes pour les spreads</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Mettre une mise en place pour les poissons (assiette à déchets + assiettes à poisson)</div>
+      </li>
+      <div class="group-label">Condiments & propreté</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Remplir les condiments et les nettoyer</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier les plateaux propres — 1 retourné pour tout le service</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Assurer que les cloches soient bien allumées et nettoyées</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Assurer que le pass soit propre pendant toute la durée du service</div>
+      </li>
+      <div class="group-label">Machine à café</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-priority">⭐ En premier</div><div class="item-text">Vérifier la propreté de la machine à café — bien remplie de grains + sucriers pleins</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vider la poubelle de la machine à café</div>
+      </li>
+      <div class="group-label">Take Away</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier mise en place take away : boxes, couvercles, sacs emporter — meuble machine à glaçons</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier lait, lait végétal, citron coupé — tous produits ouverts étiquetés</div>
+      </li>
+    </ul>
+    <div class="all-done" id="done-pass"><div class="all-done-icon">✅</div><h3>Pass complet !</h3><p>Toutes les tâches ont été effectuées.</p></div>
+  </div>
+
+  <!-- TOILETTES -->
+  <div class="section" id="section-toilettes">
+    <div class="section-header">
+      <div class="section-title"><span class="section-icon">🚿</span> Toilettes</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="section-progress" id="prog-toilettes">0 / 8</span>
+        <button class="reset-btn" onclick="resetSection('toilettes')">Réinitialiser</button>
+      </div>
+    </div>
+    <div class="name-field">
+      <label><span>👤</span> Responsable</label>
+      <input type="text" id="name-toilettes" placeholder="Votre prénom..." oninput="saveName('toilettes', this.value)" autocomplete="off">
+    </div>
+    <ul class="checklist" id="list-toilettes">
+      <div class="group-label">Oshibori & propreté</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Remplir les oshibori</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier la propreté des toilettes : miroir, cuvette, évacuation d'eau, sols, porte-papiers inox, bouton chasse sans traces de doigts</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier la propreté des miroirs</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier les poubelles</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier la propreté des lavabos</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Assurer que les savons soient remplis et propres</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier les produits dans les toilettes</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier l'intensité de la lumière miroir</div>
+      </li>
+    </ul>
+    <div class="all-done" id="done-toilettes"><div class="all-done-icon">✅</div><h3>Toilettes complètes !</h3><p>Toutes les tâches ont été effectuées.</p></div>
+  </div>
+
+  <!-- PLONGE -->
+  <div class="section" id="section-plonge">
+    <div class="section-header">
+      <div class="section-title"><span class="section-icon">🫧</span> Plonge</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="section-progress" id="prog-plonge">0 / 12</span>
+        <button class="reset-btn" onclick="resetSection('plonge')">Réinitialiser</button>
+      </div>
+    </div>
+    <div class="name-field">
+      <label><span>👤</span> Responsable</label>
+      <input type="text" id="name-plonge" placeholder="Votre prénom..." oninput="saveName('plonge', this.value)" autocomplete="off">
+    </div>
+    <ul class="checklist" id="list-plonge">
+      <div class="group-label">Machine à verre</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Allumer / Éteindre la machine à verre</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier la propreté du bac à verre</div>
+      </li>
+      <div class="group-label">Eaux tempérées</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Remplir les eaux tempérées sur le côté</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-priority">⚠️ Attention</div><div class="item-text">Ranger correctement les eaux tempérées</div></div>
+      </li>
+      <div class="group-label">Mise en place couverts</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Faire la mise en place avec le rack à couverts</div>
+      </li>
+      <div class="group-label">Espace plonge</div>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Nettoyer les étagères</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Garder cet espace propre et fonctionnel</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Allumer / Éteindre le ventilateur</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Nettoyer toutes les surfaces avant le départ</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="item-text">Vérifier les plateaux</div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-priority">⚠️ Attention</div><div class="item-text">Ne rien laisser traîner de liquide sur le haut du panneau anti-feux</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-circle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="item-priority">📍 Important</div><div class="item-text">Mise en place de l'espace plonge conforme aux standards</div></div>
+      </li>
+    </ul>
+    <div class="all-done" id="done-plonge"><div class="all-done-icon">✅</div><h3>Plonge complète !</h3><p>Toutes les tâches ont été effectuées.</p></div>
+  </div>
+
+</div>
+
+<script>
+  const SECTIONS = ['console', 'pass', 'toilettes', 'plonge'];
+  let state = {};
+  try { const saved = localStorage.getItem('mep_state'); if (saved) state = JSON.parse(saved); } catch(e) {}
+  function save() { try { localStorage.setItem('mep_state', JSON.stringify(state)); } catch(e) {} }
+  function saveName(section, value) { if (!state.names) state.names = {}; state.names[section] = value; save(); }
+  function getItems(section) { return document.querySelectorAll(`#list-${section} li`); }
+  function countSection(section) {
+    const items = getItems(section); let checked = 0;
+    items.forEach(li => { if (li.classList.contains('checked')) checked++; });
+    return { checked, total: items.length };
+  }
+  function updateBadge(section) {
+    const { checked, total } = countSection(section);
+    document.getElementById(`badge-${section}`).textContent = `${checked}/${total}`;
+    document.getElementById(`prog-${section}`).textContent = `${checked} / ${total}`;
+    document.getElementById(`tab-${section}`).classList.toggle('done', checked === total && total > 0);
+    document.getElementById(`done-${section}`).classList.toggle('visible', checked === total && total > 0);
+  }
+  function updateGlobal() {
+    let totalChecked = 0, totalAll = 0;
+    SECTIONS.forEach(s => { const { checked, total } = countSection(s); totalChecked += checked; totalAll += total; });
+    document.getElementById('globalCount').textContent = `${totalChecked} / ${totalAll}`;
+    document.getElementById('globalBar').style.width = (totalAll > 0 ? (totalChecked / totalAll * 100) : 0) + '%';
+  }
+  function toggle(li) {
+    li.classList.toggle('checked');
+    const section = li.closest('.section').id.replace('section-', '');
+    const items = Array.from(getItems(section));
+    state[section] = items.map(i => i.classList.contains('checked'));
+    save(); updateBadge(section); updateGlobal();
+  }
+  function resetSection(section) {
+    const items = getItems(section);
+    items.forEach(li => li.classList.remove('checked'));
+    state[section] = Array(items.length).fill(false);
+    const nameInput = document.getElementById(`name-${section}`);
+    if (nameInput) nameInput.value = '';
+    if (state.names) state.names[section] = '';
+    save(); updateBadge(section); updateGlobal();
+  }
+  function showTab(section) {
+    SECTIONS.forEach(s => {
+      document.getElementById(`section-${s}`).classList.toggle('active', s === section);
+      document.getElementById(`tab-${s}`).classList.toggle('active', s === section);
+    });
+  }
+  function restoreState() {
+    SECTIONS.forEach(section => {
+      if (state[section]) {
+        const items = Array.from(getItems(section));
+        state[section].forEach((checked, i) => { if (checked && items[i]) items[i].classList.add('checked'); });
+      }
+      if (state.names && state.names[section]) {
+        const nameInput = document.getElementById(`name-${section}`);
+        if (nameInput) nameInput.value = state.names[section];
+      }
+      updateBadge(section);
+    });
+    updateGlobal();
+  }
+  restoreState();
+</script>
+</body>
+</html>
