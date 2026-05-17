@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zephyr Monaco — Mise en Place</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function(){ emailjs.init({ publicKey: 'ZR5ziXCQLKk-OrvoO' }); })();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -903,41 +907,86 @@ function updateWeeklyBadge(){
 // ═══════════════════════════════════════
 // REPORTS
 // ═══════════════════════════════════════
-function sendReport(section){
-  const names=state.names||{};
-  const staff=names['staff_'+section]||'Non renseigné';
-  const manager=names['manager_'+section]||'Non renseigné';
-  const tasks=getTasks(section);
-  const staffArr=state['staff_'+section]||[];
-  const managerArr=state['manager_'+section]||[];
-  const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  const sNames={console:'Console',pass:'Pass',toilettes:'Toilettes',plonge:'Plonge'};
-  const lines=tasks.map((t,i)=>{
-    const s=staffArr[i],m=managerArr[i];
-    const status=s&&m?'✅ Complète':s?'⚠️ Attente validation manager':'❌ Non effectuée';
+const EMAILJS_SERVICE  = 'service_yw9i4oh';
+const EMAILJS_TEMPLATE = 'template_3o72gvv';
+
+async function sendReport(section){
+  const names = state.names||{};
+  const staff   = names['staff_'+section]   || 'Non renseigné';
+  const manager = names['manager_'+section] || 'Non renseigné';
+  const tasks     = getTasks(section);
+  const staffArr  = state['staff_'+section]  || [];
+  const managerArr= state['manager_'+section]|| [];
+  const now = new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const sNames = {console:'Console',pass:'Pass',toilettes:'Toilettes',plonge:'Plonge'};
+
+  const lines = tasks.map((t,i)=>{
+    const s=staffArr[i], m=managerArr[i];
+    const status = s&&m ? '✅ Complète' : s ? '⚠️ Attente validation manager' : '❌ Non effectuée';
     return status+' — '+t.text;
   });
-  const body=encodeURIComponent('RAPPORT MISE EN PLACE — ZEPHYR MONACO\n=====================================\nSection : '+sNames[section]+'\nDate : '+now+'\nEmployé : '+staff+'\nManager : '+manager+'\n\nTÂCHES :\n'+lines.join('\n')+'\n\n— Envoyé depuis l\'application Zephyr');
-  const subject=encodeURIComponent('Rapport Mise en Place — '+sNames[section]+' — '+now);
-  window.location.href='mailto:restaurant@zephyrmonaco.com?subject='+subject+'&body='+body;
+
+  const message =
+    'RAPPORT MISE EN PLACE — ZEPHYR MONACO\n'+
+    '=====================================\n'+
+    'Section  : '+sNames[section]+'\n'+
+    'Date     : '+now+'\n'+
+    'Employé  : '+staff+'\n'+
+    'Manager  : '+manager+'\n\n'+
+    'TÂCHES :\n'+lines.join('\n')+'\n\n'+
+    '— Envoyé depuis l\'application Zephyr';
+
+  const subject = 'Rapport Mise en Place — '+sNames[section]+' — '+now;
+
+  showToast('Envoi en cours...');
+  try {
+    await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
+      subject,
+      message,
+      name: manager !== 'Non renseigné' ? manager : staff,
+      email: 'restaurant@zephyrmonaco.com'
+    });
+    showToast('✅ Rapport envoyé à restaurant@zephyrmonaco.com');
+  } catch(e) {
+    showToast('❌ Erreur envoi : '+e.text||e.message);
+  }
 }
 
-function sendWeeklyReport(){
-  const data=getWeeklyData(),done=getWeeklyDone();
+async function sendWeeklyReport(){
+  const data=getWeeklyData(), done=getWeeklyDone();
   const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   let lines=[];
   DAYS.forEach(day=>{
     lines.push('\n— '+DAY_LABELS[day].toUpperCase()+' —');
     const tasks=data[day]||[], staffArr=done['staff_'+day]||[], managerArr=done['manager_'+day]||[];
     tasks.forEach((t,i)=>{
-      const s=staffArr[i],m=managerArr[i];
-      const status=s&&m?'✅ Complète':s?'⚠️ Attente validation manager':'❌ Non effectuée';
+      const s=staffArr[i], m=managerArr[i];
+      const status = s&&m ? '✅ Complète' : s ? '⚠️ Attente manager' : '❌ Non effectuée';
       lines.push(status+' — '+t);
     });
   });
-  const body=encodeURIComponent('RAPPORT TÂCHES HEBDOMADAIRES — ZEPHYR MONACO\n============================================\nDate : '+now+'\n'+lines.join('\n')+'\n\n— Envoyé depuis l\'application Zephyr');
-  const subject=encodeURIComponent('Rapport Hebdo — '+now);
-  window.location.href='mailto:restaurant@zephyrmonaco.com?subject='+subject+'&body='+body;
+
+  const message =
+    'RAPPORT TÂCHES HEBDOMADAIRES — ZEPHYR MONACO\n'+
+    '============================================\n'+
+    'Date : '+now+'\n'+
+    lines.join('\n')+'\n\n'+
+    '— Envoyé depuis l\'application Zephyr';
+
+  const subject = 'Rapport Hebdo Mise en Place — '+now;
+
+  showToast('Envoi en cours...');
+  try {
+    await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
+      subject,
+      message,
+      name: currentUser || 'Zephyr App',
+      email: 'restaurant@zephyrmonaco.com'
+    });
+    showToast('✅ Rapport hebdo envoyé !');
+  } catch(e) {
+    showToast('❌ Erreur envoi : '+e.text||e.message);
+  }
 }
 
 // ═══════════════════════════════════════
