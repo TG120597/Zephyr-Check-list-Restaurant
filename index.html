@@ -19,13 +19,11 @@
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { background:var(--beige); color:var(--text); font-family:'Jost',sans-serif; min-height:100vh;
-    background-image: radial-gradient(ellipse 3px 2px at 12% 18%,rgba(181,96,58,.18) 0%,transparent 100%), radial-gradient(ellipse 2px 3px at 34% 72%,rgba(181,96,58,.12) 0%,transparent 100%), radial-gradient(ellipse 60% 35% at 50% 0%,rgba(181,96,58,.07) 0%,transparent 70%);
+    background-image:radial-gradient(ellipse 3px 2px at 12% 18%,rgba(181,96,58,.18) 0%,transparent 100%),radial-gradient(ellipse 60% 35% at 50% 0%,rgba(181,96,58,.07) 0%,transparent 70%);
   }
 
-  /* LOGIN */
-  #login-screen { position:fixed; inset:0; background:var(--beige); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px;
-    background-image:radial-gradient(ellipse 60% 35% at 50% 0%,rgba(181,96,58,.1) 0%,transparent 70%);
-  }
+  /* ── LOGIN ── */
+  #login-screen { position:fixed; inset:0; background:var(--beige); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; background-image:radial-gradient(ellipse 60% 35% at 50% 0%,rgba(181,96,58,.1) 0%,transparent 70%); }
   #login-screen::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--beige),var(--terra),var(--terra-dark),var(--terra),var(--beige)); }
   .login-logo { font-family:'Cormorant Garamond',serif; font-size:52px; color:var(--terra-dark); font-style:italic; letter-spacing:.14em; }
   .login-sub { font-size:10px; color:var(--stone); letter-spacing:.4em; text-transform:uppercase; margin-top:4px; margin-bottom:40px; }
@@ -43,20 +41,19 @@
   .num-btn:hover { background:var(--beige3); border-color:var(--terra-border); }
   .num-btn:active { transform:scale(.95); }
   .num-btn.del { font-size:16px; color:var(--text-dim); }
-  .login-error { color:var(--terra-dark); font-size:12px; text-align:center; margin-top:12px; letter-spacing:.08em; min-height:18px; }
-  .login-name-wrap { margin-bottom:16px; }
-  .login-name-input { width:100%; background:var(--beige); border:1px solid var(--stone2); border-radius:var(--radius); padding:11px 14px; font-family:'Jost',sans-serif; font-size:14px; color:var(--text); outline:none; caret-color:var(--terra); transition:border-color .2s; }
+  .login-error { color:var(--terra-dark); font-size:12px; text-align:center; margin-top:12px; min-height:18px; }
+  .login-name-input { width:100%; background:var(--beige); border:1px solid var(--stone2); border-radius:var(--radius); padding:11px 14px; font-family:'Jost',sans-serif; font-size:14px; color:var(--text); outline:none; caret-color:var(--terra); margin-bottom:16px; transition:border-color .2s; }
   .login-name-input:focus { border-color:var(--terra-border); }
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 
-  /* ROLE BADGE */
+  /* ── ROLE BADGE ── */
   .role-badge { position:fixed; top:14px; right:16px; z-index:50; display:flex; align-items:center; gap:8px; }
   .role-pill { background:var(--terra); color:var(--beige); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:4px 10px; border-radius:99px; font-weight:500; }
   .role-pill.employee { background:var(--stone); }
   .logout-btn { background:none; border:1px solid var(--stone2); color:var(--text-dim); font-size:11px; padding:4px 10px; border-radius:99px; cursor:pointer; font-family:'Jost',sans-serif; transition:all .2s; }
   .logout-btn:hover { border-color:var(--terra); color:var(--terra); }
 
-  /* HEADER */
+  /* ── HEADER ── */
   header { text-align:center; padding:44px 20px 24px; position:relative; border-bottom:1px solid var(--stone2); background:linear-gradient(180deg,rgba(181,96,58,.06) 0%,transparent 100%); }
   header::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--beige),var(--terra),var(--terra-dark),var(--terra),var(--beige)); }
   header::after { content:''; display:block; width:40px; height:1px; background:var(--terra); margin:14px auto 0; opacity:.5; }
@@ -64,7 +61,7 @@
   .restaurant-name { font-size:10px; color:var(--stone); letter-spacing:.4em; text-transform:uppercase; margin-top:6px; }
   .subtitle { font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:var(--stone); margin-top:4px; font-weight:300; opacity:.7; }
 
-  /* PROGRESS */
+  /* ── PROGRESS ── */
   .global-progress { padding:22px 20px 0; max-width:740px; margin:0 auto; }
   .progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
   .progress-label { font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--text-dim); font-weight:500; }
@@ -72,17 +69,24 @@
   .progress-bar-bg { background:var(--beige3); border-radius:99px; height:5px; overflow:hidden; border:1px solid var(--stone2); }
   .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--terra),var(--terra-dark)); border-radius:99px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%; }
 
-  /* TABS */
-  .tabs { display:flex; gap:8px; padding:20px 20px 0; max-width:740px; margin:0 auto; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  /* ── TABS ── */
+  .tabs-wrap { display:flex; align-items:center; gap:8px; padding:20px 20px 0; max-width:740px; margin:0 auto; }
+  .tabs { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; flex:1; }
   .tabs::-webkit-scrollbar { display:none; }
-  .tab-btn { flex-shrink:0; background:var(--beige2); border:1px solid var(--stone2); color:var(--text-dim); padding:10px 16px; border-radius:99px; font-family:'Jost',sans-serif; font-size:12px; font-weight:400; cursor:pointer; transition:all .2s; letter-spacing:.06em; display:flex; align-items:center; gap:7px; }
+  .tab-btn { flex-shrink:0; background:var(--beige2); border:1px solid var(--stone2); color:var(--text-dim); padding:10px 16px; border-radius:99px; font-family:'Jost',sans-serif; font-size:12px; font-weight:400; cursor:pointer; transition:all .2s; letter-spacing:.06em; display:flex; align-items:center; gap:7px; position:relative; }
   .tab-btn .tab-badge { background:rgba(181,96,58,.08); border-radius:99px; font-size:10px; padding:1px 6px; color:var(--stone); transition:all .2s; }
   .tab-btn.active { background:var(--terra); border-color:var(--terra); color:var(--beige); font-weight:500; box-shadow:0 4px 14px rgba(181,96,58,.25); }
   .tab-btn.active .tab-badge { background:rgba(242,237,228,.2); color:rgba(242,237,228,.9); }
   .tab-btn.done { border-color:var(--vert); color:var(--vert); }
   .tab-btn.done .tab-badge { background:rgba(90,138,94,.1); color:var(--vert); }
+  .tab-delete-btn { background:none; border:none; color:rgba(255,255,255,.6); font-size:13px; cursor:pointer; padding:0 0 0 4px; line-height:1; display:none; }
+  .tab-btn.active .tab-delete-btn { display:inline; }
+  body.manager .tab-btn.active .tab-delete-btn { display:inline; }
+  .add-tab-btn { flex-shrink:0; background:var(--terra); border:none; color:var(--beige); width:34px; height:34px; border-radius:50%; font-size:20px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .2s; box-shadow:0 2px 8px rgba(181,96,58,.3); }
+  body.manager .add-tab-btn { display:flex; }
+  .add-tab-btn:hover { background:var(--terra-dark); transform:scale(1.1); }
 
-  /* SECTIONS */
+  /* ── SECTIONS ── */
   .sections { max-width:740px; margin:0 auto; padding:16px 20px 100px; }
   .section { display:none; animation:fadeIn .22s ease; }
   .section.active { display:block; }
@@ -98,13 +102,11 @@
   .add-task-btn:hover { background:var(--terra-dark); transform:scale(1.1); }
   .manager-only { display:none !important; }
   body.manager .manager-only { display:flex !important; }
-
-  /* RENAME BTN */
   .rename-btn { background:none; border:none; font-size:13px; cursor:pointer; opacity:.35; padding:0; transition:opacity .2s; display:none; font-style:normal; }
   body.manager .rename-btn { display:inline; }
   .rename-btn:hover { opacity:1; }
 
-  /* NAME FIELDS */
+  /* ── NAME FIELDS ── */
   .name-fields-row { display:flex; gap:8px; margin-bottom:12px; }
   .name-field { display:flex; align-items:center; gap:10px; background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); padding:11px 14px; flex:1; transition:border-color .2s; }
   .name-field:focus-within { border-color:var(--terra-border); }
@@ -112,13 +114,13 @@
   .name-field input { background:transparent; border:none; outline:none; color:var(--text); font-family:'Jost',sans-serif; font-size:14px; width:100%; caret-color:var(--terra); }
   .name-field input::placeholder { color:var(--stone2); }
 
-  /* CHECKLIST */
+  /* ── CHECKLIST ── */
   .checklist { list-style:none; }
   .checklist li { border-radius:var(--radius); margin-bottom:6px; background:var(--beige2); border:1px solid var(--stone2); transition:all .18s; overflow:hidden; }
   .task-row { display:flex; align-items:flex-start; gap:10px; padding:12px 14px; }
   .task-arrows { display:none; flex-direction:column; gap:2px; flex-shrink:0; align-self:center; }
   body.manager .task-arrows { display:flex; }
-  .arrow-btn { background:none; border:1px solid var(--stone2); color:var(--stone); width:22px; height:22px; border-radius:5px; font-size:11px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; padding:0; line-height:1; }
+  .arrow-btn { background:none; border:1px solid var(--stone2); color:var(--stone); width:22px; height:22px; border-radius:5px; font-size:11px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; padding:0; }
   .arrow-btn:hover { border-color:var(--terra); color:var(--terra); background:var(--terra-dim); }
   .arrow-btn:disabled { opacity:.2; cursor:default; }
   .arrow-btn:disabled:hover { border-color:var(--stone2); color:var(--stone); background:none; }
@@ -130,7 +132,7 @@
   .check-wrap.staff-done .check-circle { background:var(--vert); border-color:var(--vert); }
   .check-wrap.manager-done .check-circle { background:var(--bleu); border-color:var(--bleu); }
   .check-circle svg { opacity:0; transform:scale(.5); transition:all .2s cubic-bezier(.34,1.56,.64,1); }
-  .check-wrap.staff-done .check-circle svg, .check-wrap.manager-done .check-circle svg { opacity:1; transform:scale(1); }
+  .check-wrap.staff-done .check-circle svg,.check-wrap.manager-done .check-circle svg { opacity:1; transform:scale(1); }
   .task-content { flex:1; }
   .item-text { font-size:14px; line-height:1.6; color:var(--text); font-weight:400; transition:all .2s; }
   .task-fully-done .item-text { color:var(--text-dim); text-decoration:line-through; text-decoration-color:rgba(90,138,94,.5); }
@@ -148,8 +150,10 @@
   body.manager .task-delete { display:flex; }
   .task-delete:hover { border-color:var(--terra); color:var(--terra); background:var(--terra-dim); }
   .group-label { font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:var(--terra); padding:16px 4px 6px; font-weight:500; opacity:.9; }
+  .empty-state { text-align:center; padding:40px 20px; color:var(--text-dim); font-size:13px; opacity:.6; }
+  .empty-state .empty-icon { font-size:32px; margin-bottom:10px; }
 
-  /* ALL DONE */
+  /* ── ALL DONE ── */
   .all-done { text-align:center; padding:30px 20px; display:none; }
   .all-done.visible { display:block; }
   .all-done-icon { font-size:40px; margin-bottom:12px; animation:pop .4s cubic-bezier(.34,1.56,.64,1); }
@@ -157,33 +161,13 @@
   .all-done h3 { font-family:'Cormorant Garamond',serif; font-size:26px; color:var(--vert); margin-bottom:6px; font-weight:500; font-style:italic; }
   .all-done p { font-size:13px; color:var(--text-dim); }
 
-  /* SEND REPORT */
-  .send-report-btn { width:100%; margin-top:16px; background:var(--terra); border:none; color:var(--beige); padding:14px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:.08em; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
-  .send-report-btn:hover { background:var(--terra-dark); }
-
-  /* MODAL */
-  .modal-overlay { position:fixed; inset:0; background:rgba(58,46,38,.5); display:flex; align-items:flex-end; justify-content:center; z-index:100; opacity:0; pointer-events:none; transition:opacity .2s; }
-  .modal-overlay.open { opacity:1; pointer-events:all; }
-  .modal { background:var(--beige); border-radius:18px 18px 0 0; padding:24px 20px 40px; width:100%; max-width:740px; transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); }
-  .modal-overlay.open .modal { transform:translateY(0); }
-  .modal h3 { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--terra-dark); font-style:italic; margin-bottom:16px; }
-  .modal input[type="text"],.modal select { width:100%; background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); padding:13px 16px; font-family:'Jost',sans-serif; font-size:14px; color:var(--text); outline:none; caret-color:var(--terra); margin-bottom:12px; transition:border-color .2s; appearance:none; }
-  .modal input[type="text"]:focus,.modal select:focus { border-color:var(--terra-border); }
-  .modal select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239E8E7E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; cursor:pointer; }
-  .modal-label { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-dim); font-weight:500; margin-bottom:6px; display:block; }
-  .modal-actions { display:flex; gap:8px; margin-top:4px; }
-  .modal-cancel { flex:1; background:none; border:1px solid var(--stone2); color:var(--text-dim); padding:12px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; cursor:pointer; transition:all .2s; }
-  .modal-cancel:hover { border-color:var(--terra); color:var(--terra); }
-  .modal-confirm { flex:2; background:var(--terra); border:none; color:var(--beige); padding:12px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all .2s; }
-  .modal-confirm:hover { background:var(--terra-dark); }
-
-  /* WEEKLY */
+  /* ── WEEKLY ── */
   .day-block { background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); margin-bottom:8px; overflow:hidden; }
   .day-header { display:flex; align-items:center; justify-content:space-between; padding:13px 16px; cursor:pointer; transition:background .15s; user-select:none; }
   .day-header:hover { background:var(--beige3); }
   .day-title-wrap { display:flex; align-items:center; gap:10px; }
   .day-name { font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--terra-dark); font-style:italic; font-weight:500; }
-  .day-count { font-size:11px; color:var(--stone); letter-spacing:.08em; }
+  .day-count { font-size:11px; color:var(--stone); }
   .day-chevron { font-size:12px; color:var(--stone); transition:transform .2s; }
   .day-block.open .day-chevron { transform:rotate(180deg); }
   .day-tasks { display:none; padding:0 14px 12px; }
@@ -193,30 +177,47 @@
   .day-task-item.fully-done .day-task-text { text-decoration:line-through; color:var(--text-dim); }
   .day-task-checks { display:flex; gap:5px; flex-shrink:0; }
   .day-check-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; }
-  .day-check-label { font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:var(--stone); white-space:nowrap; }
-  .day-task-circle { width:18px; height:18px; min-width:18px; border-radius:50%; border:2px solid var(--stone2); display:flex; align-items:center; justify-content:center; transition:all .18s; flex-shrink:0; }
+  .day-check-label { font-size:8px; text-transform:uppercase; color:var(--stone); white-space:nowrap; }
+  .day-task-circle { width:18px; height:18px; border-radius:50%; border:2px solid var(--stone2); display:flex; align-items:center; justify-content:center; transition:all .18s; }
   .day-check-wrap:hover .day-task-circle { border-color:var(--terra); }
   .day-check-wrap.staff-done .day-task-circle { background:var(--vert); border-color:var(--vert); }
   .day-check-wrap.manager-done .day-task-circle { background:var(--bleu); border-color:var(--bleu); }
-  .day-task-text { font-size:13px; color:var(--text); line-height:1.5; flex:1; }
-  .day-task-badges { display:flex; gap:4px; flex-wrap:wrap; margin-top:2px; }
-  .day-badge-staff,.day-badge-manager { font-size:8px; padding:1px 5px; border-radius:4px; display:none; }
-  .day-badge-staff { background:var(--vert-dim); color:var(--vert); border:1px solid rgba(90,138,94,.25); }
-  .day-badge-manager { background:var(--bleu-dim); color:var(--bleu); border:1px solid rgba(74,122,155,.25); }
-  .day-badge-staff.show,.day-badge-manager.show { display:inline; }
-  .day-task-delete { background:none; border:none; color:var(--stone2); font-size:16px; cursor:pointer; padding:0 2px; transition:color .2s; display:none; }
+  .day-task-text { font-size:13px; color:var(--text); flex:1; }
+  .day-task-delete { background:none; border:none; color:var(--stone2); font-size:16px; cursor:pointer; display:none; }
   body.manager .day-task-delete { display:block; }
   .day-task-delete:hover { color:var(--terra); }
   .day-add-btn { display:none; align-items:center; gap:6px; padding:7px 10px; border-radius:8px; margin-top:6px; background:none; border:1px dashed var(--stone2); color:var(--text-dim); font-family:'Jost',sans-serif; font-size:12px; cursor:pointer; width:100%; transition:all .2s; }
   body.manager .day-add-btn { display:flex; }
   .day-add-btn:hover { border-color:var(--terra); color:var(--terra); }
 
-  /* GLOBAL BAR */
+  /* ── MODAL ── */
+  .modal-overlay { position:fixed; inset:0; background:rgba(58,46,38,.5); display:flex; align-items:flex-end; justify-content:center; z-index:100; opacity:0; pointer-events:none; transition:opacity .2s; }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal { background:var(--beige); border-radius:18px 18px 0 0; padding:24px 20px 40px; width:100%; max-width:740px; transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); }
+  .modal-overlay.open .modal { transform:translateY(0); }
+  .modal h3 { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--terra-dark); font-style:italic; margin-bottom:16px; }
+  .modal input[type="text"] { width:100%; background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); padding:13px 16px; font-family:'Jost',sans-serif; font-size:14px; color:var(--text); outline:none; caret-color:var(--terra); margin-bottom:12px; transition:border-color .2s; }
+  .modal input[type="text"]:focus { border-color:var(--terra-border); }
+  .modal-label { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-dim); font-weight:500; margin-bottom:6px; display:block; }
+  .modal-actions { display:flex; gap:8px; margin-top:4px; }
+  .modal-cancel { flex:1; background:none; border:1px solid var(--stone2); color:var(--text-dim); padding:12px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; cursor:pointer; transition:all .2s; }
+  .modal-cancel:hover { border-color:var(--terra); color:var(--terra); }
+  .modal-confirm { flex:2; background:var(--terra); border:none; color:var(--beige); padding:12px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all .2s; }
+  .modal-confirm:hover { background:var(--terra-dark); }
+  .emoji-picker { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .emoji-opt { font-size:22px; cursor:pointer; padding:6px; border-radius:8px; border:2px solid transparent; transition:all .15s; }
+  .emoji-opt:hover,.emoji-opt.selected { border-color:var(--terra); background:var(--terra-dim); }
+
+  /* ── GLOBAL BAR ── */
   .global-bar { position:fixed; bottom:0; left:0; right:0; z-index:40; padding:12px 20px; background:var(--beige); border-top:1px solid var(--stone2); }
   .global-bar-inner { max-width:740px; margin:0 auto; }
+  .send-report-btn { width:100%; margin-top:0; background:var(--terra); border:none; color:var(--beige); padding:14px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:.08em; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .send-report-btn:hover { background:var(--terra-dark); }
+  .weekly-send-btn { width:100%; margin-top:16px; background:var(--terra); border:none; color:var(--beige); padding:14px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:.08em; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .weekly-send-btn:hover { background:var(--terra-dark); }
 
-  /* TOAST */
-  .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--terra-dark); color:var(--beige); padding:12px 24px; border-radius:99px; font-size:13px; font-family:'Jost',sans-serif; letter-spacing:.06em; z-index:200; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
+  /* ── TOAST ── */
+  .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--terra-dark); color:var(--beige); padding:12px 24px; border-radius:99px; font-size:13px; font-family:'Jost',sans-serif; z-index:200; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
   .toast.show { transform:translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -232,9 +233,7 @@
       <button class="role-btn active" onclick="selectRole('employee')" id="role-btn-employee">👤 Employé</button>
       <button class="role-btn" onclick="selectRole('manager')" id="role-btn-manager">🔑 Manager</button>
     </div>
-    <div class="login-name-wrap">
-      <input class="login-name-input" id="login-name" type="text" placeholder="Votre prénom..." autocomplete="off">
-    </div>
+    <input class="login-name-input" id="login-name" type="text" placeholder="Votre prénom..." autocomplete="off">
     <span class="pin-label">Code PIN</span>
     <div class="pin-dots" id="pin-dots">
       <div class="pin-dot" id="dot-0"></div><div class="pin-dot" id="dot-1"></div>
@@ -258,101 +257,117 @@
 
 <!-- APP -->
 <div id="app" style="display:none">
-<header>
-  <div class="logo-text">Zephyr</div>
-  <div class="restaurant-name">Monaco</div>
-  <div class="subtitle">Checklist Mise en Place</div>
-</header>
-<div class="global-progress">
-  <div class="progress-header">
-    <span class="progress-label">Progression globale</span>
-    <span class="progress-count" id="globalCount">0 / 0</span>
+  <header>
+    <div class="logo-text">Zephyr</div>
+    <div class="restaurant-name">Monaco</div>
+    <div class="subtitle">Checklist Mise en Place</div>
+  </header>
+  <div class="global-progress">
+    <div class="progress-header">
+      <span class="progress-label">Progression globale</span>
+      <span class="progress-count" id="globalCount">0 / 0</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="globalBar"></div></div>
   </div>
-  <div class="progress-bar-bg"><div class="progress-bar-fill" id="globalBar"></div></div>
+  <div class="tabs-wrap">
+    <div class="tabs" id="tabs-container"></div>
+    <button class="add-tab-btn" onclick="openNewTabModal()" title="Nouvel onglet">+</button>
+  </div>
+  <div class="sections" id="sections-container"></div>
 </div>
-<div class="tabs">
-  <button class="tab-btn active" onclick="showTab('console')" id="tab-console"><span id="tab-label-console">🍽️ Console</span> <span class="tab-badge" id="badge-console"></span></button>
-  <button class="tab-btn" onclick="showTab('pass')" id="tab-pass"><span id="tab-label-pass">☕ Pass</span> <span class="tab-badge" id="badge-pass"></span></button>
-  <button class="tab-btn" onclick="showTab('toilettes')" id="tab-toilettes"><span id="tab-label-toilettes">🚿 Toilettes</span> <span class="tab-badge" id="badge-toilettes"></span></button>
-  <button class="tab-btn" onclick="showTab('plonge')" id="tab-plonge"><span id="tab-label-plonge">🫧 Plonge</span> <span class="tab-badge" id="badge-plonge"></span></button>
-  <button class="tab-btn" onclick="showTab('weekly')" id="tab-weekly">📅 Hebdo <span class="tab-badge" id="badge-weekly"></span></button>
+
+<!-- GLOBAL BAR -->
+<div class="global-bar" id="global-bar" style="display:none">
+  <div class="global-bar-inner">
+    <button class="send-report-btn" onclick="sendFullReport()">📧 Envoyer le rapport complet</button>
+  </div>
 </div>
-<div class="sections">
 
-  <!-- CONSOLE -->
-  <div class="section active" id="section-console">
-    <div class="section-header">
-      <div class="section-title"><span class="section-icon">🍽️</span><span id="title-console">Console</span><button class="rename-btn manager-only" onclick="openRenameModal('console')">✏️</button></div>
-      <div class="header-actions">
-        <span class="section-progress" id="prog-console"></span>
-        <button class="reset-btn manager-only" onclick="resetSection('console')">Réinit.</button>
-        <button class="add-task-btn manager-only" onclick="openAddModal('console')">+</button>
-      </div>
+<!-- MODAL: ADD TASK -->
+<div class="modal-overlay" id="modal-add-task" onclick="if(event.target.id==='modal-add-task')closeModal('modal-add-task')">
+  <div class="modal">
+    <h3>Nouvelle tâche</h3>
+    <span class="modal-label">Description</span>
+    <input type="text" id="add-task-input" placeholder="Description de la tâche..." onkeydown="if(event.key==='Enter')confirmAddTask()">
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('modal-add-task')">Annuler</button>
+      <button class="modal-confirm" onclick="confirmAddTask()">Ajouter</button>
     </div>
-    <div class="name-fields-row">
-      <div class="name-field"><label><span>👤</span> Employé</label><input type="text" id="name-staff-console" placeholder="Prénom..." oninput="saveName('console','staff',this.value)" autocomplete="off"></div>
-      <div class="name-field" style="border-left:2px solid var(--bleu)"><label style="color:var(--bleu)"><span>✓</span> Manager</label><input type="text" id="name-manager-console" placeholder="Prénom..." oninput="saveName('console','manager',this.value)" autocomplete="off"></div>
-    </div>
-    <ul class="checklist" id="list-console"></ul>
-    <div class="all-done" id="done-console"><div class="all-done-icon">✅</div><h3>Console complète !</h3><p>Toutes les tâches effectuées et validées.</p></div>
   </div>
+</div>
 
-  <!-- PASS -->
-  <div class="section" id="section-pass">
-    <div class="section-header">
-      <div class="section-title"><span class="section-icon">☕</span><span id="title-pass">Pass</span><button class="rename-btn manager-only" onclick="openRenameModal('pass')">✏️</button></div>
-      <div class="header-actions">
-        <span class="section-progress" id="prog-pass"></span>
-        <button class="reset-btn manager-only" onclick="resetSection('pass')">Réinit.</button>
-        <button class="add-task-btn manager-only" onclick="openAddModal('pass')">+</button>
-      </div>
+<!-- MODAL: EDIT TASK -->
+<div class="modal-overlay" id="modal-edit-task" onclick="if(event.target.id==='modal-edit-task')closeModal('modal-edit-task')">
+  <div class="modal">
+    <h3>Modifier la tâche</h3>
+    <span class="modal-label">Description</span>
+    <input type="text" id="edit-task-input" placeholder="Nouveau texte..." onkeydown="if(event.key==='Enter')confirmEditTask()">
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('modal-edit-task')">Annuler</button>
+      <button class="modal-confirm" onclick="confirmEditTask()">Enregistrer</button>
     </div>
-    <div class="name-fields-row">
-      <div class="name-field"><label><span>👤</span> Employé</label><input type="text" id="name-staff-pass" placeholder="Prénom..." oninput="saveName('pass','staff',this.value)" autocomplete="off"></div>
-      <div class="name-field" style="border-left:2px solid var(--bleu)"><label style="color:var(--bleu)"><span>✓</span> Manager</label><input type="text" id="name-manager-pass" placeholder="Prénom..." oninput="saveName('pass','manager',this.value)" autocomplete="off"></div>
-    </div>
-    <ul class="checklist" id="list-pass"></ul>
-    <div class="all-done" id="done-pass"><div class="all-done-icon">✅</div><h3>Pass complet !</h3><p>Toutes les tâches effectuées et validées.</p></div>
   </div>
+</div>
 
-  <!-- TOILETTES -->
-  <div class="section" id="section-toilettes">
-    <div class="section-header">
-      <div class="section-title"><span class="section-icon">🚿</span><span id="title-toilettes">Toilettes</span><button class="rename-btn manager-only" onclick="openRenameModal('toilettes')">✏️</button></div>
-      <div class="header-actions">
-        <span class="section-progress" id="prog-toilettes"></span>
-        <button class="reset-btn manager-only" onclick="resetSection('toilettes')">Réinit.</button>
-        <button class="add-task-btn manager-only" onclick="openAddModal('toilettes')">+</button>
-      </div>
+<!-- MODAL: RENAME TAB -->
+<div class="modal-overlay" id="modal-rename-tab" onclick="if(event.target.id==='modal-rename-tab')closeModal('modal-rename-tab')">
+  <div class="modal">
+    <h3>Renommer l'onglet</h3>
+    <span class="modal-label">Emoji</span>
+    <div class="emoji-picker" id="emoji-picker">
+      <span class="emoji-opt" onclick="selectEmoji(this)">🌅</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">☀️</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">🌇</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">🌙</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">🍽️</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">☕</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">🫧</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">🚿</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">📋</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">✅</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">🔑</span>
+      <span class="emoji-opt" onclick="selectEmoji(this)">⭐</span>
     </div>
-    <div class="name-fields-row">
-      <div class="name-field"><label><span>👤</span> Employé</label><input type="text" id="name-staff-toilettes" placeholder="Prénom..." oninput="saveName('toilettes','staff',this.value)" autocomplete="off"></div>
-      <div class="name-field" style="border-left:2px solid var(--bleu)"><label style="color:var(--bleu)"><span>✓</span> Manager</label><input type="text" id="name-manager-toilettes" placeholder="Prénom..." oninput="saveName('toilettes','manager',this.value)" autocomplete="off"></div>
+    <span class="modal-label">Nom</span>
+    <input type="text" id="rename-tab-input" placeholder="Nom de l'onglet..." onkeydown="if(event.key==='Enter')confirmRenameTab()">
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('modal-rename-tab')">Annuler</button>
+      <button class="modal-confirm" onclick="confirmRenameTab()">Enregistrer</button>
     </div>
-    <ul class="checklist" id="list-toilettes"></ul>
-    <div class="all-done" id="done-toilettes"><div class="all-done-icon">✅</div><h3>Toilettes complètes !</h3><p>Toutes les tâches effectuées et validées.</p></div>
   </div>
+</div>
 
-  <!-- PLONGE -->
-  <div class="section" id="section-plonge">
-    <div class="section-header">
-      <div class="section-title"><span class="section-icon">🫧</span><span id="title-plonge">Plonge</span><button class="rename-btn manager-only" onclick="openRenameModal('plonge')">✏️</button></div>
-      <div class="header-actions">
-        <span class="section-progress" id="prog-plonge"></span>
-        <button class="reset-btn manager-only" onclick="resetSection('plonge')">Réinit.</button>
-        <button class="add-task-btn manager-only" onclick="openAddModal('plonge')">+</button>
-      </div>
+<!-- MODAL: NEW TAB -->
+<div class="modal-overlay" id="modal-new-tab" onclick="if(event.target.id==='modal-new-tab')closeModal('modal-new-tab')">
+  <div class="modal">
+    <h3>Nouvel onglet</h3>
+    <span class="modal-label">Emoji</span>
+    <div class="emoji-picker" id="emoji-picker-new">
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">🌅</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">☀️</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">🌇</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">🌙</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">🍽️</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">☕</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">🫧</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">🚿</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">📋</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">✅</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">🔑</span>
+      <span class="emoji-opt" onclick="selectEmojiNew(this)">⭐</span>
     </div>
-    <div class="name-fields-row">
-      <div class="name-field"><label><span>👤</span> Employé</label><input type="text" id="name-staff-plonge" placeholder="Prénom..." oninput="saveName('plonge','staff',this.value)" autocomplete="off"></div>
-      <div class="name-field" style="border-left:2px solid var(--bleu)"><label style="color:var(--bleu)"><span>✓</span> Manager</label><input type="text" id="name-manager-plonge" placeholder="Prénom..." oninput="saveName('plonge','manager',this.value)" autocomplete="off"></div>
+    <span class="modal-label">Nom</span>
+    <input type="text" id="new-tab-input" placeholder="Ex: Soir, Fermeture..." onkeydown="if(event.key==='Enter')confirmNewTab()">
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('modal-new-tab')">Annuler</button>
+      <button class="modal-confirm" onclick="confirmNewTab()">Créer</button>
     </div>
-    <ul class="checklist" id="list-plonge"></ul>
-    <div class="all-done" id="done-plonge"><div class="all-done-icon">✅</div><h3>Plonge complète !</h3><p>Toutes les tâches effectuées et validées.</p></div>
   </div>
+</div>
 
-  <!-- WEEKLY -->
-  <div class="section" id="section-weekly">
+<!-- WEEKLY SECTION (always last) -->
+<div id="section-weekly-wrapper" style="display:none">
+  <div class="section active" id="section-weekly">
     <div class="section-header">
       <div class="section-title"><span class="section-icon">📅</span><span>Tâches hebdo</span></div>
       <div class="header-actions">
@@ -360,122 +375,108 @@
       </div>
     </div>
     <div id="weekly-container"></div>
-    <button class="send-report-btn" onclick="sendWeeklyReport()">📧 Rapport hebdo</button>
-  </div>
-
-</div>
-</div>
-
-<!-- GLOBAL BAR -->
-<div class="global-bar" id="global-bar" style="display:none">
-  <div class="global-bar-inner">
-    <button class="send-report-btn" style="margin-top:0" onclick="sendFullReport()">📧 Envoyer le rapport complet</button>
-  </div>
-</div>
-
-<!-- MODAL ADD -->
-<div class="modal-overlay" id="modal" onclick="if(event.target.id==='modal')closeModal()">
-  <div class="modal">
-    <h3>Nouvelle tâche</h3>
-    <span class="modal-label">Section</span>
-    <select id="modal-section">
-      <option value="console">🍽️ Console</option>
-      <option value="pass">☕ Pass</option>
-      <option value="toilettes">🚿 Toilettes</option>
-      <option value="plonge">🫧 Plonge</option>
-    </select>
-    <span class="modal-label">Description</span>
-    <input type="text" id="modal-input" placeholder="Description de la tâche..." onkeydown="if(event.key==='Enter')confirmAdd()">
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal()">Annuler</button>
-      <button class="modal-confirm" onclick="confirmAdd()">Ajouter</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL EDIT -->
-<div class="modal-overlay" id="edit-modal" onclick="if(event.target.id==='edit-modal')closeEditModal()">
-  <div class="modal">
-    <h3>Modifier la tâche</h3>
-    <span class="modal-label">Description</span>
-    <input type="text" id="edit-input" placeholder="Nouveau texte..." onkeydown="if(event.key==='Enter')confirmEdit()">
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeEditModal()">Annuler</button>
-      <button class="modal-confirm" onclick="confirmEdit()">Enregistrer</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL RENAME -->
-<div class="modal-overlay" id="rename-modal" onclick="if(event.target.id==='rename-modal')closeRenameModal()">
-  <div class="modal">
-    <h3>Renommer la liste</h3>
-    <span class="modal-label">Nouveau nom</span>
-    <input type="text" id="rename-input" placeholder="Nom de la liste..." onkeydown="if(event.key==='Enter')confirmRename()">
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeRenameModal()">Annuler</button>
-      <button class="modal-confirm" onclick="confirmRename()">Enregistrer</button>
-    </div>
+    <button class="weekly-send-btn" onclick="sendWeeklyReport()">📧 Rapport hebdo</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══ DEFAULTS ═══
-const DEFAULT_TASKS = {
-  console:[
-    {text:'Remplir la vasque à vin avec glace pilée',priority:'⭐ En premier'},
-    {text:'Remplir les assiettes de mise en place et assiettes à dessert'},
-    {text:'Remplir de verre à eau et verres à Alsace'},
-    {text:'Vérifier les assiettes portefeuille ×3 par console'},
-    {text:'Remplir les spray d\'eau pour les nappes'},
-    {text:'Remplir de nappes 13×13 et de serviettes'},
-    {text:'Assurer qu\'il y ait des cure-dents, des pailles et des serviettes noires'},
-    {text:'Remplir les couverts : fourchettes → couteaux → couteaux à viande → cuillères'},
-    {text:'Vérifier que les sels et poivre soient remplis'},
-    {text:'Assurer que les TPE soient bien mis en charge'},
-    {text:'Ports addition propres avec cartes visites Pachamama Group'},
-    {text:'Vérifier les plateaux (propreté dessus/dessous) — 1 retourné prêt à utilisation'},
-    {text:'Vider la vasque à vin'},
+// ══════════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════════
+const CODES = { employee:'0000', manager:'2026' };
+const EMAILJS_SERVICE = 'service_yw9i4oh', EMAILJS_TEMPLATE = 'template_3o72gvv';
+const SVG = '<svg width="10" height="8" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const DAYS = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
+const DAY_LABELS = {lundi:'Lundi',mardi:'Mardi',mercredi:'Mercredi',jeudi:'Jeudi',vendredi:'Vendredi',samedi:'Samedi',dimanche:'Dimanche'};
+const DAY_ICONS = {lundi:'🟤',mardi:'🟠',mercredi:'🟡',jeudi:'🟢',vendredi:'🔵',samedi:'🟣',dimanche:'⚪'};
+const TODAY = DAYS[new Date().getDay()===0?6:new Date().getDay()-1];
+
+// Default tabs
+const DEFAULT_TABS = [
+  { id:'matin',    emoji:'🌅', name:'Matin'       },
+  { id:'aprem',    emoji:'☀️',  name:'Après-midi'  },
+  { id:'soir',     emoji:'🌇', name:'Soir'        },
+  { id:'weekly',   emoji:'📅', name:'Hebdo'       },
+];
+
+const DEFAULT_TASKS_DATA = {
+  matin: [
+    {text:'Allumer machine à verre'},
+    {text:'Dresser terrasse'},
+    {text:'Ranger poubelle verre'},
+    {text:'Retourner verre salle'},
+    {text:'Vérifier salle'},
+    {text:'Dresser comptoir'},
+    {text:'Vérifier sucrier'},
+    {text:'Vérifier menthe'},
+    {text:'Vérifier lait'},
+    {text:'Vérifier frigo eau'},
+    {text:'Vérifier cocktail signature'},
+    {text:'Vérifier console'},
+    {text:'Remplir étagère serviette'},
+    {text:'Remplir étagère nappe'},
+    {text:'Plier nappe'},
+    {text:'Plier serviette'},
+    {text:'Ouvrir porte et rideau'},
+    {text:'Faire les bougeoires'},
+    {text:'Faire les couverts'},
+    {text:'Vérifier toilette'},
+    {text:'Nettoyer pass'},
+    {text:'Faire carcasse de la salle'},
+    {text:'Nettoyer plateaux'},
   ],
-  pass:[
-    {text:'Vérifier la propreté de la machine à café — bien remplie de grains + sucriers pleins',priority:'⭐ En premier'},
-    {text:'Remplir les assiettes portefeuilles de pinces (3)'},
-    {text:'Une assiette portefeuille de cuillères'},
-    {text:'Remplir les petites cuillères'},
-    {text:'Préparer les assiettes à desserts avec les serviettes pour les spreads'},
-    {text:'Mettre une mise en place pour les poissons (assiette à déchets + assiettes à poisson)'},
-    {text:'Remplir les condiments et les nettoyer'},
-    {text:'Vérifier les plateaux propres — 1 retourné pour tout le service'},
-    {text:'Assurer que les cloches soient bien allumées et nettoyées'},
-    {text:'Assurer que le pass soit propre pendant toute la durée du service'},
-    {text:'Vider la poubelle de la machine à café'},
-    {text:'Vérifier mise en place take away : boxes, couvercles, sacs emporter'},
+  aprem: [
+    {text:'Remplir console'},
+    {text:'Vider vide papier'},
+    {text:'Remplir étagère serviette'},
+    {text:'Remplir étagère nappe'},
+    {text:'Nettoyer hublot'},
+    {text:'Nettoyer machine à café'},
+    {text:'Remplir machine à café'},
+    {text:'Remplir eau'},
+    {text:'Remplir cocktail signature'},
+    {text:'Vérifier frigo citron, menthe, lait'},
+    {text:'Vérifier sucrier'},
+    {text:'Sortir les vides'},
+    {text:'Préparer la carcasse'},
+    {text:'Vérifier les tables'},
+    {text:'Ranger le linge'},
+    {text:'Passez le balai'},
+    {text:'Faire les bougies'},
+    {text:'Nettoyer plateaux'},
+    {text:'Refaire vasque à vin'},
+    {text:'Tcheck VAE'},
   ],
-  toilettes:[
-    {text:'Remplir les oshibori'},
-    {text:'Vérifier la propreté des toilettes : miroir, cuvette, évacuation d\'eau, sols, porte-papiers inox, bouton chasse sans traces de doigts'},
-    {text:'Vérifier la propreté des miroirs'},
-    {text:'Vérifier les poubelles'},
-    {text:'Vérifier la propreté des lavabos'},
-    {text:'Assurer que les savons soient remplis et propres'},
-    {text:'Vérifier les produits dans les toilettes'},
-    {text:'Vérifier l\'intensité de la lumière miroir'},
-  ],
-  plonge:[
-    {text:'Allumer / Éteindre la machine à verre'},
-    {text:'Vérifier la propreté du bac à verre'},
-    {text:'Remplir les eaux tempérées sur le côté'},
-    {text:'Ranger correctement les eaux tempérées',priority:'⚠️ Attention'},
-    {text:'Faire la mise en place avec le rack à couverts'},
-    {text:'Nettoyer les étagères'},
-    {text:'Garder cet espace propre et fonctionnel'},
-    {text:'Allumer / Éteindre le ventilateur'},
-    {text:'Nettoyer toutes les surfaces avant le départ'},
-    {text:'Vérifier les plateaux'},
-    {text:'Ne rien laisser traîner de liquide sur le haut du panneau anti-feux',priority:'⚠️ Attention'},
-    {text:'Mise en place de l\'espace plonge conforme aux standards',priority:'📍 Important'},
+  soir: [
+    {text:'Remplir les consoles'},
+    {text:'Remplir les frigos eau'},
+    {text:'Changer cocktail signature'},
+    {text:'Nettoyer machine à café'},
+    {text:'Faire les dates'},
+    {text:'Remplir les laits'},
+    {text:'Vider poubelle machine à café'},
+    {text:'Redresser salle'},
+    {text:'Retourner les verres'},
+    {text:'De dresser la terrasse'},
+    {text:'Faire le linge'},
+    {text:'Nettoyer frigo bar'},
+    {text:'Nettoyer frigo cave'},
+    {text:'Nettoyer iPad et iPhone'},
+    {text:'Brancher iPad et iPhone'},
+    {text:'Vider poubelle à papier'},
+    {text:'Nettoyer pass'},
+    {text:'Nettoyer plateaux'},
+    {text:'Nettoyer console'},
+    {text:'Faire les vides'},
+    {text:'Ranger bougie'},
+    {text:'Sortir les poubelles de la plonge'},
+    {text:'Rentrer console terrasse'},
+    {text:'Fermer les portes'},
+    {text:'Fermer les rideaux'},
+    {text:'Tcheck VAE'},
+    {text:'Préparer redresse terrasse (x32)'},
   ],
 };
 const DEFAULT_WEEKLY = {
@@ -487,66 +488,68 @@ const DEFAULT_WEEKLY = {
   samedi:['Vider les plateformes avec décoration et les nettoyer','Nettoyer les sacs à fond au sel'],
   dimanche:['Nettoyer les théières avec le produit à argenterie'],
 };
-const DEFAULT_SECTION_NAMES = {console:'🍽️ Console',pass:'☕ Pass',toilettes:'🚿 Toilettes',plonge:'🫧 Plonge'};
-const DAYS = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
-const DAY_LABELS = {lundi:'Lundi',mardi:'Mardi',mercredi:'Mercredi',jeudi:'Jeudi',vendredi:'Vendredi',samedi:'Samedi',dimanche:'Dimanche'};
-const DAY_ICONS = {lundi:'🟤',mardi:'🟠',mercredi:'🟡',jeudi:'🟢',vendredi:'🔵',samedi:'🟣',dimanche:'⚪'};
-const TODAY = DAYS[new Date().getDay()===0?6:new Date().getDay()-1];
-const SECTIONS = ['console','pass','toilettes','plonge'];
-const SVG = '<svg width="10" height="8" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const EMAILJS_SERVICE='service_yw9i4oh', EMAILJS_TEMPLATE='template_3o72gvv';
 
-// ═══ STATE ═══
-let state={};
-try{const s=localStorage.getItem('zephyr_v5');if(s)state=JSON.parse(s);}catch(e){}
-function save(){try{localStorage.setItem('zephyr_v5',JSON.stringify(state));}catch(e){}}
-function getTasks(s){if(!state['tasks_'+s])state['tasks_'+s]=JSON.parse(JSON.stringify(DEFAULT_TASKS[s]));return state['tasks_'+s];}
-function getWeeklyData(){if(!state.weekly)state.weekly=JSON.parse(JSON.stringify(DEFAULT_WEEKLY));return state.weekly;}
-function getWeeklyDone(){if(!state.weeklyDone)state.weeklyDone={};return state.weeklyDone;}
-function getSectionName(s){return(state.sectionNames&&state.sectionNames[s])||DEFAULT_SECTION_NAMES[s];}
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let state = {};
+try { const s = localStorage.getItem('zephyr_v6'); if(s) state = JSON.parse(s); } catch(e) {}
+function save() { try { localStorage.setItem('zephyr_v6', JSON.stringify(state)); } catch(e) {} }
 
-// ═══ LOGIN ═══
-const CODES={employee:'0000',manager:'2026'};
-let selectedRole='employee',currentPin='',currentUser='',currentRole='';
-
-function selectRole(r){
-  selectedRole=r;
-  document.getElementById('role-btn-employee').classList.toggle('active',r==='employee');
-  document.getElementById('role-btn-manager').classList.toggle('active',r==='manager');
-  currentPin='';updateDots();
-  document.getElementById('login-error').textContent='';
+function getTabs() {
+  if(!state.tabs) state.tabs = JSON.parse(JSON.stringify(DEFAULT_TABS));
+  return state.tabs;
 }
-function pinPress(d){if(currentPin.length>=4)return;currentPin+=d;updateDots();if(currentPin.length===4)setTimeout(tryLogin,150);}
-function pinDelete(){currentPin=currentPin.slice(0,-1);updateDots();}
-function pinClear(){currentPin='';updateDots();}
-function updateDots(){for(let i=0;i<4;i++)document.getElementById('dot-'+i).classList.toggle('filled',i<currentPin.length);}
+function getTasks(id) {
+  if(!state.tasks) state.tasks = {};
+  if(!state.tasks[id]) {
+    state.tasks[id] = DEFAULT_TASKS_DATA[id] ? JSON.parse(JSON.stringify(DEFAULT_TASKS_DATA[id])) : [];
+  }
+  return state.tasks[id];
+}
+function getWeeklyData() { if(!state.weekly) state.weekly = JSON.parse(JSON.stringify(DEFAULT_WEEKLY)); return state.weekly; }
+function getWeeklyDone() { if(!state.weeklyDone) state.weeklyDone = {}; return state.weeklyDone; }
 
-function tryLogin(){
-  const name=document.getElementById('login-name').value.trim();
-  if(!name){document.getElementById('login-error').textContent='Veuillez entrer votre prénom.';currentPin='';updateDots();return;}
-  if(currentPin===CODES[selectedRole]){
-    currentRole=selectedRole;currentUser=name;
-    document.getElementById('login-error').textContent='';
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('app').style.display='block';
-    document.getElementById('global-bar').style.display='block';
-    document.getElementById('role-badge').style.display='flex';
-    const pill=document.getElementById('role-pill');
-    pill.textContent=currentRole==='manager'?'🔑 Manager — '+currentUser:'👤 '+currentUser;
-    pill.className='role-pill'+(currentRole==='employee'?' employee':'');
-    document.body.className=currentRole;
+// ══════════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════════
+let selectedRole = 'employee', currentPin = '', currentUser = '', currentRole = '';
+
+function selectRole(r) {
+  selectedRole = r;
+  document.getElementById('role-btn-employee').classList.toggle('active', r==='employee');
+  document.getElementById('role-btn-manager').classList.toggle('active', r==='manager');
+  currentPin = ''; updateDots();
+  document.getElementById('login-error').textContent = '';
+}
+function pinPress(d) { if(currentPin.length>=4) return; currentPin+=d; updateDots(); if(currentPin.length===4) setTimeout(tryLogin,150); }
+function pinDelete() { currentPin=currentPin.slice(0,-1); updateDots(); }
+function pinClear() { currentPin=''; updateDots(); }
+function updateDots() { for(let i=0;i<4;i++) document.getElementById('dot-'+i).classList.toggle('filled',i<currentPin.length); }
+
+function tryLogin() {
+  const name = document.getElementById('login-name').value.trim();
+  if(!name) { document.getElementById('login-error').textContent='Veuillez entrer votre prénom.'; currentPin=''; updateDots(); return; }
+  if(currentPin === CODES[selectedRole]) {
+    currentRole = selectedRole; currentUser = name;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('global-bar').style.display = 'block';
+    document.getElementById('role-badge').style.display = 'flex';
+    const pill = document.getElementById('role-pill');
+    pill.textContent = currentRole==='manager' ? '🔑 Manager — '+currentUser : '👤 '+currentUser;
+    pill.className = 'role-pill'+(currentRole==='employee'?' employee':'');
+    document.body.className = currentRole;
     initApp();
   } else {
-    document.getElementById('login-error').textContent='Code incorrect. Réessayez.';
-    currentPin='';updateDots();
-    const card=document.querySelector('.login-card');
-    card.style.animation='none';
-    setTimeout(()=>{card.style.animation='shake .3s ease';},10);
+    document.getElementById('login-error').textContent = 'Code incorrect. Réessayez.';
+    currentPin=''; updateDots();
+    const card = document.querySelector('.login-card');
+    card.style.animation='none'; setTimeout(()=>{ card.style.animation='shake .3s ease'; },10);
   }
 }
-
-function logout(){
-  currentRole='';currentUser='';currentPin='';
+function logout() {
+  currentRole=''; currentUser=''; currentPin='';
   document.body.className='';
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
@@ -557,47 +560,140 @@ function logout(){
   updateDots();
 }
 
-// ═══ SECTION NAMES ═══
-function applySectionNames(){
-  SECTIONS.forEach(s=>{
-    const name=getSectionName(s);
-    const tl=document.getElementById('tab-label-'+s);if(tl)tl.textContent=name;
-    const ts=document.getElementById('title-'+s);if(ts)ts.textContent=name.replace(/^\S+\s/,'');
-    const opt=document.querySelector('#modal-section option[value="'+s+'"]');if(opt)opt.textContent=name;
+// ══════════════════════════════════════════════
+// TABS RENDERING
+// ══════════════════════════════════════════════
+let activeTab = '';
+
+function renderTabs() {
+  const tabs = getTabs();
+  const container = document.getElementById('tabs-container');
+  const sections = document.getElementById('sections-container');
+  container.innerHTML = '';
+  sections.innerHTML = '';
+
+  tabs.forEach((tab, idx) => {
+    // Tab button
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (tab.id === activeTab ? ' active' : '');
+    btn.id = 'tab-'+tab.id;
+    btn.onclick = () => showTab(tab.id);
+
+    if(tab.id === 'weekly') {
+      btn.innerHTML = `${tab.emoji} ${tab.name} <span class="tab-badge" id="badge-weekly"></span>`;
+    } else {
+      const {checked,total} = countSection(tab.id);
+      const done = checked===total && total>0;
+      if(done) btn.classList.add('done');
+      btn.innerHTML = `${tab.emoji} ${tab.name} <span class="tab-badge" id="badge-${tab.id}">${checked}/${total}</span>
+        <button class="tab-delete-btn" onclick="deleteTab('${tab.id}');event.stopPropagation()" title="Supprimer">✕</button>`;
+    }
+    container.appendChild(btn);
+
+    // Section
+    if(tab.id === 'weekly') {
+      const sec = document.createElement('div');
+      sec.className = 'section' + (tab.id === activeTab ? ' active' : '');
+      sec.id = 'section-weekly';
+      sec.innerHTML = `
+        <div class="section-header">
+          <div class="section-title"><span class="section-icon">📅</span><span>Tâches hebdo</span></div>
+          <div class="header-actions">
+            <button class="reset-btn manager-only" onclick="resetWeekly()">Réinit.</button>
+          </div>
+        </div>
+        <div id="weekly-container"></div>
+        <button class="weekly-send-btn" onclick="sendWeeklyReport()">📧 Rapport hebdo</button>`;
+      sections.appendChild(sec);
+      if(tab.id === activeTab) renderWeekly();
+    } else {
+      const sec = document.createElement('div');
+      sec.className = 'section' + (tab.id === activeTab ? ' active' : '');
+      sec.id = 'section-'+tab.id;
+      const names = state.names || {};
+      sec.innerHTML = `
+        <div class="section-header">
+          <div class="section-title">
+            <span class="section-icon">${tab.emoji}</span>
+            <span>${tab.name}</span>
+            <button class="rename-btn manager-only" onclick="openRenameTab('${tab.id}')">✏️</button>
+          </div>
+          <div class="header-actions">
+            <span class="section-progress" id="prog-${tab.id}"></span>
+            <button class="reset-btn manager-only" onclick="resetSection('${tab.id}')">Réinit.</button>
+            <button class="add-task-btn manager-only" onclick="openAddTask('${tab.id}')">+</button>
+          </div>
+        </div>
+        <div class="name-fields-row">
+          <div class="name-field">
+            <label><span>👤</span> Employé</label>
+            <input type="text" id="name-staff-${tab.id}" placeholder="Prénom..." oninput="saveName('${tab.id}','staff',this.value)" autocomplete="off" value="${names['staff_'+tab.id]||''}">
+          </div>
+          <div class="name-field" style="border-left:2px solid var(--bleu)">
+            <label style="color:var(--bleu)"><span>✓</span> Manager</label>
+            <input type="text" id="name-manager-${tab.id}" placeholder="Prénom..." oninput="saveName('${tab.id}','manager',this.value)" autocomplete="off" value="${names['manager_'+tab.id]||''}">
+          </div>
+        </div>
+        <ul class="checklist" id="list-${tab.id}"></ul>
+        <div class="all-done" id="done-${tab.id}">
+          <div class="all-done-icon">✅</div>
+          <h3>${tab.name} complet !</h3>
+          <p>Toutes les tâches effectuées et validées.</p>
+        </div>`;
+      sections.appendChild(sec);
+      renderChecklist(tab.id);
+    }
   });
-}
-let renameTarget='';
-function openRenameModal(s){renameTarget=s;document.getElementById('rename-input').value=getSectionName(s);document.getElementById('rename-modal').classList.add('open');setTimeout(()=>document.getElementById('rename-input').focus(),300);}
-function closeRenameModal(){document.getElementById('rename-modal').classList.remove('open');}
-function confirmRename(){
-  const text=document.getElementById('rename-input').value.trim();
-  if(!text)return;
-  if(!state.sectionNames)state.sectionNames={};
-  state.sectionNames[renameTarget]=text;
-  save();applySectionNames();closeRenameModal();showToast('Liste renommée ✓');
+
+  // Pre-fill name for logged user
+  tabs.forEach(tab => {
+    if(tab.id==='weekly') return;
+    const si = document.getElementById('name-staff-'+tab.id);
+    const mi = document.getElementById('name-manager-'+tab.id);
+    if(currentRole==='employee' && si && !si.value) si.value = currentUser;
+    if(currentRole==='manager' && mi && !mi.value) mi.value = currentUser;
+  });
+
+  updateGlobal();
+  updateWeeklyBadge();
 }
 
-// ═══ RENDER ═══
-function renderSection(section){
-  const tasks=getTasks(section);
-  const staffArr=state['staff_'+section]||[];
-  const managerArr=state['manager_'+section]||[];
-  const ul=document.getElementById('list-'+section);
-  ul.innerHTML='';
-  tasks.forEach((task,i)=>{
-    const li=document.createElement('li');
-    li.dataset.idx=i;
-    if(staffArr[i]&&managerArr[i])li.classList.add('task-fully-done');
-    li.innerHTML=`<div class="task-row">
+function showTab(id) {
+  activeTab = id;
+  renderTabs();
+  if(id==='weekly') renderWeekly();
+}
+
+// ══════════════════════════════════════════════
+// CHECKLIST RENDER
+// ══════════════════════════════════════════════
+function renderChecklist(id) {
+  const tasks = getTasks(id);
+  const sa = state['staff_'+id] || [];
+  const ma = state['manager_'+id] || [];
+  const ul = document.getElementById('list-'+id);
+  if(!ul) return;
+  ul.innerHTML = '';
+
+  if(tasks.length === 0) {
+    ul.innerHTML = `<div class="empty-state"><div class="empty-icon">📝</div>Aucune tâche — appuie sur + pour en ajouter</div>`;
+    updateBadge(id);
+    return;
+  }
+
+  tasks.forEach((task, i) => {
+    const li = document.createElement('li');
+    if(sa[i]&&ma[i]) li.classList.add('task-fully-done');
+    li.innerHTML = `<div class="task-row">
       <div class="task-arrows">
-        <button class="arrow-btn" onclick="moveTask('${section}',${i},-1)" ${i===0?'disabled':''}>▲</button>
-        <button class="arrow-btn" onclick="moveTask('${section}',${i},1)" ${i===tasks.length-1?'disabled':''}>▼</button>
+        <button class="arrow-btn" onclick="moveTask('${id}',${i},-1)" ${i===0?'disabled':''}>▲</button>
+        <button class="arrow-btn" onclick="moveTask('${id}',${i},1)" ${i===tasks.length-1?'disabled':''}>▼</button>
       </div>
       <div class="task-checks">
-        <div class="check-wrap${staffArr[i]?' staff-done':''}" onclick="toggleStaff('${section}',${i},this)">
+        <div class="check-wrap${sa[i]?' staff-done':''}" onclick="toggleStaff('${id}',${i},this)">
           <div class="check-circle">${SVG}</div><span class="check-label">Équipe</span>
         </div>
-        <div class="check-wrap${managerArr[i]?' manager-done':''}" onclick="toggleManager('${section}',${i},this)">
+        <div class="check-wrap${ma[i]?' manager-done':''}" onclick="toggleManager('${id}',${i},this)">
           <div class="check-circle">${SVG}</div><span class="check-label" style="color:var(--bleu)">Manager</span>
         </div>
       </div>
@@ -605,140 +701,172 @@ function renderSection(section){
         ${task.priority?`<div class="item-priority">${task.priority}</div>`:''}
         <div class="item-text">${task.text}</div>
         <div class="task-badges">
-          <span class="badge-staff${staffArr[i]?' show':''}">✓ Équipe</span>
-          <span class="badge-manager${managerArr[i]?' show':''}">✓ Manager</span>
+          <span class="badge-staff${sa[i]?' show':''}">✓ Équipe</span>
+          <span class="badge-manager${ma[i]?' show':''}">✓ Manager</span>
         </div>
       </div>
       <div class="task-actions">
-        <button class="task-edit" onclick="openEditModal('${section}',${i})">✏️</button>
-        <button class="task-delete" onclick="deleteTask('${section}',${i})">×</button>
+        <button class="task-edit" onclick="openEditTask('${id}',${i})">✏️</button>
+        <button class="task-delete" onclick="deleteTask('${id}',${i})">×</button>
       </div>
     </div>`;
     ul.appendChild(li);
   });
-  updateBadge(section);
+  updateBadge(id);
 }
 
-// ═══ MOVE ═══
-function moveTask(section,idx,dir){
-  const tasks=getTasks(section);
-  const sa=state['staff_'+section]||[];
-  const ma=state['manager_'+section]||[];
-  const ni=idx+dir;
-  if(ni<0||ni>=tasks.length)return;
-  [tasks[idx],tasks[ni]]=[tasks[ni],tasks[idx]];
-  [sa[idx],sa[ni]]=[sa[ni]||false,sa[idx]||false];
-  [ma[idx],ma[ni]]=[ma[ni]||false,ma[idx]||false];
-  state['tasks_'+section]=tasks;state['staff_'+section]=sa;state['manager_'+section]=ma;
-  save();renderSection(section);
-}
-
-// ═══ CHECK ═══
-function toggleStaff(section,idx,el){
+// ══════════════════════════════════════════════
+// CHECK LOGIC
+// ══════════════════════════════════════════════
+function toggleStaff(id, idx, el) {
   el.classList.toggle('staff-done');
-  const li=el.closest('li');
-  const bs=li.querySelector('.badge-staff');if(bs)bs.classList.toggle('show',el.classList.contains('staff-done'));
-  li.classList.toggle('task-fully-done',el.classList.contains('staff-done')&&li.querySelector('.check-wrap:last-child').classList.contains('manager-done'));
-  saveSectionState(section);updateBadge(section);updateGlobal();
+  const li = el.closest('li');
+  li.querySelector('.badge-staff')?.classList.toggle('show', el.classList.contains('staff-done'));
+  li.classList.toggle('task-fully-done', el.classList.contains('staff-done') && li.querySelector('.check-wrap:last-child').classList.contains('manager-done'));
+  saveSectionState(id); updateBadge(id); updateGlobal();
 }
-function toggleManager(section,idx,el){
-  if(currentRole!=='manager'){showToast('Réservé au manager 🔑');return;}
+function toggleManager(id, idx, el) {
+  if(currentRole!=='manager') { showToast('Réservé au manager 🔑'); return; }
   el.classList.toggle('manager-done');
-  const li=el.closest('li');
-  const bm=li.querySelector('.badge-manager');if(bm)bm.classList.toggle('show',el.classList.contains('manager-done'));
-  li.classList.toggle('task-fully-done',el.classList.contains('manager-done')&&li.querySelector('.check-wrap:first-child').classList.contains('staff-done'));
-  saveSectionState(section);updateBadge(section);updateGlobal();
+  const li = el.closest('li');
+  li.querySelector('.badge-manager')?.classList.toggle('show', el.classList.contains('manager-done'));
+  li.classList.toggle('task-fully-done', el.classList.contains('manager-done') && li.querySelector('.check-wrap:first-child').classList.contains('staff-done'));
+  saveSectionState(id); updateBadge(id); updateGlobal();
 }
-function saveSectionState(section){
-  const items=document.getElementById('list-'+section).querySelectorAll('li');
-  const s=[],m=[];
-  items.forEach(li=>{const ws=li.querySelectorAll('.check-wrap');s.push(ws[0]?.classList.contains('staff-done')||false);m.push(ws[1]?.classList.contains('manager-done')||false);});
-  state['staff_'+section]=s;state['manager_'+section]=m;save();
+function saveSectionState(id) {
+  const items = document.getElementById('list-'+id)?.querySelectorAll('li');
+  if(!items) return;
+  const s=[], m=[];
+  items.forEach(li => { const ws=li.querySelectorAll('.check-wrap'); s.push(ws[0]?.classList.contains('staff-done')||false); m.push(ws[1]?.classList.contains('manager-done')||false); });
+  state['staff_'+id]=s; state['manager_'+id]=m; save();
 }
-function countSection(section){
-  const items=document.getElementById('list-'+section).querySelectorAll('li');
-  let done=0;items.forEach(li=>{if(li.classList.contains('task-fully-done'))done++;});
-  return{checked:done,total:items.length};
+function countSection(id) {
+  const tasks = getTasks(id);
+  const sa = state['staff_'+id]||[], ma = state['manager_'+id]||[];
+  const done = tasks.filter((_,i)=>sa[i]&&ma[i]).length;
+  return { checked:done, total:tasks.length };
 }
-function updateBadge(section){
-  const{checked,total}=countSection(section);
-  const b=document.getElementById('badge-'+section);if(b)b.textContent=checked+'/'+total;
-  const p=document.getElementById('prog-'+section);if(p)p.textContent=checked+' / '+total;
-  document.getElementById('tab-'+section)?.classList.toggle('done',checked===total&&total>0);
-  document.getElementById('done-'+section)?.classList.toggle('visible',checked===total&&total>0);
+function updateBadge(id) {
+  const {checked,total} = countSection(id);
+  const b = document.getElementById('badge-'+id); if(b) b.textContent=checked+'/'+total;
+  const p = document.getElementById('prog-'+id); if(p) p.textContent=checked+' / '+total;
+  const tab = document.getElementById('tab-'+id);
+  if(tab) tab.classList.toggle('done', checked===total&&total>0&&id!=='weekly');
+  const done = document.getElementById('done-'+id);
+  if(done) done.classList.toggle('visible', checked===total&&total>0);
 }
-function updateGlobal(){
-  let tc=0,ta=0;
-  SECTIONS.forEach(s=>{const{checked,total}=countSection(s);tc+=checked;ta+=total;});
+function updateGlobal() {
+  let tc=0, ta=0;
+  getTabs().filter(t=>t.id!=='weekly').forEach(t=>{ const{checked,total}=countSection(t.id); tc+=checked; ta+=total; });
   document.getElementById('globalCount').textContent=tc+' / '+ta;
   document.getElementById('globalBar').style.width=(ta>0?(tc/ta*100):0)+'%';
 }
-function resetSection(section){
-  state['staff_'+section]=[];state['manager_'+section]=[];
+function resetSection(id) {
+  state['staff_'+id]=[]; state['manager_'+id]=[];
   if(!state.names)state.names={};
-  state.names['staff_'+section]='';state.names['manager_'+section]='';
-  save();renderSection(section);
-  const si=document.getElementById('name-staff-'+section);if(si)si.value='';
-  const mi=document.getElementById('name-manager-'+section);if(mi)mi.value='';
-  updateGlobal();showToast('Section réinitialisée ✓');
+  state.names['staff_'+id]=''; state.names['manager_'+id]='';
+  const si=document.getElementById('name-staff-'+id); if(si)si.value='';
+  const mi=document.getElementById('name-manager-'+id); if(mi)mi.value='';
+  save(); renderChecklist(id); updateGlobal(); showToast('Section réinitialisée ✓');
 }
 
-// ═══ ADD/EDIT/DELETE ═══
-function openAddModal(section){
-  document.getElementById('modal-section').value=section;
-  document.getElementById('modal-input').value='';
-  document.getElementById('modal').classList.add('open');
-  setTimeout(()=>document.getElementById('modal-input').focus(),300);
-}
-function closeModal(){document.getElementById('modal').classList.remove('open');}
-function confirmAdd(){
-  const section=document.getElementById('modal-section').value;
-  const text=document.getElementById('modal-input').value.trim();
-  if(!text)return;
-  getTasks(section).push({text});save();renderSection(section);closeModal();
-  showToast('Tâche ajoutée dans '+getSectionName(section).replace(/^\S+\s/,'')+' ✓');
+// ══════════════════════════════════════════════
+// MOVE TASK
+// ══════════════════════════════════════════════
+function moveTask(id, idx, dir) {
+  const tasks=getTasks(id), sa=state['staff_'+id]||[], ma=state['manager_'+id]||[];
+  const ni=idx+dir; if(ni<0||ni>=tasks.length)return;
+  [tasks[idx],tasks[ni]]=[tasks[ni],tasks[idx]];
+  [sa[idx],sa[ni]]=[sa[ni]||false,sa[idx]||false];
+  [ma[idx],ma[ni]]=[ma[ni]||false,ma[idx]||false];
+  state['tasks'][id]=tasks; state['staff_'+id]=sa; state['manager_'+id]=ma;
+  save(); renderChecklist(id);
 }
 
-let editSection='',editIdx=-1;
-function openEditModal(section,idx){
-  editSection=section;editIdx=idx;
-  document.getElementById('edit-input').value=getTasks(section)[idx].text;
-  document.getElementById('edit-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('edit-input').focus(),300);
-}
-function closeEditModal(){document.getElementById('edit-modal').classList.remove('open');}
-function confirmEdit(){
-  const text=document.getElementById('edit-input').value.trim();
-  if(!text)return;
-  getTasks(editSection)[editIdx].text=text;save();renderSection(editSection);closeEditModal();showToast('Tâche modifiée ✓');
-}
+// ══════════════════════════════════════════════
+// ADD / EDIT / DELETE TASK
+// ══════════════════════════════════════════════
+let addTaskTarget='', editTaskTarget='', editTaskIdx=-1;
 
-function deleteTask(section,idx){
-  const tasks=getTasks(section);
-  const sa=state['staff_'+section]||[];const ma=state['manager_'+section]||[];
-  tasks.splice(idx,1);sa.splice(idx,1);ma.splice(idx,1);
-  state['tasks_'+section]=tasks;state['staff_'+section]=sa;state['manager_'+section]=ma;
-  save();renderSection(section);updateGlobal();
+function openAddTask(id) { addTaskTarget=id; document.getElementById('add-task-input').value=''; openModal('modal-add-task'); setTimeout(()=>document.getElementById('add-task-input').focus(),300); }
+function confirmAddTask() {
+  const text=document.getElementById('add-task-input').value.trim(); if(!text)return;
+  getTasks(addTaskTarget).push({text}); save(); renderChecklist(addTaskTarget); closeModal('modal-add-task'); showToast('Tâche ajoutée ✓');
 }
-
-// ═══ NAMES ═══
-function saveName(section,role,value){if(!state.names)state.names={};state.names[role+'_'+section]=value;save();}
-
-// ═══ TABS ═══
-function showTab(section){
-  [...SECTIONS,'weekly'].forEach(s=>{
-    document.getElementById('section-'+s)?.classList.toggle('active',s===section);
-    document.getElementById('tab-'+s)?.classList.toggle('active',s===section);
-  });
-  if(section==='weekly')renderWeekly();
+function openEditTask(id, idx) { editTaskTarget=id; editTaskIdx=idx; document.getElementById('edit-task-input').value=getTasks(id)[idx].text; openModal('modal-edit-task'); setTimeout(()=>document.getElementById('edit-task-input').focus(),300); }
+function confirmEditTask() {
+  const text=document.getElementById('edit-task-input').value.trim(); if(!text)return;
+  getTasks(editTaskTarget)[editTaskIdx].text=text; save(); renderChecklist(editTaskTarget); closeModal('modal-edit-task'); showToast('Tâche modifiée ✓');
+}
+function deleteTask(id, idx) {
+  const tasks=getTasks(id), sa=state['staff_'+id]||[], ma=state['manager_'+id]||[];
+  tasks.splice(idx,1); sa.splice(idx,1); ma.splice(idx,1);
+  state['tasks'][id]=tasks; state['staff_'+id]=sa; state['manager_'+id]=ma;
+  save(); renderChecklist(id); updateGlobal();
 }
 
-// ═══ WEEKLY ═══
-function renderWeekly(){
-  const data=getWeeklyData(),done=getWeeklyDone();
-  const c=document.getElementById('weekly-container');c.innerHTML='';
+// ══════════════════════════════════════════════
+// TAB MANAGEMENT
+// ══════════════════════════════════════════════
+let selectedEmojiRename='', selectedEmojiNew='🌅', renameTabTarget='';
+
+function selectEmoji(el) { document.querySelectorAll('#emoji-picker .emoji-opt').forEach(e=>e.classList.remove('selected')); el.classList.add('selected'); selectedEmojiRename=el.textContent; }
+function selectEmojiNew(el) { document.querySelectorAll('#emoji-picker-new .emoji-opt').forEach(e=>e.classList.remove('selected')); el.classList.add('selected'); selectedEmojiNew=el.textContent; }
+
+function openRenameTab(id) {
+  renameTabTarget=id; const tab=getTabs().find(t=>t.id===id);
+  document.getElementById('rename-tab-input').value=tab?tab.name:'';
+  selectedEmojiRename=tab?tab.emoji:'';
+  document.querySelectorAll('#emoji-picker .emoji-opt').forEach(e=>{ e.classList.toggle('selected',e.textContent===selectedEmojiRename); });
+  openModal('modal-rename-tab'); setTimeout(()=>document.getElementById('rename-tab-input').focus(),300);
+}
+function confirmRenameTab() {
+  const name=document.getElementById('rename-tab-input').value.trim(); if(!name)return;
+  const tabs=getTabs(); const tab=tabs.find(t=>t.id===renameTabTarget);
+  if(tab){ tab.name=name; if(selectedEmojiRename)tab.emoji=selectedEmojiRename; }
+  save(); closeModal('modal-rename-tab'); renderTabs(); showToast('Onglet renommé ✓');
+}
+
+function openNewTabModal() {
+  document.getElementById('new-tab-input').value=''; selectedEmojiNew='🌅';
+  document.querySelectorAll('#emoji-picker-new .emoji-opt').forEach((e,i)=>e.classList.toggle('selected',i===0));
+  openModal('modal-new-tab'); setTimeout(()=>document.getElementById('new-tab-input').focus(),300);
+}
+function confirmNewTab() {
+  const name=document.getElementById('new-tab-input').value.trim(); if(!name)return;
+  const id='tab_'+Date.now();
+  const tabs=getTabs();
+  const weeklyIdx=tabs.findIndex(t=>t.id==='weekly');
+  const newTab={id,emoji:selectedEmojiNew||'📋',name};
+  if(weeklyIdx>=0)tabs.splice(weeklyIdx,0,newTab); else tabs.push(newTab);
+  if(!state.tasks)state.tasks={}; state.tasks[id]=[];
+  save(); activeTab=id; closeModal('modal-new-tab'); renderTabs(); showToast('Onglet créé ✓');
+}
+
+function deleteTab(id) {
+  if(!confirm('Supprimer cet onglet et toutes ses tâches ?')) return;
+  const tabs=getTabs();
+  const idx=tabs.findIndex(t=>t.id===id); if(idx>=0)tabs.splice(idx,1);
+  delete state.tasks?.[id]; delete state['staff_'+id]; delete state['manager_'+id];
+  save();
+  activeTab=tabs[0]?.id||'weekly';
+  renderTabs(); updateGlobal(); showToast('Onglet supprimé ✓');
+}
+
+// ══════════════════════════════════════════════
+// NAMES
+// ══════════════════════════════════════════════
+function saveName(id, role, value) { if(!state.names)state.names={}; state.names[role+'_'+id]=value; save(); }
+
+// ══════════════════════════════════════════════
+// WEEKLY
+// ══════════════════════════════════════════════
+function renderWeekly() {
+  const data=getWeeklyData(), done=getWeeklyDone();
+  const c=document.getElementById('weekly-container'); if(!c)return;
+  c.innerHTML='';
   DAYS.forEach(day=>{
-    const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];
+    const tasks=data[day]||[], sa=done['staff_'+day]||[], ma=done['manager_'+day]||[];
     const fd=tasks.filter((_,i)=>sa[i]&&ma[i]).length;
     const block=document.createElement('div');
     block.className='day-block'+(day===TODAY?' open':'');
@@ -751,131 +879,95 @@ function renderWeekly(){
   });
   updateWeeklyBadge();
 }
-function renderDayTasks(day){
-  const data=getWeeklyData(),done=getWeeklyDone();
-  const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];
-  const c=document.getElementById('dtasks-'+day);if(!c)return;
+function renderDayTasks(day) {
+  const data=getWeeklyData(), done=getWeeklyDone();
+  const tasks=data[day]||[], sa=done['staff_'+day]||[], ma=done['manager_'+day]||[];
+  const c=document.getElementById('dtasks-'+day); if(!c)return;
   c.innerHTML='';
   tasks.forEach((t,i)=>{
-    const sd=sa[i]||false,md=ma[i]||false,fd=sd&&md;
+    const sd=sa[i]||false, md=ma[i]||false, fd=sd&&md;
     const item=document.createElement('div');
     item.className='day-task-item'+(fd?' fully-done':'');
     item.innerHTML=`<div class="day-task-checks">
-      <div class="day-check-wrap${sd?' staff-done':''}" onclick="toggleDayStaff('${day}',${i},this)">
+      <div class="day-check-wrap${sd?' staff-done':''}" onclick="toggleDayStaff('${day}',${i})">
         <div class="day-task-circle">${sd?SVG:''}</div><span class="day-check-label">Équipe</span></div>
-      <div class="day-check-wrap${md?' manager-done':''}" onclick="toggleDayManager('${day}',${i},this)">
+      <div class="day-check-wrap${md?' manager-done':''}" onclick="toggleDayManager('${day}',${i})">
         <div class="day-task-circle">${md?SVG:''}</div><span class="day-check-label" style="color:var(--bleu)">Mgr</span></div>
     </div>
-    <div style="flex:1"><div class="day-task-text">${t}</div>
-      <div class="day-task-badges"><span class="day-badge-staff${sd?' show':''}">✓ Équipe</span><span class="day-badge-manager${md?' show':''}">✓ Manager</span></div>
-    </div>
+    <div style="flex:1"><div class="day-task-text">${t}</div></div>
     <button class="day-task-delete" onclick="deleteDayTask('${day}',${i})">×</button>`;
     c.appendChild(item);
   });
-  const btn=document.createElement('button');
-  btn.className='day-add-btn';btn.innerHTML='+ Ajouter une tâche';
-  btn.onclick=()=>addDayTask(day);c.appendChild(btn);
+  const btn=document.createElement('button'); btn.className='day-add-btn'; btn.innerHTML='+ Ajouter'; btn.onclick=()=>addDayTask(day); c.appendChild(btn);
 }
-function toggleDayStaff(day,idx,el){
-  const done=getWeeklyDone();if(!done['staff_'+day])done['staff_'+day]=[];
-  done['staff_'+day][idx]=!done['staff_'+day][idx];
-  save();renderDayTasks(day);updateDayCount(day);updateWeeklyBadge();
-}
-function toggleDayManager(day,idx,el){
+function toggleDayStaff(day,idx) { const done=getWeeklyDone(); if(!done['staff_'+day])done['staff_'+day]=[]; done['staff_'+day][idx]=!done['staff_'+day][idx]; save(); renderDayTasks(day); updateDayCount(day); updateWeeklyBadge(); }
+function toggleDayManager(day,idx) {
   if(currentRole!=='manager'){showToast('Réservé au manager 🔑');return;}
-  const done=getWeeklyDone();if(!done['manager_'+day])done['manager_'+day]=[];
-  done['manager_'+day][idx]=!done['manager_'+day][idx];
-  save();renderDayTasks(day);updateDayCount(day);updateWeeklyBadge();
+  const done=getWeeklyDone(); if(!done['manager_'+day])done['manager_'+day]=[]; done['manager_'+day][idx]=!done['manager_'+day][idx]; save(); renderDayTasks(day); updateDayCount(day); updateWeeklyBadge();
 }
-function deleteDayTask(day,idx){
+function deleteDayTask(day,idx) {
   if(currentRole!=='manager')return;
   const data=getWeeklyData(),done=getWeeklyDone();
-  data[day].splice(idx,1);
-  if(done['staff_'+day])done['staff_'+day].splice(idx,1);
-  if(done['manager_'+day])done['manager_'+day].splice(idx,1);
-  save();renderDayTasks(day);updateDayCount(day);updateWeeklyBadge();
+  data[day].splice(idx,1); if(done['staff_'+day])done['staff_'+day].splice(idx,1); if(done['manager_'+day])done['manager_'+day].splice(idx,1);
+  save(); renderDayTasks(day); updateDayCount(day); updateWeeklyBadge();
 }
-function addDayTask(day){
-  const text=prompt('Nouvelle tâche pour '+DAY_LABELS[day]+' :');
-  if(!text||!text.trim())return;
-  getWeeklyData()[day].push(text.trim());save();renderDayTasks(day);updateDayCount(day);updateWeeklyBadge();
-}
-function updateDayCount(day){
-  const data=getWeeklyData(),done=getWeeklyDone();
-  const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];
-  const fd=tasks.filter((_,i)=>sa[i]&&ma[i]).length;
-  const cnt=document.getElementById('dcnt-'+day);
-  if(cnt)cnt.textContent=fd+'/'+tasks.length+(day===TODAY?' — Aujourd\'hui':'');
-}
-function updateWeeklyBadge(){
-  const data=getWeeklyData(),done=getWeeklyDone();
-  let t=0,d=0;
-  DAYS.forEach(day=>{const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];t+=tasks.length;d+=tasks.filter((_,i)=>sa[i]&&ma[i]).length;});
-  const b=document.getElementById('badge-weekly');if(b)b.textContent=d+'/'+t;
-}
-function resetWeekly(){
-  state.weeklyDone={};save();renderWeekly();showToast('Tâches hebdo réinitialisées ✓');
-}
+function addDayTask(day) { const text=prompt('Nouvelle tâche pour '+DAY_LABELS[day]+' :'); if(!text||!text.trim())return; getWeeklyData()[day].push(text.trim()); save(); renderDayTasks(day); updateDayCount(day); updateWeeklyBadge(); }
+function updateDayCount(day) { const data=getWeeklyData(),done=getWeeklyDone(); const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[]; const fd=tasks.filter((_,i)=>sa[i]&&ma[i]).length; const cnt=document.getElementById('dcnt-'+day); if(cnt)cnt.textContent=fd+'/'+tasks.length+(day===TODAY?' — Aujourd\'hui':''); }
+function updateWeeklyBadge() { const data=getWeeklyData(),done=getWeeklyDone(); let t=0,d=0; DAYS.forEach(day=>{const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];t+=tasks.length;d+=tasks.filter((_,i)=>sa[i]&&ma[i]).length;}); const b=document.getElementById('badge-weekly');if(b)b.textContent=d+'/'+t; }
+function resetWeekly() { state.weeklyDone={}; save(); renderWeekly(); showToast('Hebdo réinitialisé ✓'); }
 
-// ═══ REPORTS ═══
-async function sendFullReport(){
+// ══════════════════════════════════════════════
+// MODAL HELPERS
+// ══════════════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ══════════════════════════════════════════════
+// REPORTS
+// ══════════════════════════════════════════════
+async function sendFullReport() {
   const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   let msg='RAPPORT COMPLET — ZEPHYR MONACO\n'+'='.repeat(34)+'\nDate : '+now+'\n';
-  SECTIONS.forEach(s=>{
-    const names=state.names||{};
-    const tasks=getTasks(s),sa=state['staff_'+s]||[],ma=state['manager_'+s]||[];
+  const names=state.names||{};
+  getTabs().filter(t=>t.id!=='weekly').forEach(tab=>{
+    const tasks=getTasks(tab.id), sa=state['staff_'+tab.id]||[], ma=state['manager_'+tab.id]||[];
     const lines=tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t.text);
-    msg+='\n\n── '+getSectionName(s).toUpperCase()+' ──\n';
-    msg+='Employé : '+(names['staff_'+s]||'—')+' | Manager : '+(names['manager_'+s]||'—')+'\n';
-    msg+=lines.join('\n');
+    msg+='\n\n── '+tab.emoji+' '+tab.name.toUpperCase()+' ──\n';
+    msg+='Employé : '+(names['staff_'+tab.id]||'—')+' | Manager : '+(names['manager_'+tab.id]||'—')+'\n';
+    msg+=lines.length>0?lines.join('\n'):'(aucune tâche)';
   });
   const data=getWeeklyData(),done=getWeeklyDone();
-  msg+='\n\n── HEBDOMADAIRE ──';
-  DAYS.forEach(day=>{
-    const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];
-    if(tasks.length>0){msg+='\n'+DAY_LABELS[day]+' : '+tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':'❌')+' '+t).join(' | ');}
-  });
+  msg+='\n\n── 📅 HEBDOMADAIRE ──';
+  DAYS.forEach(day=>{ const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[]; if(tasks.length>0){msg+='\n'+DAY_LABELS[day]+' : '+tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':'❌')+' '+t).join(' | ');} });
   msg+='\n\n— Envoyé depuis l\'application Zephyr Monaco';
   showToast('Envoi en cours...');
-  try{
-    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport Complet Mise en Place — '+now,message:msg,name:currentUser||'Zephyr App',email:'restaurant@zephyrmonaco.com'});
-    showToast('✅ Rapport envoyé !');
-  }catch(e){showToast('❌ Erreur : '+(e.text||e.message));}
+  try { await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport Complet — '+now,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'}); showToast('✅ Rapport envoyé !'); }
+  catch(e) { showToast('❌ Erreur : '+(e.text||e.message)); }
 }
-async function sendWeeklyReport(){
+async function sendWeeklyReport() {
   const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   const data=getWeeklyData(),done=getWeeklyDone();
   let lines=[];
-  DAYS.forEach(day=>{
-    lines.push('\n— '+DAY_LABELS[day].toUpperCase()+' —');
-    const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];
-    tasks.forEach((t,i)=>lines.push((sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t));
-  });
+  DAYS.forEach(day=>{ lines.push('\n— '+DAY_LABELS[day].toUpperCase()+' —'); const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[]; tasks.forEach((t,i)=>lines.push((sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t)); });
   const msg='RAPPORT HEBDOMADAIRE — ZEPHYR MONACO\n'+'='.repeat(37)+'\nDate : '+now+'\n'+lines.join('\n')+'\n\n— Envoyé depuis l\'application Zephyr Monaco';
   showToast('Envoi en cours...');
-  try{
-    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport Hebdo — '+now,message:msg,name:currentUser||'Zephyr App',email:'restaurant@zephyrmonaco.com'});
-    showToast('✅ Rapport hebdo envoyé !');
-  }catch(e){showToast('❌ Erreur : '+(e.text||e.message));}
+  try { await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport Hebdo — '+now,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'}); showToast('✅ Rapport hebdo envoyé !'); }
+  catch(e) { showToast('❌ Erreur : '+(e.text||e.message)); }
 }
 
-// ═══ TOAST ═══
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 
-// ═══ INIT ═══
-function initApp(){
-  applySectionNames();
-  SECTIONS.forEach(section=>{
-    renderSection(section);
-    const names=state.names||{};
-    const si=document.getElementById('name-staff-'+section);
-    const mi=document.getElementById('name-manager-'+section);
-    if(si&&names['staff_'+section])si.value=names['staff_'+section];
-    if(mi&&names['manager_'+section])mi.value=names['manager_'+section];
-    if(currentRole==='employee'&&si&&!si.value)si.value=currentUser;
-    if(currentRole==='manager'&&mi&&!mi.value)mi.value=currentUser;
-  });
-  updateGlobal();updateWeeklyBadge();
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+function initApp() {
+  if(!state.tasks) state.tasks={};
+  const tabs=getTabs();
+  activeTab = tabs[0]?.id || 'matin';
+  renderTabs();
 }
 </script>
 </body>
