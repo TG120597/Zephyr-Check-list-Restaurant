@@ -42,8 +42,7 @@
   .num-btn:active { transform:scale(.95); }
   .num-btn.del { font-size:16px; color:var(--text-dim); }
   .login-error { color:var(--terra-dark); font-size:12px; text-align:center; margin-top:12px; min-height:18px; }
-  .login-name-input { width:100%; background:var(--beige); border:1px solid var(--stone2); border-radius:var(--radius); padding:11px 14px; font-family:'Jost',sans-serif; font-size:14px; color:var(--text); outline:none; caret-color:var(--terra); margin-bottom:16px; transition:border-color .2s; }
-  .login-name-input:focus { border-color:var(--terra-border); }
+  .login-name-input { width:100%; background:var(--beige); border:1px solid var(--stone2); border-radius:var(--radius); padding:11px 14px; font-family:'Jost',sans-serif; font-size:14px; color:var(--text); outline:none; caret-color:var(--terra); margin-bottom:16px; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 
   /* ── ROLE BADGE ── */
@@ -54,149 +53,150 @@
   .logout-btn:hover { border-color:var(--terra); color:var(--terra); }
 
   /* ── HEADER ── */
-  header { text-align:center; padding:44px 20px 24px; position:relative; border-bottom:1px solid var(--stone2); background:linear-gradient(180deg,rgba(181,96,58,.06) 0%,transparent 100%); }
+  header { text-align:center; padding:44px 20px 20px; position:relative; border-bottom:1px solid var(--stone2); background:linear-gradient(180deg,rgba(181,96,58,.06) 0%,transparent 100%); }
   header::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--beige),var(--terra),var(--terra-dark),var(--terra),var(--beige)); }
-  header::after { content:''; display:block; width:40px; height:1px; background:var(--terra); margin:14px auto 0; opacity:.5; }
-  .logo-text { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,8vw,52px); color:var(--terra-dark); letter-spacing:.14em; font-weight:500; font-style:italic; }
-  .restaurant-name { font-size:10px; color:var(--stone); letter-spacing:.4em; text-transform:uppercase; margin-top:6px; }
-  .subtitle { font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:var(--stone); margin-top:4px; font-weight:300; opacity:.7; }
+  .logo-text { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,7vw,48px); color:var(--terra-dark); letter-spacing:.14em; font-weight:500; font-style:italic; }
+  .restaurant-name { font-size:10px; color:var(--stone); letter-spacing:.4em; text-transform:uppercase; margin-top:4px; }
+  .subtitle { font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:var(--stone); margin-top:3px; font-weight:300; opacity:.7; }
 
   /* ── PROGRESS ── */
-  .global-progress { padding:22px 20px 0; max-width:740px; margin:0 auto; }
-  .progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .global-progress { padding:18px 20px 0; max-width:760px; margin:0 auto; }
+  .progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
   .progress-label { font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--text-dim); font-weight:500; }
-  .progress-count { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--terra); font-weight:600; }
+  .progress-count { font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--terra); font-weight:600; }
   .progress-bar-bg { background:var(--beige3); border-radius:99px; height:5px; overflow:hidden; border:1px solid var(--stone2); }
   .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--terra),var(--terra-dark)); border-radius:99px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%; }
 
-  /* ── TABS ── */
-  .tabs-wrap { display:flex; align-items:center; gap:8px; padding:20px 20px 0; max-width:740px; margin:0 auto; }
-  .tabs { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; flex:1; }
-  .tabs::-webkit-scrollbar { display:none; }
-  .tab-btn { flex-shrink:0; background:var(--beige2); border:1px solid var(--stone2); color:var(--text-dim); padding:10px 16px; border-radius:99px; font-family:'Jost',sans-serif; font-size:12px; font-weight:400; cursor:pointer; transition:all .2s; letter-spacing:.06em; display:flex; align-items:center; gap:7px; position:relative; }
-  .tab-btn .tab-badge { background:rgba(181,96,58,.08); border-radius:99px; font-size:10px; padding:1px 6px; color:var(--stone); transition:all .2s; }
-  .tab-btn.active { background:var(--terra); border-color:var(--terra); color:var(--beige); font-weight:500; box-shadow:0 4px 14px rgba(181,96,58,.25); }
-  .tab-btn.active .tab-badge { background:rgba(242,237,228,.2); color:rgba(242,237,228,.9); }
-  .tab-btn.done { border-color:var(--vert); color:var(--vert); }
-  .tab-btn.done .tab-badge { background:rgba(90,138,94,.1); color:var(--vert); }
-  .tab-delete-btn { background:none; border:none; color:rgba(255,255,255,.6); font-size:13px; cursor:pointer; padding:0 0 0 4px; line-height:1; display:none; }
-  .tab-btn.active .tab-delete-btn { display:inline; }
-  body.manager .tab-btn.active .tab-delete-btn { display:inline; }
-  .add-tab-btn { flex-shrink:0; background:var(--terra); border:none; color:var(--beige); width:34px; height:34px; border-radius:50%; font-size:20px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .2s; box-shadow:0 2px 8px rgba(181,96,58,.3); }
-  body.manager .add-tab-btn { display:flex; }
-  .add-tab-btn:hover { background:var(--terra-dark); transform:scale(1.1); }
+  /* ── DEPT TABS (top level) ── */
+  .dept-tabs { display:flex; gap:6px; padding:14px 20px 0; max-width:760px; margin:0 auto; overflow-x:auto; scrollbar-width:none; }
+  .dept-tabs::-webkit-scrollbar { display:none; }
+  .dept-btn { flex-shrink:0; padding:9px 20px; border-radius:99px; border:1px solid var(--stone2); background:var(--beige2); color:var(--text-dim); font-family:'Jost',sans-serif; font-size:13px; font-weight:400; cursor:pointer; transition:all .2s; letter-spacing:.06em; }
+  .dept-btn.active { background:var(--terra-dark); border-color:var(--terra-dark); color:var(--beige); font-weight:500; box-shadow:0 4px 14px rgba(140,69,40,.3); }
+  .dept-btn .dept-badge { font-size:10px; background:rgba(181,96,58,.1); border-radius:99px; padding:1px 6px; margin-left:4px; color:var(--stone); }
+  .dept-btn.active .dept-badge { background:rgba(255,255,255,.15); color:rgba(255,255,255,.8); }
+
+  /* ── SUB TABS (Matin/Après-midi/Soir/Hebdo) ── */
+  .sub-tabs-wrap { display:flex; align-items:center; gap:8px; padding:10px 20px 0; max-width:760px; margin:0 auto; }
+  .sub-tabs { display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; flex:1; }
+  .sub-tabs::-webkit-scrollbar { display:none; }
+  .sub-btn { flex-shrink:0; padding:8px 14px; border-radius:99px; border:1px solid var(--stone2); background:var(--beige2); color:var(--text-dim); font-family:'Jost',sans-serif; font-size:12px; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:6px; }
+  .sub-btn .sub-badge { font-size:10px; background:rgba(181,96,58,.08); border-radius:99px; padding:1px 5px; color:var(--stone); }
+  .sub-btn.active { background:var(--terra); border-color:var(--terra); color:var(--beige); font-weight:500; box-shadow:0 3px 10px rgba(181,96,58,.25); }
+  .sub-btn.active .sub-badge { background:rgba(242,237,228,.2); color:rgba(242,237,228,.9); }
+  .sub-btn.done { border-color:var(--vert); color:var(--vert); }
+  .sub-btn.done .sub-badge { background:rgba(90,138,94,.1); color:var(--vert); }
+  .add-sub-btn { flex-shrink:0; background:var(--terra); border:none; color:var(--beige); width:30px; height:30px; border-radius:50%; font-size:18px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .2s; }
+  body.manager .add-sub-btn { display:flex; }
+  .add-sub-btn:hover { background:var(--terra-dark); transform:scale(1.1); }
 
   /* ── SECTIONS ── */
-  .sections { max-width:740px; margin:0 auto; padding:16px 20px 100px; }
-  .section { display:none; animation:fadeIn .22s ease; }
+  .sections { max-width:760px; margin:0 auto; padding:14px 20px 110px; }
+  .section { display:none; animation:fadeIn .2s ease; }
   .section.active { display:block; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-  .section-header { display:flex; align-items:center; justify-content:space-between; padding:18px 0 14px; border-bottom:1px solid var(--stone2); margin-bottom:12px; }
-  .section-title { font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--terra-dark); display:flex; align-items:center; gap:8px; font-weight:500; font-style:italic; }
-  .section-icon { font-size:20px; font-style:normal; }
-  .section-progress { font-size:12px; color:var(--text-dim); letter-spacing:.1em; }
-  .header-actions { display:flex; gap:8px; align-items:center; }
-  .reset-btn { background:none; border:1px solid var(--stone2); color:var(--text-dim); padding:5px 12px; border-radius:99px; font-size:11px; cursor:pointer; font-family:'Jost',sans-serif; letter-spacing:.06em; transition:all .2s; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+  .section-header { display:flex; align-items:center; justify-content:space-between; padding:16px 0 12px; border-bottom:1px solid var(--stone2); margin-bottom:12px; }
+  .section-title { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--terra-dark); display:flex; align-items:center; gap:8px; font-weight:500; font-style:italic; }
+  .section-progress { font-size:12px; color:var(--text-dim); }
+  .header-actions { display:flex; gap:6px; align-items:center; }
+  .reset-btn { background:none; border:1px solid var(--stone2); color:var(--text-dim); padding:5px 10px; border-radius:99px; font-size:11px; cursor:pointer; font-family:'Jost',sans-serif; transition:all .2s; display:none; }
+  body.manager .reset-btn { display:block; }
   .reset-btn:hover { border-color:var(--terra); color:var(--terra); }
-  .add-task-btn { background:var(--terra); border:none; color:var(--beige); width:30px; height:30px; border-radius:50%; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; box-shadow:0 2px 8px rgba(181,96,58,.3); }
+  .add-task-btn { background:var(--terra); border:none; color:var(--beige); width:28px; height:28px; border-radius:50%; font-size:18px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .2s; }
+  body.manager .add-task-btn { display:flex; }
   .add-task-btn:hover { background:var(--terra-dark); transform:scale(1.1); }
-  .manager-only { display:none !important; }
-  body.manager .manager-only { display:flex !important; }
-  .rename-btn { background:none; border:none; font-size:13px; cursor:pointer; opacity:.35; padding:0; transition:opacity .2s; display:none; font-style:normal; }
+  .rename-btn { background:none; border:none; font-size:12px; cursor:pointer; opacity:.3; display:none; font-style:normal; transition:opacity .2s; }
   body.manager .rename-btn { display:inline; }
   .rename-btn:hover { opacity:1; }
 
   /* ── NAME FIELDS ── */
   .name-fields-row { display:flex; gap:8px; margin-bottom:12px; }
-  .name-field { display:flex; align-items:center; gap:10px; background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); padding:11px 14px; flex:1; transition:border-color .2s; }
+  .name-field { display:flex; align-items:center; gap:8px; background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); padding:10px 12px; flex:1; transition:border-color .2s; }
   .name-field:focus-within { border-color:var(--terra-border); }
-  .name-field label { font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--text-dim); font-weight:500; white-space:nowrap; flex-shrink:0; }
-  .name-field input { background:transparent; border:none; outline:none; color:var(--text); font-family:'Jost',sans-serif; font-size:14px; width:100%; caret-color:var(--terra); }
+  .name-field label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--text-dim); font-weight:500; white-space:nowrap; flex-shrink:0; }
+  .name-field input { background:transparent; border:none; outline:none; color:var(--text); font-family:'Jost',sans-serif; font-size:13px; width:100%; caret-color:var(--terra); }
   .name-field input::placeholder { color:var(--stone2); }
 
   /* ── CHECKLIST ── */
   .checklist { list-style:none; }
-  .checklist li { border-radius:var(--radius); margin-bottom:6px; background:var(--beige2); border:1px solid var(--stone2); transition:all .18s; overflow:hidden; }
-  .task-row { display:flex; align-items:flex-start; gap:10px; padding:12px 14px; }
+  .checklist li { border-radius:var(--radius); margin-bottom:5px; background:var(--beige2); border:1px solid var(--stone2); transition:all .18s; overflow:hidden; }
+  .task-row { display:flex; align-items:flex-start; gap:8px; padding:11px 12px; }
   .task-arrows { display:none; flex-direction:column; gap:2px; flex-shrink:0; align-self:center; }
   body.manager .task-arrows { display:flex; }
-  .arrow-btn { background:none; border:1px solid var(--stone2); color:var(--stone); width:22px; height:22px; border-radius:5px; font-size:11px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; padding:0; }
+  .arrow-btn { background:none; border:1px solid var(--stone2); color:var(--stone); width:20px; height:20px; border-radius:4px; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; padding:0; }
   .arrow-btn:hover { border-color:var(--terra); color:var(--terra); background:var(--terra-dim); }
   .arrow-btn:disabled { opacity:.2; cursor:default; }
   .arrow-btn:disabled:hover { border-color:var(--stone2); color:var(--stone); background:none; }
-  .task-checks { display:flex; flex-direction:column; gap:5px; flex-shrink:0; padding-top:2px; }
-  .check-wrap { display:flex; align-items:center; gap:5px; cursor:pointer; user-select:none; }
-  .check-label { font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--stone); white-space:nowrap; }
-  .check-circle { width:20px; height:20px; min-width:20px; border-radius:50%; border:2px solid var(--stone2); display:flex; align-items:center; justify-content:center; transition:all .18s; background:transparent; }
+  .task-checks { display:flex; flex-direction:column; gap:4px; flex-shrink:0; padding-top:1px; }
+  .check-wrap { display:flex; align-items:center; gap:4px; cursor:pointer; user-select:none; }
+  .check-label { font-size:8px; letter-spacing:.1em; text-transform:uppercase; color:var(--stone); white-space:nowrap; }
+  .check-circle { width:18px; height:18px; min-width:18px; border-radius:50%; border:2px solid var(--stone2); display:flex; align-items:center; justify-content:center; transition:all .18s; background:transparent; }
   .check-wrap:hover .check-circle { border-color:var(--terra); }
   .check-wrap.staff-done .check-circle { background:var(--vert); border-color:var(--vert); }
   .check-wrap.manager-done .check-circle { background:var(--bleu); border-color:var(--bleu); }
   .check-circle svg { opacity:0; transform:scale(.5); transition:all .2s cubic-bezier(.34,1.56,.64,1); }
   .check-wrap.staff-done .check-circle svg,.check-wrap.manager-done .check-circle svg { opacity:1; transform:scale(1); }
   .task-content { flex:1; }
-  .item-text { font-size:14px; line-height:1.6; color:var(--text); font-weight:400; transition:all .2s; }
+  .item-text { font-size:13px; line-height:1.5; color:var(--text); font-weight:400; transition:all .2s; }
   .task-fully-done .item-text { color:var(--text-dim); text-decoration:line-through; text-decoration-color:rgba(90,138,94,.5); }
-  .task-badges { display:flex; gap:5px; margin-top:4px; flex-wrap:wrap; }
-  .badge-staff,.badge-manager { font-size:9px; padding:1px 6px; border-radius:4px; display:none; }
+  .task-badges { display:flex; gap:4px; margin-top:3px; flex-wrap:wrap; }
+  .badge-staff,.badge-manager { font-size:8px; padding:1px 5px; border-radius:3px; display:none; }
   .badge-staff { background:var(--vert-dim); color:var(--vert); border:1px solid rgba(90,138,94,.25); }
   .badge-manager { background:var(--bleu-dim); color:var(--bleu); border:1px solid rgba(74,122,155,.25); }
   .badge-staff.show,.badge-manager.show { display:inline; }
-  .item-priority { display:inline-block; background:var(--terra-dim); color:var(--terra-dark); border:1px solid var(--terra-border); font-size:9px; letter-spacing:.15em; text-transform:uppercase; padding:2px 7px; border-radius:4px; margin-bottom:4px; font-weight:500; }
-  .task-actions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; align-self:center; }
-  .task-edit { background:none; border:1px solid var(--stone2); color:var(--stone); width:24px; height:24px; border-radius:5px; font-size:12px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .15s; padding:0; }
+  .task-actions { display:flex; flex-direction:column; gap:3px; flex-shrink:0; align-self:center; }
+  .task-edit { background:none; border:1px solid var(--stone2); color:var(--stone); width:22px; height:22px; border-radius:4px; font-size:11px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .15s; padding:0; }
   body.manager .task-edit { display:flex; }
   .task-edit:hover { border-color:var(--bleu); color:var(--bleu); background:var(--bleu-dim); }
-  .task-delete { background:none; border:1px solid var(--stone2); color:var(--stone); width:24px; height:24px; border-radius:5px; font-size:14px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .15s; padding:0; }
+  .task-delete { background:none; border:1px solid var(--stone2); color:var(--stone); width:22px; height:22px; border-radius:4px; font-size:13px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .15s; padding:0; }
   body.manager .task-delete { display:flex; }
   .task-delete:hover { border-color:var(--terra); color:var(--terra); background:var(--terra-dim); }
-  .group-label { font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:var(--terra); padding:16px 4px 6px; font-weight:500; opacity:.9; }
-  .empty-state { text-align:center; padding:40px 20px; color:var(--text-dim); font-size:13px; opacity:.6; }
-  .empty-state .empty-icon { font-size:32px; margin-bottom:10px; }
+  .empty-state { text-align:center; padding:36px 20px; color:var(--text-dim); font-size:13px; opacity:.6; }
+  .empty-icon { font-size:28px; margin-bottom:8px; }
 
   /* ── ALL DONE ── */
-  .all-done { text-align:center; padding:30px 20px; display:none; }
+  .all-done { text-align:center; padding:24px 20px; display:none; }
   .all-done.visible { display:block; }
-  .all-done-icon { font-size:40px; margin-bottom:12px; animation:pop .4s cubic-bezier(.34,1.56,.64,1); }
+  .all-done-icon { font-size:36px; margin-bottom:10px; animation:pop .4s cubic-bezier(.34,1.56,.64,1); }
   @keyframes pop { from{transform:scale(0)} to{transform:scale(1)} }
-  .all-done h3 { font-family:'Cormorant Garamond',serif; font-size:26px; color:var(--vert); margin-bottom:6px; font-weight:500; font-style:italic; }
+  .all-done h3 { font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--vert); margin-bottom:4px; font-weight:500; font-style:italic; }
   .all-done p { font-size:13px; color:var(--text-dim); }
 
   /* ── WEEKLY ── */
-  .day-block { background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); margin-bottom:8px; overflow:hidden; }
-  .day-header { display:flex; align-items:center; justify-content:space-between; padding:13px 16px; cursor:pointer; transition:background .15s; user-select:none; }
+  .day-block { background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); margin-bottom:7px; overflow:hidden; }
+  .day-header { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; cursor:pointer; transition:background .15s; user-select:none; }
   .day-header:hover { background:var(--beige3); }
-  .day-title-wrap { display:flex; align-items:center; gap:10px; }
-  .day-name { font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--terra-dark); font-style:italic; font-weight:500; }
+  .day-title-wrap { display:flex; align-items:center; gap:8px; }
+  .day-name { font-family:'Cormorant Garamond',serif; font-size:17px; color:var(--terra-dark); font-style:italic; font-weight:500; }
   .day-count { font-size:11px; color:var(--stone); }
-  .day-chevron { font-size:12px; color:var(--stone); transition:transform .2s; }
+  .day-chevron { font-size:11px; color:var(--stone); transition:transform .2s; }
   .day-block.open .day-chevron { transform:rotate(180deg); }
-  .day-tasks { display:none; padding:0 14px 12px; }
+  .day-tasks { display:none; padding:0 12px 10px; }
   .day-block.open .day-tasks { display:block; }
-  .day-task-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; margin-bottom:4px; transition:background .15s; border:1px solid transparent; }
+  .day-task-item { display:flex; align-items:center; gap:8px; padding:8px 8px; border-radius:7px; margin-bottom:3px; transition:background .15s; border:1px solid transparent; }
   .day-task-item:hover { background:var(--beige3); border-color:var(--terra-border); }
   .day-task-item.fully-done .day-task-text { text-decoration:line-through; color:var(--text-dim); }
-  .day-task-checks { display:flex; gap:5px; flex-shrink:0; }
+  .day-task-checks { display:flex; gap:4px; flex-shrink:0; }
   .day-check-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; }
-  .day-check-label { font-size:8px; text-transform:uppercase; color:var(--stone); white-space:nowrap; }
-  .day-task-circle { width:18px; height:18px; border-radius:50%; border:2px solid var(--stone2); display:flex; align-items:center; justify-content:center; transition:all .18s; }
+  .day-check-label { font-size:7px; text-transform:uppercase; color:var(--stone); white-space:nowrap; }
+  .day-task-circle { width:16px; height:16px; border-radius:50%; border:2px solid var(--stone2); display:flex; align-items:center; justify-content:center; transition:all .18s; }
   .day-check-wrap:hover .day-task-circle { border-color:var(--terra); }
   .day-check-wrap.staff-done .day-task-circle { background:var(--vert); border-color:var(--vert); }
   .day-check-wrap.manager-done .day-task-circle { background:var(--bleu); border-color:var(--bleu); }
   .day-task-text { font-size:13px; color:var(--text); flex:1; }
-  .day-task-delete { background:none; border:none; color:var(--stone2); font-size:16px; cursor:pointer; display:none; }
+  .day-task-delete { background:none; border:none; color:var(--stone2); font-size:15px; cursor:pointer; display:none; transition:color .2s; }
   body.manager .day-task-delete { display:block; }
   .day-task-delete:hover { color:var(--terra); }
-  .day-add-btn { display:none; align-items:center; gap:6px; padding:7px 10px; border-radius:8px; margin-top:6px; background:none; border:1px dashed var(--stone2); color:var(--text-dim); font-family:'Jost',sans-serif; font-size:12px; cursor:pointer; width:100%; transition:all .2s; }
+  .day-add-btn { display:none; align-items:center; gap:5px; padding:6px 8px; border-radius:7px; margin-top:5px; background:none; border:1px dashed var(--stone2); color:var(--text-dim); font-family:'Jost',sans-serif; font-size:11px; cursor:pointer; width:100%; transition:all .2s; }
   body.manager .day-add-btn { display:flex; }
   .day-add-btn:hover { border-color:var(--terra); color:var(--terra); }
 
   /* ── MODAL ── */
   .modal-overlay { position:fixed; inset:0; background:rgba(58,46,38,.5); display:flex; align-items:flex-end; justify-content:center; z-index:100; opacity:0; pointer-events:none; transition:opacity .2s; }
   .modal-overlay.open { opacity:1; pointer-events:all; }
-  .modal { background:var(--beige); border-radius:18px 18px 0 0; padding:24px 20px 40px; width:100%; max-width:740px; transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); }
+  .modal { background:var(--beige); border-radius:18px 18px 0 0; padding:24px 20px 40px; width:100%; max-width:760px; transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); }
   .modal-overlay.open .modal { transform:translateY(0); }
   .modal h3 { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--terra-dark); font-style:italic; margin-bottom:16px; }
-  .modal input[type="text"] { width:100%; background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); padding:13px 16px; font-family:'Jost',sans-serif; font-size:14px; color:var(--text); outline:none; caret-color:var(--terra); margin-bottom:12px; transition:border-color .2s; }
+  .modal input[type="text"] { width:100%; background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); padding:12px 14px; font-family:'Jost',sans-serif; font-size:14px; color:var(--text); outline:none; caret-color:var(--terra); margin-bottom:12px; }
   .modal input[type="text"]:focus { border-color:var(--terra-border); }
   .modal-label { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-dim); font-weight:500; margin-bottom:6px; display:block; }
   .modal-actions { display:flex; gap:8px; margin-top:4px; }
@@ -205,19 +205,19 @@
   .modal-confirm { flex:2; background:var(--terra); border:none; color:var(--beige); padding:12px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all .2s; }
   .modal-confirm:hover { background:var(--terra-dark); }
   .emoji-picker { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
-  .emoji-opt { font-size:22px; cursor:pointer; padding:6px; border-radius:8px; border:2px solid transparent; transition:all .15s; }
+  .emoji-opt { font-size:22px; cursor:pointer; padding:6px; border-radius:7px; border:2px solid transparent; transition:all .15s; }
   .emoji-opt:hover,.emoji-opt.selected { border-color:var(--terra); background:var(--terra-dim); }
 
-  /* ── GLOBAL BAR ── */
-  .global-bar { position:fixed; bottom:0; left:0; right:0; z-index:40; padding:12px 20px; background:var(--beige); border-top:1px solid var(--stone2); }
-  .global-bar-inner { max-width:740px; margin:0 auto; }
-  .send-report-btn { width:100%; margin-top:0; background:var(--terra); border:none; color:var(--beige); padding:14px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:.08em; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+  /* ── DEPT REPORT BAR ── */
+  .report-bar { position:fixed; bottom:0; left:0; right:0; z-index:40; background:var(--beige); border-top:1px solid var(--stone2); padding:10px 20px; }
+  .report-bar-inner { max-width:760px; margin:0 auto; }
+  .send-report-btn { width:100%; background:var(--terra); border:none; color:var(--beige); padding:13px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:.08em; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
   .send-report-btn:hover { background:var(--terra-dark); }
-  .weekly-send-btn { width:100%; margin-top:16px; background:var(--terra); border:none; color:var(--beige); padding:14px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:.08em; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
-  .weekly-send-btn:hover { background:var(--terra-dark); }
+  .weekly-send-btn { width:100%; margin-top:14px; background:var(--stone); border:none; color:var(--beige); padding:12px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:12px; font-weight:500; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .weekly-send-btn:hover { background:var(--terra); }
 
   /* ── TOAST ── */
-  .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--terra-dark); color:var(--beige); padding:12px 24px; border-radius:99px; font-size:13px; font-family:'Jost',sans-serif; z-index:200; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
+  .toast { position:fixed; bottom:75px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--terra-dark); color:var(--beige); padding:11px 22px; border-radius:99px; font-size:13px; font-family:'Jost',sans-serif; z-index:200; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
   .toast.show { transform:translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -262,6 +262,7 @@
     <div class="restaurant-name">Monaco</div>
     <div class="subtitle">Checklist Mise en Place</div>
   </header>
+
   <div class="global-progress">
     <div class="progress-header">
       <span class="progress-label">Progression globale</span>
@@ -269,17 +270,24 @@
     </div>
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="globalBar"></div></div>
   </div>
-  <div class="tabs-wrap">
-    <div class="tabs" id="tabs-container"></div>
-    <button class="add-tab-btn" onclick="openNewTabModal()" title="Nouvel onglet">+</button>
+
+  <!-- DEPT TABS -->
+  <div class="dept-tabs" id="dept-tabs"></div>
+
+  <!-- SUB TABS -->
+  <div class="sub-tabs-wrap">
+    <div class="sub-tabs" id="sub-tabs"></div>
+    <button class="add-sub-btn" onclick="openNewSubModal()" title="Nouvel onglet">+</button>
   </div>
+
+  <!-- SECTIONS -->
   <div class="sections" id="sections-container"></div>
 </div>
 
-<!-- GLOBAL BAR -->
-<div class="global-bar" id="global-bar" style="display:none">
-  <div class="global-bar-inner">
-    <button class="send-report-btn" onclick="sendFullReport()">📧 Envoyer le rapport complet</button>
+<!-- REPORT BAR -->
+<div class="report-bar" id="report-bar" style="display:none">
+  <div class="report-bar-inner">
+    <button class="send-report-btn" id="report-btn" onclick="sendDeptReport()">📧 Envoyer le rapport — Salle</button>
   </div>
 </div>
 
@@ -288,7 +296,7 @@
   <div class="modal">
     <h3>Nouvelle tâche</h3>
     <span class="modal-label">Description</span>
-    <input type="text" id="add-task-input" placeholder="Description de la tâche..." onkeydown="if(event.key==='Enter')confirmAddTask()">
+    <input type="text" id="add-task-input" placeholder="Description..." onkeydown="if(event.key==='Enter')confirmAddTask()">
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal('modal-add-task')">Annuler</button>
       <button class="modal-confirm" onclick="confirmAddTask()">Ajouter</button>
@@ -300,8 +308,7 @@
 <div class="modal-overlay" id="modal-edit-task" onclick="if(event.target.id==='modal-edit-task')closeModal('modal-edit-task')">
   <div class="modal">
     <h3>Modifier la tâche</h3>
-    <span class="modal-label">Description</span>
-    <input type="text" id="edit-task-input" placeholder="Nouveau texte..." onkeydown="if(event.key==='Enter')confirmEditTask()">
+    <input type="text" id="edit-task-input" onkeydown="if(event.key==='Enter')confirmEditTask()">
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal('modal-edit-task')">Annuler</button>
       <button class="modal-confirm" onclick="confirmEditTask()">Enregistrer</button>
@@ -309,73 +316,39 @@
   </div>
 </div>
 
-<!-- MODAL: RENAME TAB -->
-<div class="modal-overlay" id="modal-rename-tab" onclick="if(event.target.id==='modal-rename-tab')closeModal('modal-rename-tab')">
+<!-- MODAL: RENAME SUB -->
+<div class="modal-overlay" id="modal-rename-sub" onclick="if(event.target.id==='modal-rename-sub')closeModal('modal-rename-sub')">
   <div class="modal">
     <h3>Renommer l'onglet</h3>
-    <span class="modal-label">Emoji</span>
-    <div class="emoji-picker" id="emoji-picker">
-      <span class="emoji-opt" onclick="selectEmoji(this)">🌅</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">☀️</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">🌇</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">🌙</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">🍽️</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">☕</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">🫧</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">🚿</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">📋</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">✅</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">🔑</span>
-      <span class="emoji-opt" onclick="selectEmoji(this)">⭐</span>
+    <div class="emoji-picker" id="emoji-rename">
+      <span class="emoji-opt" onclick="pickEmoji(this,'rename')">🌅</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">☀️</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'rename')">🌇</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">🌙</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'rename')">📅</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">📋</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'rename')">✅</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">⭐</span>
     </div>
-    <span class="modal-label">Nom</span>
-    <input type="text" id="rename-tab-input" placeholder="Nom de l'onglet..." onkeydown="if(event.key==='Enter')confirmRenameTab()">
+    <input type="text" id="rename-sub-input" onkeydown="if(event.key==='Enter')confirmRenameSub()">
     <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal('modal-rename-tab')">Annuler</button>
-      <button class="modal-confirm" onclick="confirmRenameTab()">Enregistrer</button>
+      <button class="modal-cancel" onclick="closeModal('modal-rename-sub')">Annuler</button>
+      <button class="modal-confirm" onclick="confirmRenameSub()">Enregistrer</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: NEW TAB -->
-<div class="modal-overlay" id="modal-new-tab" onclick="if(event.target.id==='modal-new-tab')closeModal('modal-new-tab')">
+<!-- MODAL: NEW SUB -->
+<div class="modal-overlay" id="modal-new-sub" onclick="if(event.target.id==='modal-new-sub')closeModal('modal-new-sub')">
   <div class="modal">
     <h3>Nouvel onglet</h3>
-    <span class="modal-label">Emoji</span>
-    <div class="emoji-picker" id="emoji-picker-new">
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">🌅</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">☀️</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">🌇</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">🌙</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">🍽️</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">☕</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">🫧</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">🚿</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">📋</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">✅</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">🔑</span>
-      <span class="emoji-opt" onclick="selectEmojiNew(this)">⭐</span>
+    <div class="emoji-picker" id="emoji-new">
+      <span class="emoji-opt" onclick="pickEmoji(this,'new')">🌅</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">☀️</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'new')">🌇</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">🌙</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'new')">📅</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">📋</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'new')">✅</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">⭐</span>
     </div>
-    <span class="modal-label">Nom</span>
-    <input type="text" id="new-tab-input" placeholder="Ex: Soir, Fermeture..." onkeydown="if(event.key==='Enter')confirmNewTab()">
+    <input type="text" id="new-sub-input" placeholder="Ex: Nuit, Fermeture..." onkeydown="if(event.key==='Enter')confirmNewSub()">
     <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal('modal-new-tab')">Annuler</button>
-      <button class="modal-confirm" onclick="confirmNewTab()">Créer</button>
+      <button class="modal-cancel" onclick="closeModal('modal-new-sub')">Annuler</button>
+      <button class="modal-confirm" onclick="confirmNewSub()">Créer</button>
     </div>
-  </div>
-</div>
-
-<!-- WEEKLY SECTION (always last) -->
-<div id="section-weekly-wrapper" style="display:none">
-  <div class="section active" id="section-weekly">
-    <div class="section-header">
-      <div class="section-title"><span class="section-icon">📅</span><span>Tâches hebdo</span></div>
-      <div class="header-actions">
-        <button class="reset-btn manager-only" onclick="resetWeekly()">Réinit.</button>
-      </div>
-    </div>
-    <div id="weekly-container"></div>
-    <button class="weekly-send-btn" onclick="sendWeeklyReport()">📧 Rapport hebdo</button>
   </div>
 </div>
 
@@ -383,103 +356,137 @@
 
 <script>
 // ══════════════════════════════════════════════
-// CONSTANTS
+// DATA
 // ══════════════════════════════════════════════
-const CODES = { employee:'0000', manager:'2026' };
-const EMAILJS_SERVICE = 'service_yw9i4oh', EMAILJS_TEMPLATE = 'template_3o72gvv';
-const SVG = '<svg width="10" height="8" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const DAYS = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
-const DAY_LABELS = {lundi:'Lundi',mardi:'Mardi',mercredi:'Mercredi',jeudi:'Jeudi',vendredi:'Vendredi',samedi:'Samedi',dimanche:'Dimanche'};
-const DAY_ICONS = {lundi:'🟤',mardi:'🟠',mercredi:'🟡',jeudi:'🟢',vendredi:'🔵',samedi:'🟣',dimanche:'⚪'};
+const CODES = {employee:'0000',manager:'2026'};
+const EMAILJS_SERVICE='service_yw9i4oh', EMAILJS_TEMPLATE='template_3o72gvv';
+const SVG = '<svg width="9" height="7" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const DAYS=['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
+const DAY_LABELS={lundi:'Lundi',mardi:'Mardi',mercredi:'Mercredi',jeudi:'Jeudi',vendredi:'Vendredi',samedi:'Samedi',dimanche:'Dimanche'};
+const DAY_ICONS={lundi:'🟤',mardi:'🟠',mercredi:'🟡',jeudi:'🟢',vendredi:'🔵',samedi:'🟣',dimanche:'⚪'};
 const TODAY = DAYS[new Date().getDay()===0?6:new Date().getDay()-1];
 
-// Default tabs
-const DEFAULT_TABS = [
-  { id:'matin',    emoji:'🌅', name:'Matin'       },
-  { id:'aprem',    emoji:'☀️',  name:'Après-midi'  },
-  { id:'soir',     emoji:'🌇', name:'Soir'        },
-  { id:'weekly',   emoji:'📅', name:'Hebdo'       },
+// Default departments
+const DEFAULT_DEPTS = [
+  { id:'salle', name:'🍽️ Salle' },
+  { id:'bar',   name:'🍸 Bar'   },
+  { id:'accueil', name:'🛎️ Accueil' },
 ];
 
-const DEFAULT_TASKS_DATA = {
-  matin: [
-    {text:'Allumer machine à verre'},
-    {text:'Dresser terrasse'},
-    {text:'Ranger poubelle verre'},
-    {text:'Retourner verre salle'},
-    {text:'Vérifier salle'},
-    {text:'Dresser comptoir'},
-    {text:'Vérifier sucrier'},
-    {text:'Vérifier menthe'},
-    {text:'Vérifier lait'},
-    {text:'Vérifier frigo eau'},
-    {text:'Vérifier cocktail signature'},
-    {text:'Vérifier console'},
-    {text:'Remplir étagère serviette'},
-    {text:'Remplir étagère nappe'},
-    {text:'Plier nappe'},
-    {text:'Plier serviette'},
-    {text:'Ouvrir porte et rideau'},
-    {text:'Faire les bougeoires'},
-    {text:'Faire les couverts'},
-    {text:'Vérifier toilette'},
-    {text:'Nettoyer pass'},
-    {text:'Faire carcasse de la salle'},
-    {text:'Nettoyer plateaux'},
+// Default sub-tabs per dept
+const DEFAULT_SUBS = {
+  salle:   [{id:'s_matin',emoji:'🌅',name:'Matin'},{id:'s_aprem',emoji:'☀️',name:'Après-midi'},{id:'s_soir',emoji:'🌇',name:'Soir'},{id:'s_hebdo',emoji:'📅',name:'Hebdo'}],
+  bar:     [{id:'b_matin',emoji:'🌅',name:'Matin'},{id:'b_aprem',emoji:'☀️',name:'Après-midi'},{id:'b_soir',emoji:'🌇',name:'Soir'},{id:'b_hebdo',emoji:'📅',name:'Hebdo'}],
+  accueil: [{id:'a_matin',emoji:'🌅',name:'Matin'},{id:'a_aprem',emoji:'☀️',name:'Après-midi'},{id:'a_soir',emoji:'🌇',name:'Soir'},{id:'a_hebdo',emoji:'📅',name:'Hebdo'}],
+};
+
+// Pre-loaded tasks for Salle
+const PRESET_TASKS = {
+  s_matin:[
+    {text:'Allumer machine à verre'},{text:'Dresser terrasse'},{text:'Ranger poubelle verre'},
+    {text:'Retourner verre salle'},{text:'Vérifier salle'},{text:'Dresser comptoir'},
+    {text:'Vérifier sucrier'},{text:'Vérifier menthe'},{text:'Vérifier lait'},
+    {text:'Vérifier frigo eau'},{text:'Vérifier cocktail signature'},{text:'Vérifier console'},
+    {text:'Remplir étagère serviette'},{text:'Remplir étagère nappe'},{text:'Plier nappe'},
+    {text:'Plier serviette'},{text:'Ouvrir porte et rideau'},{text:'Faire les bougeoires'},
+    {text:'Faire les couverts'},{text:'Vérifier toilette'},{text:'Nettoyer pass'},
+    {text:'Faire carcasse de la salle'},{text:'Nettoyer plateaux'},
   ],
-  aprem: [
-    {text:'Remplir console'},
-    {text:'Vider vide papier'},
-    {text:'Remplir étagère serviette'},
-    {text:'Remplir étagère nappe'},
-    {text:'Nettoyer hublot'},
-    {text:'Nettoyer machine à café'},
-    {text:'Remplir machine à café'},
-    {text:'Remplir eau'},
-    {text:'Remplir cocktail signature'},
-    {text:'Vérifier frigo citron, menthe, lait'},
-    {text:'Vérifier sucrier'},
-    {text:'Sortir les vides'},
-    {text:'Préparer la carcasse'},
-    {text:'Vérifier les tables'},
-    {text:'Ranger le linge'},
-    {text:'Passez le balai'},
-    {text:'Faire les bougies'},
-    {text:'Nettoyer plateaux'},
-    {text:'Refaire vasque à vin'},
-    {text:'Tcheck VAE'},
+  s_aprem:[
+    {text:'Remplir console'},{text:'Vider vide papier'},{text:'Remplir étagère serviette'},
+    {text:'Remplir étagère nappe'},{text:'Nettoyer hublot'},{text:'Nettoyer machine à café'},
+    {text:'Remplir machine à café'},{text:'Remplir eau'},{text:'Remplir cocktail signature'},
+    {text:'Vérifier frigo citron, menthe, lait'},{text:'Vérifier sucrier'},{text:'Sortir les vides'},
+    {text:'Préparer la carcasse'},{text:'Vérifier les tables'},{text:'Ranger le linge'},
+    {text:'Passez le balai'},{text:'Faire les bougies'},{text:'Nettoyer plateaux'},
+    {text:'Refaire vasque à vin'},{text:'Tcheck VAE'},
   ],
-  soir: [
-    {text:'Remplir les consoles'},
-    {text:'Remplir les frigos eau'},
-    {text:'Changer cocktail signature'},
-    {text:'Nettoyer machine à café'},
-    {text:'Faire les dates'},
-    {text:'Remplir les laits'},
-    {text:'Vider poubelle machine à café'},
-    {text:'Redresser salle'},
-    {text:'Retourner les verres'},
-    {text:'De dresser la terrasse'},
-    {text:'Faire le linge'},
-    {text:'Nettoyer frigo bar'},
-    {text:'Nettoyer frigo cave'},
-    {text:'Nettoyer iPad et iPhone'},
-    {text:'Brancher iPad et iPhone'},
-    {text:'Vider poubelle à papier'},
-    {text:'Nettoyer pass'},
-    {text:'Nettoyer plateaux'},
-    {text:'Nettoyer console'},
-    {text:'Faire les vides'},
-    {text:'Ranger bougie'},
-    {text:'Sortir les poubelles de la plonge'},
-    {text:'Rentrer console terrasse'},
-    {text:'Fermer les portes'},
-    {text:'Fermer les rideaux'},
-    {text:'Tcheck VAE'},
+  s_soir:[
+    {text:'Remplir les consoles'},{text:'Remplir les frigos eau'},{text:'Changer cocktail signature'},
+    {text:'Nettoyer machine à café'},{text:'Faire les dates'},{text:'Remplir les laits'},
+    {text:'Vider poubelle machine à café'},{text:'Redresser salle'},{text:'Retourner les verres'},
+    {text:'De dresser la terrasse'},{text:'Faire le linge'},{text:'Nettoyer frigo bar'},
+    {text:'Nettoyer frigo cave'},{text:'Nettoyer iPad et iPhone'},{text:'Brancher iPad et iPhone'},
+    {text:'Vider poubelle à papier'},{text:'Nettoyer pass'},{text:'Nettoyer plateaux'},
+    {text:'Nettoyer console'},{text:'Faire les vides'},{text:'Ranger bougie'},
+    {text:'Sortir les poubelles de la plonge'},{text:'Rentrer console terrasse'},
+    {text:'Fermer les portes'},{text:'Fermer les rideaux'},{text:'Tcheck VAE'},
     {text:'Préparer redresse terrasse (x32)'},
   ],
+  a_matin:[
+    {text:'Lumière : lunch avec toilette 13%'},
+    {text:'Musique : Spotify salle + toilette'},
+    {text:'Desk : tout nettoyer (iPad et téléphone inclus), ranger les menus et les contrôler'},
+    {text:'Nettoyer les armoires / vitres si besoin'},
+    {text:'Extérieur : nettoyer le menu et insérer la batterie'},
+    {text:'Rideaux : ranger les rideaux de l\'entrée et les rideaux automatiques blancs'},
+    {text:'Contrôler les menus dessert dans les consoles'},
+    {text:'Nettoyer les ports addition (console) et les remplir avec les cartes de visite'},
+    {text:'Toilettes : contrôler et remplir les oshibori et le savon pour les mains'},
+    {text:'Contrôler Open Table (jamais de réservation sur unavailable table quand possible)'},
+    {text:'Faire la carcasse avec les serveurs et les informer en avance pour les informations sur les clients'},
+    {text:'Menu : imprimer si besoin (pour la personne à 10h)'},
+    {text:'Mail : contrôler et répondre'},
+    {text:'Confirmation midi si à 10h — confirmation soir si à 12h'},
+  ],
+  a_aprem:[
+    {text:'Vidéo à envoyer sur le groupe dans le moment où il y\'a plus de monde'},
+    {text:'Passer à récupérer les menus à chaque fois qu\'on installe quelqu\'un et les contrôler — ranger / jeter'},
+    {text:'Contrôler vitres et miroirs'},
+    {text:'Contrôler chaque 15 minutes les toilettes (oshibori / papier toilette)'},
+    {text:'Imprimer menus dès que possible et calme'},
+    {text:'Appeler les réservations du soir si pas fait le matin'},
+    {text:'Allumer lumières bar à 16h'},
+    {text:'Nettoyer les portes cartes à fin du service avant le service du soir'},
+    {text:'Nettoyer le menu d\'extérieur'},
+    {text:'Organiser la carcasse et passer les infos aux serveurs'},
+  ],
+  a_soir:[
+    {text:'Récupérer tous les menus, les contrôler et les ranger'},
+    {text:'Ranger et nettoyer le desk'},
+    {text:'Mettre les iPad et téléphone en charge'},
+    {text:'Mettre toutes les tables en "Finish"'},
+    {text:'Vérifier les toilettes'},
+    {text:'Vider poubelle armoire'},
+    {text:'Ranger, nettoyer le menu d\'extérieur et mettre en charge la batterie au desk'},
+  ],
+  b_matin:[
+    {text:'Allumer le lave vaisselle et checker la propreté'},
+    {text:'Ouverture frigos bar'},
+    {text:'Vérification remplissage soft + vins'},
+    {text:'Ramener de la salle 6 liteaux propres'},
+    {text:'Vérification tablette chargée'},
+    {text:'Vérification TPE chargé'},
+    {text:'Vérification réception de commande sur le quai de livraison'},
+    {text:'Dépôt des BL/factures dans la panière attitrée'},
+    {text:'Découpe de fruits (orange, lime, citrons jaunes)'},
+    {text:'Vérification remplissage pipettes'},
+    {text:'Contrôle nettoyage des tables'},
+    {text:'Préparer les bougies'},
+    {text:'Effectuer mise en place des eaux (Panna + San P)'},
+    {text:'Ajouter articles potentiels de la veille à la 195'},
+  ],
+  b_soir:[
+    {text:'Lavage matériel à la main'},
+    {text:'Nettoyage des speedrails - bouteilles cocktails, dessous de celles-ci'},
+    {text:'Jeter les garnitures'},
+    {text:'MEP des grilles de stations au lave-vaisselle et séchage'},
+    {text:'S\'assurer que tous les verres soient nettoyés'},
+    {text:'Vérifier les étiquettes DLC et JUS'},
+    {text:'Laver les vitres et les joints des frigos'},
+    {text:'Recharger les frigos pour le service suivant'},
+    {text:'Nettoyer les tables bar + comptoir avec le produit adapté'},
+    {text:'Nettoyage des plateaux de services'},
+    {text:'Nettoyager les chaises + banquettes si besoin'},
+    {text:'Nettoyage filtres machines à verres + éteindre cette dernière'},
+    {text:'Vider/nettoyer les poubelles bars'},
+    {text:'Laver lavettes/microfibres'},
+    {text:'Fermer les frigos bar'},
+    {text:'Fermer les frigos arrières cuisine'},
+  ],
 };
-const DEFAULT_WEEKLY = {
+
+const DEFAULT_WEEKLY_TASKS = {
   lundi:['Nettoyer pieds de tables et pieds de chaises','Faire les couverts avec produit argenterie'],
   mardi:['Remplir et nettoyer sels et poivres','Vider les plateformes avec les décorations et les nettoyer'],
   mercredi:['Nettoyage du vestiaire et toilettes staff','Nettoyage de la machine à café et moulin'],
@@ -492,68 +499,54 @@ const DEFAULT_WEEKLY = {
 // ══════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════
-let state = {};
-try { const s = localStorage.getItem('zephyr_v6'); if(s) state = JSON.parse(s); } catch(e) {}
-function save() { try { localStorage.setItem('zephyr_v6', JSON.stringify(state)); } catch(e) {} }
+let state={};
+try{const s=localStorage.getItem('zephyr_v7');if(s)state=JSON.parse(s);}catch(e){}
+function save(){try{localStorage.setItem('zephyr_v7',JSON.stringify(state));}catch(e){}}
 
-function getTabs() {
-  if(!state.tabs) state.tabs = JSON.parse(JSON.stringify(DEFAULT_TABS));
-  return state.tabs;
-}
-function getTasks(id) {
-  if(!state.tasks) state.tasks = {};
-  if(!state.tasks[id]) {
-    state.tasks[id] = DEFAULT_TASKS_DATA[id] ? JSON.parse(JSON.stringify(DEFAULT_TASKS_DATA[id])) : [];
-  }
-  return state.tasks[id];
-}
-function getWeeklyData() { if(!state.weekly) state.weekly = JSON.parse(JSON.stringify(DEFAULT_WEEKLY)); return state.weekly; }
-function getWeeklyDone() { if(!state.weeklyDone) state.weeklyDone = {}; return state.weeklyDone; }
+function getDepts(){if(!state.depts)state.depts=JSON.parse(JSON.stringify(DEFAULT_DEPTS));return state.depts;}
+function getSubs(deptId){if(!state.subs)state.subs={};if(!state.subs[deptId])state.subs[deptId]=JSON.parse(JSON.stringify(DEFAULT_SUBS[deptId]||[]));return state.subs[deptId];}
+function getTasks(subId){if(!state.tasks)state.tasks={};if(!state.tasks[subId])state.tasks[subId]=PRESET_TASKS[subId]?JSON.parse(JSON.stringify(PRESET_TASKS[subId])):[];return state.tasks[subId];}
+function isHebdo(subId){return subId.endsWith('_hebdo')||subId==='s_hebdo'||subId==='b_hebdo'||subId==='a_hebdo';}
+function getWeeklyData(deptId){if(!state.weekly)state.weekly={};if(!state.weekly[deptId])state.weekly[deptId]=deptId==='salle'?JSON.parse(JSON.stringify(DEFAULT_WEEKLY_TASKS)):{lundi:[],mardi:[],mercredi:[],jeudi:[],vendredi:[],samedi:[],dimanche:[]};return state.weekly[deptId];}
+function getWeeklyDone(deptId){if(!state.weeklyDone)state.weeklyDone={};if(!state.weeklyDone[deptId])state.weeklyDone[deptId]={};return state.weeklyDone[deptId];}
 
 // ══════════════════════════════════════════════
 // LOGIN
 // ══════════════════════════════════════════════
-let selectedRole = 'employee', currentPin = '', currentUser = '', currentRole = '';
+let selectedRole='employee',currentPin='',currentUser='',currentRole='';
+let activeDept='salle',activeSub='s_matin';
 
-function selectRole(r) {
-  selectedRole = r;
-  document.getElementById('role-btn-employee').classList.toggle('active', r==='employee');
-  document.getElementById('role-btn-manager').classList.toggle('active', r==='manager');
-  currentPin = ''; updateDots();
-  document.getElementById('login-error').textContent = '';
-}
-function pinPress(d) { if(currentPin.length>=4) return; currentPin+=d; updateDots(); if(currentPin.length===4) setTimeout(tryLogin,150); }
-function pinDelete() { currentPin=currentPin.slice(0,-1); updateDots(); }
-function pinClear() { currentPin=''; updateDots(); }
-function updateDots() { for(let i=0;i<4;i++) document.getElementById('dot-'+i).classList.toggle('filled',i<currentPin.length); }
+function selectRole(r){selectedRole=r;document.getElementById('role-btn-employee').classList.toggle('active',r==='employee');document.getElementById('role-btn-manager').classList.toggle('active',r==='manager');currentPin='';updateDots();document.getElementById('login-error').textContent='';}
+function pinPress(d){if(currentPin.length>=4)return;currentPin+=d;updateDots();if(currentPin.length===4)setTimeout(tryLogin,150);}
+function pinDelete(){currentPin=currentPin.slice(0,-1);updateDots();}
+function pinClear(){currentPin='';updateDots();}
+function updateDots(){for(let i=0;i<4;i++)document.getElementById('dot-'+i).classList.toggle('filled',i<currentPin.length);}
 
-function tryLogin() {
-  const name = document.getElementById('login-name').value.trim();
-  if(!name) { document.getElementById('login-error').textContent='Veuillez entrer votre prénom.'; currentPin=''; updateDots(); return; }
-  if(currentPin === CODES[selectedRole]) {
-    currentRole = selectedRole; currentUser = name;
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    document.getElementById('global-bar').style.display = 'block';
-    document.getElementById('role-badge').style.display = 'flex';
-    const pill = document.getElementById('role-pill');
-    pill.textContent = currentRole==='manager' ? '🔑 Manager — '+currentUser : '👤 '+currentUser;
-    pill.className = 'role-pill'+(currentRole==='employee'?' employee':'');
-    document.body.className = currentRole;
+function tryLogin(){
+  const name=document.getElementById('login-name').value.trim();
+  if(!name){document.getElementById('login-error').textContent='Veuillez entrer votre prénom.';currentPin='';updateDots();return;}
+  if(currentPin===CODES[selectedRole]){
+    currentRole=selectedRole;currentUser=name;
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('report-bar').style.display='block';
+    document.getElementById('role-badge').style.display='flex';
+    const pill=document.getElementById('role-pill');
+    pill.textContent=currentRole==='manager'?'🔑 Manager — '+currentUser:'👤 '+currentUser;
+    pill.className='role-pill'+(currentRole==='employee'?' employee':'');
+    document.body.className=currentRole;
     initApp();
   } else {
-    document.getElementById('login-error').textContent = 'Code incorrect. Réessayez.';
-    currentPin=''; updateDots();
-    const card = document.querySelector('.login-card');
-    card.style.animation='none'; setTimeout(()=>{ card.style.animation='shake .3s ease'; },10);
+    document.getElementById('login-error').textContent='Code incorrect.';
+    currentPin='';updateDots();
+    const c=document.querySelector('.login-card');c.style.animation='none';setTimeout(()=>{c.style.animation='shake .3s ease';},10);
   }
 }
-function logout() {
-  currentRole=''; currentUser=''; currentPin='';
-  document.body.className='';
+function logout(){
+  currentRole='';currentUser='';currentPin='';document.body.className='';
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
-  document.getElementById('global-bar').style.display='none';
+  document.getElementById('report-bar').style.display='none';
   document.getElementById('role-badge').style.display='none';
   document.getElementById('login-name').value='';
   document.getElementById('login-error').textContent='';
@@ -561,144 +554,169 @@ function logout() {
 }
 
 // ══════════════════════════════════════════════
-// TABS RENDERING
+// RENDER DEPT TABS
 // ══════════════════════════════════════════════
-let activeTab = '';
-
-function renderTabs() {
-  const tabs = getTabs();
-  const container = document.getElementById('tabs-container');
-  const sections = document.getElementById('sections-container');
-  container.innerHTML = '';
-  sections.innerHTML = '';
-
-  tabs.forEach((tab, idx) => {
-    // Tab button
-    const btn = document.createElement('button');
-    btn.className = 'tab-btn' + (tab.id === activeTab ? ' active' : '');
-    btn.id = 'tab-'+tab.id;
-    btn.onclick = () => showTab(tab.id);
-
-    if(tab.id === 'weekly') {
-      btn.innerHTML = `${tab.emoji} ${tab.name} <span class="tab-badge" id="badge-weekly"></span>`;
-    } else {
-      const {checked,total} = countSection(tab.id);
-      const done = checked===total && total>0;
-      if(done) btn.classList.add('done');
-      btn.innerHTML = `${tab.emoji} ${tab.name} <span class="tab-badge" id="badge-${tab.id}">${checked}/${total}</span>
-        <button class="tab-delete-btn" onclick="deleteTab('${tab.id}');event.stopPropagation()" title="Supprimer">✕</button>`;
-    }
-    container.appendChild(btn);
-
-    // Section
-    if(tab.id === 'weekly') {
-      const sec = document.createElement('div');
-      sec.className = 'section' + (tab.id === activeTab ? ' active' : '');
-      sec.id = 'section-weekly';
-      sec.innerHTML = `
-        <div class="section-header">
-          <div class="section-title"><span class="section-icon">📅</span><span>Tâches hebdo</span></div>
-          <div class="header-actions">
-            <button class="reset-btn manager-only" onclick="resetWeekly()">Réinit.</button>
-          </div>
-        </div>
-        <div id="weekly-container"></div>
-        <button class="weekly-send-btn" onclick="sendWeeklyReport()">📧 Rapport hebdo</button>`;
-      sections.appendChild(sec);
-      if(tab.id === activeTab) renderWeekly();
-    } else {
-      const sec = document.createElement('div');
-      sec.className = 'section' + (tab.id === activeTab ? ' active' : '');
-      sec.id = 'section-'+tab.id;
-      const names = state.names || {};
-      sec.innerHTML = `
-        <div class="section-header">
-          <div class="section-title">
-            <span class="section-icon">${tab.emoji}</span>
-            <span>${tab.name}</span>
-            <button class="rename-btn manager-only" onclick="openRenameTab('${tab.id}')">✏️</button>
-          </div>
-          <div class="header-actions">
-            <span class="section-progress" id="prog-${tab.id}"></span>
-            <button class="reset-btn manager-only" onclick="resetSection('${tab.id}')">Réinit.</button>
-            <button class="add-task-btn manager-only" onclick="openAddTask('${tab.id}')">+</button>
-          </div>
-        </div>
-        <div class="name-fields-row">
-          <div class="name-field">
-            <label><span>👤</span> Employé</label>
-            <input type="text" id="name-staff-${tab.id}" placeholder="Prénom..." oninput="saveName('${tab.id}','staff',this.value)" autocomplete="off" value="${names['staff_'+tab.id]||''}">
-          </div>
-          <div class="name-field" style="border-left:2px solid var(--bleu)">
-            <label style="color:var(--bleu)"><span>✓</span> Manager</label>
-            <input type="text" id="name-manager-${tab.id}" placeholder="Prénom..." oninput="saveName('${tab.id}','manager',this.value)" autocomplete="off" value="${names['manager_'+tab.id]||''}">
-          </div>
-        </div>
-        <ul class="checklist" id="list-${tab.id}"></ul>
-        <div class="all-done" id="done-${tab.id}">
-          <div class="all-done-icon">✅</div>
-          <h3>${tab.name} complet !</h3>
-          <p>Toutes les tâches effectuées et validées.</p>
-        </div>`;
-      sections.appendChild(sec);
-      renderChecklist(tab.id);
-    }
+function renderDeptTabs(){
+  const depts=getDepts();
+  const c=document.getElementById('dept-tabs');c.innerHTML='';
+  depts.forEach(dept=>{
+    const btn=document.createElement('button');
+    btn.className='dept-btn'+(dept.id===activeDept?' active':'');
+    const {total,done}=getDeptProgress(dept.id);
+    btn.innerHTML=`${dept.name} <span class="dept-badge">${done}/${total}</span>`;
+    btn.onclick=()=>showDept(dept.id);
+    c.appendChild(btn);
   });
-
-  // Pre-fill name for logged user
-  tabs.forEach(tab => {
-    if(tab.id==='weekly') return;
-    const si = document.getElementById('name-staff-'+tab.id);
-    const mi = document.getElementById('name-manager-'+tab.id);
-    if(currentRole==='employee' && si && !si.value) si.value = currentUser;
-    if(currentRole==='manager' && mi && !mi.value) mi.value = currentUser;
-  });
-
-  updateGlobal();
-  updateWeeklyBadge();
+  updateReportBtn();
 }
 
-function showTab(id) {
-  activeTab = id;
-  renderTabs();
-  if(id==='weekly') renderWeekly();
+function getDeptProgress(deptId){
+  const subs=getSubs(deptId);
+  let total=0,done=0;
+  subs.forEach(sub=>{
+    if(isHebdo(sub.id)){
+      const data=getWeeklyData(deptId),dd=getWeeklyDone(deptId);
+      DAYS.forEach(day=>{const tasks=data[day]||[],sa=dd['staff_'+day]||[],ma=dd['manager_'+day]||[];total+=tasks.length;done+=tasks.filter((_,i)=>sa[i]&&ma[i]).length;});
+    } else {
+      const r=countSection(sub.id);total+=r.total;done+=r.checked;
+    }
+  });
+  return{total,done};
+}
+
+function showDept(deptId){
+  activeDept=deptId;
+  const subs=getSubs(deptId);
+  activeSub=subs[0]?.id||'';
+  renderDeptTabs();renderSubTabs();renderCurrentSection();
 }
 
 // ══════════════════════════════════════════════
-// CHECKLIST RENDER
+// RENDER SUB TABS
 // ══════════════════════════════════════════════
-function renderChecklist(id) {
-  const tasks = getTasks(id);
-  const sa = state['staff_'+id] || [];
-  const ma = state['manager_'+id] || [];
-  const ul = document.getElementById('list-'+id);
-  if(!ul) return;
-  ul.innerHTML = '';
+function renderSubTabs(){
+  const subs=getSubs(activeDept);
+  const c=document.getElementById('sub-tabs');c.innerHTML='';
+  subs.forEach(sub=>{
+    const btn=document.createElement('button');
+    let badge='';
+    if(isHebdo(sub.id)){const{total,done}=getHebdoProgress(activeDept);badge=done+'/'+total;}
+    else{const r=countSection(sub.id);badge=r.checked+'/'+r.total;}
+    const isDone=badge.split('/')[0]===badge.split('/')[1]&&badge.split('/')[1]!=='0';
+    btn.className='sub-btn'+(sub.id===activeSub?' active':'')+(isDone&&sub.id!==activeSub?' done':'');
+    btn.innerHTML=`${sub.emoji} ${sub.name} <span class="sub-badge" id="sbadge-${sub.id}">${badge}</span>`;
+    btn.onclick=()=>showSub(sub.id);
+    c.appendChild(btn);
+  });
+}
 
-  if(tasks.length === 0) {
-    ul.innerHTML = `<div class="empty-state"><div class="empty-icon">📝</div>Aucune tâche — appuie sur + pour en ajouter</div>`;
-    updateBadge(id);
-    return;
+function getHebdoProgress(deptId){
+  const data=getWeeklyData(deptId),dd=getWeeklyDone(deptId);
+  let total=0,done=0;
+  DAYS.forEach(day=>{const tasks=data[day]||[],sa=dd['staff_'+day]||[],ma=dd['manager_'+day]||[];total+=tasks.length;done+=tasks.filter((_,i)=>sa[i]&&ma[i]).length;});
+  return{total,done};
+}
+
+function showSub(subId){
+  activeSub=subId;
+  renderSubTabs();renderCurrentSection();
+}
+
+// ══════════════════════════════════════════════
+// RENDER SECTION
+// ══════════════════════════════════════════════
+function renderCurrentSection(){
+  const subs=getSubs(activeDept);
+  const sub=subs.find(s=>s.id===activeSub);
+  if(!sub)return;
+  const c=document.getElementById('sections-container');
+  c.innerHTML='';
+
+  if(isHebdo(sub.id)){
+    renderWeeklySection(activeDept);
+  } else {
+    renderChecklistSection(sub);
+  }
+}
+
+function renderChecklistSection(sub){
+  const c=document.getElementById('sections-container');
+  const tasks=getTasks(sub.id);
+  const sa=state['staff_'+sub.id]||[], ma=state['manager_'+sub.id]||[];
+  const names=state.names||{};
+  const {checked,total}=countSection(sub.id);
+
+  const sec=document.createElement('div');
+  sec.className='section active';
+  sec.id='section-'+sub.id;
+
+  sec.innerHTML=`
+    <div class="section-header">
+      <div class="section-title">
+        <span>${sub.emoji}</span>
+        <span id="sec-title-${sub.id}">${sub.name}</span>
+        <button class="rename-btn" onclick="openRenameSub('${sub.id}')">✏️</button>
+      </div>
+      <div class="header-actions">
+        <span class="section-progress" id="prog-${sub.id}">${checked} / ${total}</span>
+        <button class="reset-btn" onclick="resetSection('${sub.id}')">Réinit.</button>
+        <button class="add-task-btn" onclick="openAddTask('${sub.id}')">+</button>
+      </div>
+    </div>
+    <div class="name-fields-row">
+      <div class="name-field">
+        <label>👤 Employé</label>
+        <input type="text" id="ns-${sub.id}" placeholder="Prénom..." oninput="saveName('${sub.id}','staff',this.value)" value="${names['staff_'+sub.id]||''}" autocomplete="off">
+      </div>
+      <div class="name-field" style="border-left:2px solid var(--bleu)">
+        <label style="color:var(--bleu)">✓ Manager</label>
+        <input type="text" id="nm-${sub.id}" placeholder="Prénom..." oninput="saveName('${sub.id}','manager',this.value)" value="${names['manager_'+sub.id]||''}" autocomplete="off">
+      </div>
+    </div>
+    <ul class="checklist" id="list-${sub.id}"></ul>
+    <div class="all-done" id="done-${sub.id}">
+      <div class="all-done-icon">✅</div><h3>${sub.name} complet !</h3><p>Toutes les tâches effectuées et validées.</p>
+    </div>`;
+  c.appendChild(sec);
+
+  // Pre-fill name
+  const si=document.getElementById('ns-'+sub.id);
+  const mi=document.getElementById('nm-'+sub.id);
+  if(currentRole==='employee'&&si&&!si.value) si.value=currentUser;
+  if(currentRole==='manager'&&mi&&!mi.value) mi.value=currentUser;
+
+  renderChecklist(sub.id);
+}
+
+function renderChecklist(subId){
+  const tasks=getTasks(subId);
+  const sa=state['staff_'+subId]||[], ma=state['manager_'+subId]||[];
+  const ul=document.getElementById('list-'+subId);
+  if(!ul)return;
+  ul.innerHTML='';
+
+  if(tasks.length===0){
+    ul.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div>Aucune tâche — appuie sur + pour en ajouter</div>`;
+    updateBadge(subId);return;
   }
 
-  tasks.forEach((task, i) => {
-    const li = document.createElement('li');
-    if(sa[i]&&ma[i]) li.classList.add('task-fully-done');
-    li.innerHTML = `<div class="task-row">
+  tasks.forEach((task,i)=>{
+    const li=document.createElement('li');
+    if(sa[i]&&ma[i])li.classList.add('task-fully-done');
+    li.innerHTML=`<div class="task-row">
       <div class="task-arrows">
-        <button class="arrow-btn" onclick="moveTask('${id}',${i},-1)" ${i===0?'disabled':''}>▲</button>
-        <button class="arrow-btn" onclick="moveTask('${id}',${i},1)" ${i===tasks.length-1?'disabled':''}>▼</button>
+        <button class="arrow-btn" onclick="moveTask('${subId}',${i},-1)" ${i===0?'disabled':''}>▲</button>
+        <button class="arrow-btn" onclick="moveTask('${subId}',${i},1)" ${i===tasks.length-1?'disabled':''}>▼</button>
       </div>
       <div class="task-checks">
-        <div class="check-wrap${sa[i]?' staff-done':''}" onclick="toggleStaff('${id}',${i},this)">
+        <div class="check-wrap${sa[i]?' staff-done':''}" onclick="toggleStaff('${subId}',${i},this)">
           <div class="check-circle">${SVG}</div><span class="check-label">Équipe</span>
         </div>
-        <div class="check-wrap${ma[i]?' manager-done':''}" onclick="toggleManager('${id}',${i},this)">
+        <div class="check-wrap${ma[i]?' manager-done':''}" onclick="toggleManager('${subId}',${i},this)">
           <div class="check-circle">${SVG}</div><span class="check-label" style="color:var(--bleu)">Manager</span>
         </div>
       </div>
       <div class="task-content">
-        ${task.priority?`<div class="item-priority">${task.priority}</div>`:''}
         <div class="item-text">${task.text}</div>
         <div class="task-badges">
           <span class="badge-staff${sa[i]?' show':''}">✓ Équipe</span>
@@ -706,268 +724,269 @@ function renderChecklist(id) {
         </div>
       </div>
       <div class="task-actions">
-        <button class="task-edit" onclick="openEditTask('${id}',${i})">✏️</button>
-        <button class="task-delete" onclick="deleteTask('${id}',${i})">×</button>
+        <button class="task-edit" onclick="openEditTask('${subId}',${i})">✏️</button>
+        <button class="task-delete" onclick="deleteTask('${subId}',${i})">×</button>
       </div>
     </div>`;
     ul.appendChild(li);
   });
-  updateBadge(id);
+  updateBadge(subId);
 }
 
 // ══════════════════════════════════════════════
 // CHECK LOGIC
 // ══════════════════════════════════════════════
-function toggleStaff(id, idx, el) {
+function toggleStaff(subId,idx,el){
   el.classList.toggle('staff-done');
-  const li = el.closest('li');
-  li.querySelector('.badge-staff')?.classList.toggle('show', el.classList.contains('staff-done'));
-  li.classList.toggle('task-fully-done', el.classList.contains('staff-done') && li.querySelector('.check-wrap:last-child').classList.contains('manager-done'));
-  saveSectionState(id); updateBadge(id); updateGlobal();
+  const li=el.closest('li');
+  li.querySelector('.badge-staff')?.classList.toggle('show',el.classList.contains('staff-done'));
+  li.classList.toggle('task-fully-done',el.classList.contains('staff-done')&&li.querySelector('.check-wrap:last-child').classList.contains('manager-done'));
+  saveSectionState(subId);updateBadge(subId);updateGlobal();
 }
-function toggleManager(id, idx, el) {
-  if(currentRole!=='manager') { showToast('Réservé au manager 🔑'); return; }
+function toggleManager(subId,idx,el){
+  if(currentRole!=='manager'){showToast('Réservé au manager 🔑');return;}
   el.classList.toggle('manager-done');
-  const li = el.closest('li');
-  li.querySelector('.badge-manager')?.classList.toggle('show', el.classList.contains('manager-done'));
-  li.classList.toggle('task-fully-done', el.classList.contains('manager-done') && li.querySelector('.check-wrap:first-child').classList.contains('staff-done'));
-  saveSectionState(id); updateBadge(id); updateGlobal();
+  const li=el.closest('li');
+  li.querySelector('.badge-manager')?.classList.toggle('show',el.classList.contains('manager-done'));
+  li.classList.toggle('task-fully-done',el.classList.contains('manager-done')&&li.querySelector('.check-wrap:first-child').classList.contains('staff-done'));
+  saveSectionState(subId);updateBadge(subId);updateGlobal();
 }
-function saveSectionState(id) {
-  const items = document.getElementById('list-'+id)?.querySelectorAll('li');
-  if(!items) return;
-  const s=[], m=[];
-  items.forEach(li => { const ws=li.querySelectorAll('.check-wrap'); s.push(ws[0]?.classList.contains('staff-done')||false); m.push(ws[1]?.classList.contains('manager-done')||false); });
-  state['staff_'+id]=s; state['manager_'+id]=m; save();
+function saveSectionState(subId){
+  const items=document.getElementById('list-'+subId)?.querySelectorAll('li');if(!items)return;
+  const s=[],m=[];
+  items.forEach(li=>{const ws=li.querySelectorAll('.check-wrap');s.push(ws[0]?.classList.contains('staff-done')||false);m.push(ws[1]?.classList.contains('manager-done')||false);});
+  state['staff_'+subId]=s;state['manager_'+subId]=m;save();
 }
-function countSection(id) {
-  const tasks = getTasks(id);
-  const sa = state['staff_'+id]||[], ma = state['manager_'+id]||[];
-  const done = tasks.filter((_,i)=>sa[i]&&ma[i]).length;
-  return { checked:done, total:tasks.length };
+function countSection(subId){
+  const tasks=getTasks(subId),sa=state['staff_'+subId]||[],ma=state['manager_'+subId]||[];
+  return{checked:tasks.filter((_,i)=>sa[i]&&ma[i]).length,total:tasks.length};
 }
-function updateBadge(id) {
-  const {checked,total} = countSection(id);
-  const b = document.getElementById('badge-'+id); if(b) b.textContent=checked+'/'+total;
-  const p = document.getElementById('prog-'+id); if(p) p.textContent=checked+' / '+total;
-  const tab = document.getElementById('tab-'+id);
-  if(tab) tab.classList.toggle('done', checked===total&&total>0&&id!=='weekly');
-  const done = document.getElementById('done-'+id);
-  if(done) done.classList.toggle('visible', checked===total&&total>0);
+function updateBadge(subId){
+  const{checked,total}=countSection(subId);
+  const b=document.getElementById('sbadge-'+subId);if(b)b.textContent=checked+'/'+total;
+  const p=document.getElementById('prog-'+subId);if(p)p.textContent=checked+' / '+total;
+  const done=document.getElementById('done-'+subId);if(done)done.classList.toggle('visible',checked===total&&total>0);
+  renderSubTabs();renderDeptTabs();
 }
-function updateGlobal() {
-  let tc=0, ta=0;
-  getTabs().filter(t=>t.id!=='weekly').forEach(t=>{ const{checked,total}=countSection(t.id); tc+=checked; ta+=total; });
+function updateGlobal(){
+  let tc=0,ta=0;
+  getDepts().forEach(dept=>{const p=getDeptProgress(dept.id);tc+=p.done;ta+=p.total;});
   document.getElementById('globalCount').textContent=tc+' / '+ta;
   document.getElementById('globalBar').style.width=(ta>0?(tc/ta*100):0)+'%';
 }
-function resetSection(id) {
-  state['staff_'+id]=[]; state['manager_'+id]=[];
-  if(!state.names)state.names={};
-  state.names['staff_'+id]=''; state.names['manager_'+id]='';
-  const si=document.getElementById('name-staff-'+id); if(si)si.value='';
-  const mi=document.getElementById('name-manager-'+id); if(mi)mi.value='';
-  save(); renderChecklist(id); updateGlobal(); showToast('Section réinitialisée ✓');
+function resetSection(subId){
+  state['staff_'+subId]=[];state['manager_'+subId]=[];
+  if(!state.names)state.names={};state.names['staff_'+subId]='';state.names['manager_'+subId]='';
+  save();renderCurrentSection();updateGlobal();showToast('Réinitialisé ✓');
 }
-
-// ══════════════════════════════════════════════
-// MOVE TASK
-// ══════════════════════════════════════════════
-function moveTask(id, idx, dir) {
-  const tasks=getTasks(id), sa=state['staff_'+id]||[], ma=state['manager_'+id]||[];
-  const ni=idx+dir; if(ni<0||ni>=tasks.length)return;
+function moveTask(subId,idx,dir){
+  const tasks=getTasks(subId),sa=state['staff_'+subId]||[],ma=state['manager_'+subId]||[];
+  const ni=idx+dir;if(ni<0||ni>=tasks.length)return;
   [tasks[idx],tasks[ni]]=[tasks[ni],tasks[idx]];
-  [sa[idx],sa[ni]]=[sa[ni]||false,sa[idx]||false];
-  [ma[idx],ma[ni]]=[ma[ni]||false,ma[idx]||false];
-  state['tasks'][id]=tasks; state['staff_'+id]=sa; state['manager_'+id]=ma;
-  save(); renderChecklist(id);
+  [sa[idx],sa[ni]]=[sa[ni]||false,sa[idx]||false];[ma[idx],ma[ni]]=[ma[ni]||false,ma[idx]||false];
+  if(!state.tasks)state.tasks={};state.tasks[subId]=tasks;state['staff_'+subId]=sa;state['manager_'+subId]=ma;
+  save();renderChecklist(subId);
 }
 
 // ══════════════════════════════════════════════
-// ADD / EDIT / DELETE TASK
+// ADD/EDIT/DELETE
 // ══════════════════════════════════════════════
-let addTaskTarget='', editTaskTarget='', editTaskIdx=-1;
-
-function openAddTask(id) { addTaskTarget=id; document.getElementById('add-task-input').value=''; openModal('modal-add-task'); setTimeout(()=>document.getElementById('add-task-input').focus(),300); }
-function confirmAddTask() {
-  const text=document.getElementById('add-task-input').value.trim(); if(!text)return;
-  getTasks(addTaskTarget).push({text}); save(); renderChecklist(addTaskTarget); closeModal('modal-add-task'); showToast('Tâche ajoutée ✓');
+let addTarget='',editTarget='',editIdx=-1;
+function openAddTask(subId){addTarget=subId;document.getElementById('add-task-input').value='';openModal('modal-add-task');setTimeout(()=>document.getElementById('add-task-input').focus(),300);}
+function confirmAddTask(){
+  const text=document.getElementById('add-task-input').value.trim();if(!text)return;
+  getTasks(addTarget).push({text});save();renderChecklist(addTarget);closeModal('modal-add-task');showToast('Tâche ajoutée ✓');
 }
-function openEditTask(id, idx) { editTaskTarget=id; editTaskIdx=idx; document.getElementById('edit-task-input').value=getTasks(id)[idx].text; openModal('modal-edit-task'); setTimeout(()=>document.getElementById('edit-task-input').focus(),300); }
-function confirmEditTask() {
-  const text=document.getElementById('edit-task-input').value.trim(); if(!text)return;
-  getTasks(editTaskTarget)[editTaskIdx].text=text; save(); renderChecklist(editTaskTarget); closeModal('modal-edit-task'); showToast('Tâche modifiée ✓');
+function openEditTask(subId,idx){editTarget=subId;editIdx=idx;document.getElementById('edit-task-input').value=getTasks(subId)[idx].text;openModal('modal-edit-task');setTimeout(()=>document.getElementById('edit-task-input').focus(),300);}
+function confirmEditTask(){
+  const text=document.getElementById('edit-task-input').value.trim();if(!text)return;
+  getTasks(editTarget)[editIdx].text=text;save();renderChecklist(editTarget);closeModal('modal-edit-task');showToast('Tâche modifiée ✓');
 }
-function deleteTask(id, idx) {
-  const tasks=getTasks(id), sa=state['staff_'+id]||[], ma=state['manager_'+id]||[];
-  tasks.splice(idx,1); sa.splice(idx,1); ma.splice(idx,1);
-  state['tasks'][id]=tasks; state['staff_'+id]=sa; state['manager_'+id]=ma;
-  save(); renderChecklist(id); updateGlobal();
-}
-
-// ══════════════════════════════════════════════
-// TAB MANAGEMENT
-// ══════════════════════════════════════════════
-let selectedEmojiRename='', selectedEmojiNew='🌅', renameTabTarget='';
-
-function selectEmoji(el) { document.querySelectorAll('#emoji-picker .emoji-opt').forEach(e=>e.classList.remove('selected')); el.classList.add('selected'); selectedEmojiRename=el.textContent; }
-function selectEmojiNew(el) { document.querySelectorAll('#emoji-picker-new .emoji-opt').forEach(e=>e.classList.remove('selected')); el.classList.add('selected'); selectedEmojiNew=el.textContent; }
-
-function openRenameTab(id) {
-  renameTabTarget=id; const tab=getTabs().find(t=>t.id===id);
-  document.getElementById('rename-tab-input').value=tab?tab.name:'';
-  selectedEmojiRename=tab?tab.emoji:'';
-  document.querySelectorAll('#emoji-picker .emoji-opt').forEach(e=>{ e.classList.toggle('selected',e.textContent===selectedEmojiRename); });
-  openModal('modal-rename-tab'); setTimeout(()=>document.getElementById('rename-tab-input').focus(),300);
-}
-function confirmRenameTab() {
-  const name=document.getElementById('rename-tab-input').value.trim(); if(!name)return;
-  const tabs=getTabs(); const tab=tabs.find(t=>t.id===renameTabTarget);
-  if(tab){ tab.name=name; if(selectedEmojiRename)tab.emoji=selectedEmojiRename; }
-  save(); closeModal('modal-rename-tab'); renderTabs(); showToast('Onglet renommé ✓');
-}
-
-function openNewTabModal() {
-  document.getElementById('new-tab-input').value=''; selectedEmojiNew='🌅';
-  document.querySelectorAll('#emoji-picker-new .emoji-opt').forEach((e,i)=>e.classList.toggle('selected',i===0));
-  openModal('modal-new-tab'); setTimeout(()=>document.getElementById('new-tab-input').focus(),300);
-}
-function confirmNewTab() {
-  const name=document.getElementById('new-tab-input').value.trim(); if(!name)return;
-  const id='tab_'+Date.now();
-  const tabs=getTabs();
-  const weeklyIdx=tabs.findIndex(t=>t.id==='weekly');
-  const newTab={id,emoji:selectedEmojiNew||'📋',name};
-  if(weeklyIdx>=0)tabs.splice(weeklyIdx,0,newTab); else tabs.push(newTab);
-  if(!state.tasks)state.tasks={}; state.tasks[id]=[];
-  save(); activeTab=id; closeModal('modal-new-tab'); renderTabs(); showToast('Onglet créé ✓');
-}
-
-function deleteTab(id) {
-  if(!confirm('Supprimer cet onglet et toutes ses tâches ?')) return;
-  const tabs=getTabs();
-  const idx=tabs.findIndex(t=>t.id===id); if(idx>=0)tabs.splice(idx,1);
-  delete state.tasks?.[id]; delete state['staff_'+id]; delete state['manager_'+id];
-  save();
-  activeTab=tabs[0]?.id||'weekly';
-  renderTabs(); updateGlobal(); showToast('Onglet supprimé ✓');
+function deleteTask(subId,idx){
+  const tasks=getTasks(subId),sa=state['staff_'+subId]||[],ma=state['manager_'+subId]||[];
+  tasks.splice(idx,1);sa.splice(idx,1);ma.splice(idx,1);
+  if(!state.tasks)state.tasks={};state.tasks[subId]=tasks;state['staff_'+subId]=sa;state['manager_'+subId]=ma;
+  save();renderChecklist(subId);updateGlobal();
 }
 
 // ══════════════════════════════════════════════
 // NAMES
 // ══════════════════════════════════════════════
-function saveName(id, role, value) { if(!state.names)state.names={}; state.names[role+'_'+id]=value; save(); }
+function saveName(subId,role,value){if(!state.names)state.names={};state.names[role+'_'+subId]=value;save();}
+
+// ══════════════════════════════════════════════
+// SUB TAB MANAGEMENT
+// ══════════════════════════════════════════════
+let emojiRename='🌅',emojiNew='🌅',renameSubTarget='';
+function pickEmoji(el,type){
+  const picker=type==='rename'?'emoji-rename':'emoji-new';
+  document.querySelectorAll('#'+picker+' .emoji-opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  if(type==='rename')emojiRename=el.textContent; else emojiNew=el.textContent;
+}
+function openRenameSub(subId){
+  renameSubTarget=subId;
+  const subs=getSubs(activeDept),sub=subs.find(s=>s.id===subId);
+  document.getElementById('rename-sub-input').value=sub?sub.name:'';
+  emojiRename=sub?sub.emoji:'🌅';
+  document.querySelectorAll('#emoji-rename .emoji-opt').forEach(e=>e.classList.toggle('selected',e.textContent===emojiRename));
+  openModal('modal-rename-sub');setTimeout(()=>document.getElementById('rename-sub-input').focus(),300);
+}
+function confirmRenameSub(){
+  const name=document.getElementById('rename-sub-input').value.trim();if(!name)return;
+  const subs=getSubs(activeDept),sub=subs.find(s=>s.id===renameSubTarget);
+  if(sub){sub.name=name;sub.emoji=emojiRename;}
+  save();closeModal('modal-rename-sub');renderSubTabs();renderCurrentSection();showToast('Onglet renommé ✓');
+}
+function openNewSubModal(){
+  document.getElementById('new-sub-input').value='';emojiNew='🌅';
+  document.querySelectorAll('#emoji-new .emoji-opt').forEach((e,i)=>e.classList.toggle('selected',i===0));
+  openModal('modal-new-sub');setTimeout(()=>document.getElementById('new-sub-input').focus(),300);
+}
+function confirmNewSub(){
+  const name=document.getElementById('new-sub-input').value.trim();if(!name)return;
+  const id=activeDept+'_'+Date.now();
+  const subs=getSubs(activeDept);
+  const hebdoIdx=subs.findIndex(s=>isHebdo(s.id));
+  const newSub={id,emoji:emojiNew,name};
+  if(hebdoIdx>=0)subs.splice(hebdoIdx,0,newSub); else subs.push(newSub);
+  if(!state.tasks)state.tasks={};state.tasks[id]=[];
+  save();activeSub=id;closeModal('modal-new-sub');renderSubTabs();renderCurrentSection();showToast('Onglet créé ✓');
+}
 
 // ══════════════════════════════════════════════
 // WEEKLY
 // ══════════════════════════════════════════════
-function renderWeekly() {
-  const data=getWeeklyData(), done=getWeeklyDone();
-  const c=document.getElementById('weekly-container'); if(!c)return;
+function renderWeeklySection(deptId){
+  const c=document.getElementById('sections-container');
+  const sec=document.createElement('div');
+  sec.className='section active';
+  sec.innerHTML=`
+    <div class="section-header">
+      <div class="section-title"><span>📅</span><span>Tâches hebdo</span></div>
+      <div class="header-actions">
+        <button class="reset-btn" onclick="resetWeekly('${deptId}')">Réinit.</button>
+      </div>
+    </div>
+    <div id="weekly-container-${deptId}"></div>
+    <button class="weekly-send-btn" onclick="sendWeeklyReport('${deptId}')">📧 Rapport hebdo — ${getDepts().find(d=>d.id===deptId)?.name||deptId}</button>`;
+  c.appendChild(sec);
+  renderWeekly(deptId);
+}
+
+function renderWeekly(deptId){
+  const data=getWeeklyData(deptId),done=getWeeklyDone(deptId);
+  const c=document.getElementById('weekly-container-'+deptId);if(!c)return;
   c.innerHTML='';
   DAYS.forEach(day=>{
-    const tasks=data[day]||[], sa=done['staff_'+day]||[], ma=done['manager_'+day]||[];
+    const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];
     const fd=tasks.filter((_,i)=>sa[i]&&ma[i]).length;
     const block=document.createElement('div');
     block.className='day-block'+(day===TODAY?' open':'');
     block.innerHTML=`<div class="day-header" onclick="this.parentElement.classList.toggle('open')">
-      <div class="day-title-wrap"><span>${DAY_ICONS[day]}</span><span class="day-name">${DAY_LABELS[day]}</span><span class="day-count" id="dcnt-${day}">${fd}/${tasks.length}${day===TODAY?' — Aujourd\'hui':''}</span></div>
+      <div class="day-title-wrap"><span>${DAY_ICONS[day]}</span><span class="day-name">${DAY_LABELS[day]}</span><span class="day-count" id="dcnt-${deptId}-${day}">${fd}/${tasks.length}${day===TODAY?' — Aujourd\'hui':''}</span></div>
       <span class="day-chevron">▾</span></div>
-      <div class="day-tasks" id="dtasks-${day}"></div>`;
+      <div class="day-tasks" id="dtasks-${deptId}-${day}"></div>`;
     c.appendChild(block);
-    renderDayTasks(day);
+    renderDayTasks(deptId,day);
   });
-  updateWeeklyBadge();
 }
-function renderDayTasks(day) {
-  const data=getWeeklyData(), done=getWeeklyDone();
-  const tasks=data[day]||[], sa=done['staff_'+day]||[], ma=done['manager_'+day]||[];
-  const c=document.getElementById('dtasks-'+day); if(!c)return;
+function renderDayTasks(deptId,day){
+  const data=getWeeklyData(deptId),done=getWeeklyDone(deptId);
+  const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];
+  const c=document.getElementById('dtasks-'+deptId+'-'+day);if(!c)return;
   c.innerHTML='';
   tasks.forEach((t,i)=>{
-    const sd=sa[i]||false, md=ma[i]||false, fd=sd&&md;
+    const sd=sa[i]||false,md=ma[i]||false;
     const item=document.createElement('div');
-    item.className='day-task-item'+(fd?' fully-done':'');
+    item.className='day-task-item'+(sd&&md?' fully-done':'');
     item.innerHTML=`<div class="day-task-checks">
-      <div class="day-check-wrap${sd?' staff-done':''}" onclick="toggleDayStaff('${day}',${i})">
+      <div class="day-check-wrap${sd?' staff-done':''}" onclick="toggleDayStaff('${deptId}','${day}',${i})">
         <div class="day-task-circle">${sd?SVG:''}</div><span class="day-check-label">Équipe</span></div>
-      <div class="day-check-wrap${md?' manager-done':''}" onclick="toggleDayManager('${day}',${i})">
+      <div class="day-check-wrap${md?' manager-done':''}" onclick="toggleDayManager('${deptId}','${day}',${i})">
         <div class="day-task-circle">${md?SVG:''}</div><span class="day-check-label" style="color:var(--bleu)">Mgr</span></div>
     </div>
-    <div style="flex:1"><div class="day-task-text">${t}</div></div>
-    <button class="day-task-delete" onclick="deleteDayTask('${day}',${i})">×</button>`;
+    <div class="day-task-text" style="flex:1">${t}</div>
+    <button class="day-task-delete" onclick="deleteDayTask('${deptId}','${day}',${i})">×</button>`;
     c.appendChild(item);
   });
-  const btn=document.createElement('button'); btn.className='day-add-btn'; btn.innerHTML='+ Ajouter'; btn.onclick=()=>addDayTask(day); c.appendChild(btn);
+  const btn=document.createElement('button');btn.className='day-add-btn';btn.innerHTML='+ Ajouter';btn.onclick=()=>addDayTask(deptId,day);c.appendChild(btn);
 }
-function toggleDayStaff(day,idx) { const done=getWeeklyDone(); if(!done['staff_'+day])done['staff_'+day]=[]; done['staff_'+day][idx]=!done['staff_'+day][idx]; save(); renderDayTasks(day); updateDayCount(day); updateWeeklyBadge(); }
-function toggleDayManager(day,idx) {
-  if(currentRole!=='manager'){showToast('Réservé au manager 🔑');return;}
-  const done=getWeeklyDone(); if(!done['manager_'+day])done['manager_'+day]=[]; done['manager_'+day][idx]=!done['manager_'+day][idx]; save(); renderDayTasks(day); updateDayCount(day); updateWeeklyBadge();
-}
-function deleteDayTask(day,idx) {
-  if(currentRole!=='manager')return;
-  const data=getWeeklyData(),done=getWeeklyDone();
-  data[day].splice(idx,1); if(done['staff_'+day])done['staff_'+day].splice(idx,1); if(done['manager_'+day])done['manager_'+day].splice(idx,1);
-  save(); renderDayTasks(day); updateDayCount(day); updateWeeklyBadge();
-}
-function addDayTask(day) { const text=prompt('Nouvelle tâche pour '+DAY_LABELS[day]+' :'); if(!text||!text.trim())return; getWeeklyData()[day].push(text.trim()); save(); renderDayTasks(day); updateDayCount(day); updateWeeklyBadge(); }
-function updateDayCount(day) { const data=getWeeklyData(),done=getWeeklyDone(); const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[]; const fd=tasks.filter((_,i)=>sa[i]&&ma[i]).length; const cnt=document.getElementById('dcnt-'+day); if(cnt)cnt.textContent=fd+'/'+tasks.length+(day===TODAY?' — Aujourd\'hui':''); }
-function updateWeeklyBadge() { const data=getWeeklyData(),done=getWeeklyDone(); let t=0,d=0; DAYS.forEach(day=>{const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];t+=tasks.length;d+=tasks.filter((_,i)=>sa[i]&&ma[i]).length;}); const b=document.getElementById('badge-weekly');if(b)b.textContent=d+'/'+t; }
-function resetWeekly() { state.weeklyDone={}; save(); renderWeekly(); showToast('Hebdo réinitialisé ✓'); }
+function toggleDayStaff(deptId,day,idx){const d=getWeeklyDone(deptId);if(!d['staff_'+day])d['staff_'+day]=[];d['staff_'+day][idx]=!d['staff_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
+function toggleDayManager(deptId,day,idx){if(currentRole!=='manager'){showToast('Réservé au manager 🔑');return;}const d=getWeeklyDone(deptId);if(!d['manager_'+day])d['manager_'+day]=[];d['manager_'+day][idx]=!d['manager_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
+function deleteDayTask(deptId,day,idx){if(currentRole!=='manager')return;const data=getWeeklyData(deptId),d=getWeeklyDone(deptId);data[day].splice(idx,1);if(d['staff_'+day])d['staff_'+day].splice(idx,1);if(d['manager_'+day])d['manager_'+day].splice(idx,1);save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
+function addDayTask(deptId,day){const text=prompt('Nouvelle tâche pour '+DAY_LABELS[day]+' :');if(!text||!text.trim())return;getWeeklyData(deptId)[day].push(text.trim());save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
+function updateDayCount(deptId,day){const data=getWeeklyData(deptId),d=getWeeklyDone(deptId);const tasks=data[day]||[],sa=d['staff_'+day]||[],ma=d['manager_'+day]||[];const fd=tasks.filter((_,i)=>sa[i]&&ma[i]).length;const cnt=document.getElementById('dcnt-'+deptId+'-'+day);if(cnt)cnt.textContent=fd+'/'+tasks.length+(day===TODAY?' — Aujourd\'hui':'');}
+function resetWeekly(deptId){if(!state.weeklyDone)state.weeklyDone={};state.weeklyDone[deptId]={};save();renderWeekly(deptId);showToast('Hebdo réinitialisé ✓');}
 
 // ══════════════════════════════════════════════
-// MODAL HELPERS
+// REPORT BTN
 // ══════════════════════════════════════════════
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function updateReportBtn(){
+  const dept=getDepts().find(d=>d.id===activeDept);
+  const btn=document.getElementById('report-btn');
+  if(btn&&dept)btn.textContent='📧 Envoyer le rapport — '+dept.name;
+}
 
 // ══════════════════════════════════════════════
 // REPORTS
 // ══════════════════════════════════════════════
-async function sendFullReport() {
+async function sendDeptReport(){
+  const dept=getDepts().find(d=>d.id===activeDept);
+  const subs=getSubs(activeDept);
   const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  let msg='RAPPORT COMPLET — ZEPHYR MONACO\n'+'='.repeat(34)+'\nDate : '+now+'\n';
   const names=state.names||{};
-  getTabs().filter(t=>t.id!=='weekly').forEach(tab=>{
-    const tasks=getTasks(tab.id), sa=state['staff_'+tab.id]||[], ma=state['manager_'+tab.id]||[];
-    const lines=tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t.text);
-    msg+='\n\n── '+tab.emoji+' '+tab.name.toUpperCase()+' ──\n';
-    msg+='Employé : '+(names['staff_'+tab.id]||'—')+' | Manager : '+(names['manager_'+tab.id]||'—')+'\n';
-    msg+=lines.length>0?lines.join('\n'):'(aucune tâche)';
+  let msg='RAPPORT — '+dept.name.toUpperCase()+'\n'+'='.repeat(40)+'\nDate : '+now+'\n';
+
+  subs.forEach(sub=>{
+    if(isHebdo(sub.id)){
+      const data=getWeeklyData(activeDept),done=getWeeklyDone(activeDept);
+      msg+='\n\n── HEBDOMADAIRE ──';
+      DAYS.forEach(day=>{const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];if(tasks.length>0){msg+='\n'+DAY_LABELS[day]+' : '+tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':'❌')+' '+t).join(' | ');}});
+    } else {
+      const tasks=getTasks(sub.id),sa=state['staff_'+sub.id]||[],ma=state['manager_'+sub.id]||[];
+      msg+='\n\n── '+sub.emoji+' '+sub.name.toUpperCase()+' ──\n';
+      msg+='Employé : '+(names['staff_'+sub.id]||'—')+' | Manager : '+(names['manager_'+sub.id]||'—')+'\n';
+      msg+=tasks.length>0?tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t.text).join('\n'):'(aucune tâche)';
+    }
   });
-  const data=getWeeklyData(),done=getWeeklyDone();
-  msg+='\n\n── 📅 HEBDOMADAIRE ──';
-  DAYS.forEach(day=>{ const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[]; if(tasks.length>0){msg+='\n'+DAY_LABELS[day]+' : '+tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':'❌')+' '+t).join(' | ');} });
   msg+='\n\n— Envoyé depuis l\'application Zephyr Monaco';
+  const subject='Rapport '+dept.name+' — '+now;
   showToast('Envoi en cours...');
-  try { await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport Complet — '+now,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'}); showToast('✅ Rapport envoyé !'); }
-  catch(e) { showToast('❌ Erreur : '+(e.text||e.message)); }
+  try{await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'});showToast('✅ Rapport '+dept.name+' envoyé !');}
+  catch(e){showToast('❌ Erreur : '+(e.text||e.message));}
 }
-async function sendWeeklyReport() {
+
+async function sendWeeklyReport(deptId){
+  const dept=getDepts().find(d=>d.id===deptId);
+  const data=getWeeklyData(deptId),done=getWeeklyDone(deptId);
   const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  const data=getWeeklyData(),done=getWeeklyDone();
   let lines=[];
-  DAYS.forEach(day=>{ lines.push('\n— '+DAY_LABELS[day].toUpperCase()+' —'); const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[]; tasks.forEach((t,i)=>lines.push((sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t)); });
-  const msg='RAPPORT HEBDOMADAIRE — ZEPHYR MONACO\n'+'='.repeat(37)+'\nDate : '+now+'\n'+lines.join('\n')+'\n\n— Envoyé depuis l\'application Zephyr Monaco';
+  DAYS.forEach(day=>{lines.push('\n— '+DAY_LABELS[day].toUpperCase()+' —');const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];tasks.forEach((t,i)=>lines.push((sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t));});
+  const msg='RAPPORT HEBDO — '+dept.name.toUpperCase()+'\n'+'='.repeat(40)+'\nDate : '+now+'\n'+lines.join('\n')+'\n\n— Envoyé depuis l\'application Zephyr Monaco';
   showToast('Envoi en cours...');
-  try { await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport Hebdo — '+now,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'}); showToast('✅ Rapport hebdo envoyé !'); }
-  catch(e) { showToast('❌ Erreur : '+(e.text||e.message)); }
+  try{await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport Hebdo '+dept.name+' — '+now,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'});showToast('✅ Rapport hebdo envoyé !');}
+  catch(e){showToast('❌ Erreur : '+(e.text||e.message));}
 }
+
+// ══════════════════════════════════════════════
+// MODAL HELPERS
+// ══════════════════════════════════════════════
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 // ══════════════════════════════════════════════
 // TOAST
 // ══════════════════════════════════════════════
-function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
 // ══════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════
-function initApp() {
-  if(!state.tasks) state.tasks={};
-  const tabs=getTabs();
-  activeTab = tabs[0]?.id || 'matin';
-  renderTabs();
+function initApp(){
+  activeDept='salle';
+  activeSub=getSubs('salle')[0]?.id||'s_matin';
+  renderDeptTabs();renderSubTabs();renderCurrentSection();updateGlobal();
 }
 </script>
 </body>
