@@ -6,6 +6,55 @@
 <title>Zephyr Monaco — Mise en Place</title>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>(function(){ emailjs.init({ publicKey: 'ZR5ziXCQLKk-OrvoO' }); })();</script>
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+  import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPP1hMK6PHeSW7WiJZvQ_r-7yvRm1bfJM",
+    authDomain: "zephyr-monaco.firebaseapp.com",
+    projectId: "zephyr-monaco",
+    storageBucket: "zephyr-monaco.firebasestorage.app",
+    messagingSenderId: "889758734631",
+    appId: "1:889758734631:web:639f47062a9d891726b102"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const DOC = doc(db, 'zephyr', 'state');
+
+  // Save to Firestore
+  window.fbSave = async function(state) {
+    try {
+      await setDoc(DOC, { data: JSON.stringify(state) });
+    } catch(e) { console.error('Firebase save error:', e); }
+  };
+
+  // Real-time listener
+  window.fbListen = function(callback) {
+    return onSnapshot(DOC, (snap) => {
+      if (snap.exists()) {
+        try {
+          const data = JSON.parse(snap.data().data);
+          callback(data);
+        } catch(e) {}
+      }
+    });
+  };
+
+  // Load once
+  window.fbLoad = async function() {
+    try {
+      const snap = await getDoc(DOC);
+      if (snap.exists()) return JSON.parse(snap.data().data);
+    } catch(e) {}
+    return null;
+  };
+
+  window.firebaseReady = true;
+  document.dispatchEvent(new Event('firebase-ready'));
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -21,7 +70,6 @@
   body { background:var(--beige); color:var(--text); font-family:'Jost',sans-serif; min-height:100vh;
     background-image:radial-gradient(ellipse 3px 2px at 12% 18%,rgba(181,96,58,.18) 0%,transparent 100%),radial-gradient(ellipse 60% 35% at 50% 0%,rgba(181,96,58,.07) 0%,transparent 70%);
   }
-
   /* ── LOGIN ── */
   #login-screen { position:fixed; inset:0; background:var(--beige); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; background-image:radial-gradient(ellipse 60% 35% at 50% 0%,rgba(181,96,58,.1) 0%,transparent 70%); }
   #login-screen::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--beige),var(--terra),var(--terra-dark),var(--terra),var(--beige)); }
@@ -44,21 +92,22 @@
   .login-error { color:var(--terra-dark); font-size:12px; text-align:center; margin-top:12px; min-height:18px; }
   .login-name-input { width:100%; background:var(--beige); border:1px solid var(--stone2); border-radius:var(--radius); padding:11px 14px; font-family:'Jost',sans-serif; font-size:14px; color:var(--text); outline:none; caret-color:var(--terra); margin-bottom:16px; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
-
   /* ── ROLE BADGE ── */
   .role-badge { position:fixed; top:14px; right:16px; z-index:50; display:flex; align-items:center; gap:8px; }
   .role-pill { background:var(--terra); color:var(--beige); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:4px 10px; border-radius:99px; font-weight:500; }
   .role-pill.employee { background:var(--stone); }
   .logout-btn { background:none; border:1px solid var(--stone2); color:var(--text-dim); font-size:11px; padding:4px 10px; border-radius:99px; cursor:pointer; font-family:'Jost',sans-serif; transition:all .2s; }
   .logout-btn:hover { border-color:var(--terra); color:var(--terra); }
-
+  /* sync indicator */
+  .sync-dot { width:8px; height:8px; border-radius:50%; background:var(--vert); display:inline-block; margin-left:4px; }
+  .sync-dot.syncing { background:var(--terra); animation:pulse .8s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
   /* ── HEADER ── */
   header { text-align:center; padding:44px 20px 20px; position:relative; border-bottom:1px solid var(--stone2); background:linear-gradient(180deg,rgba(181,96,58,.06) 0%,transparent 100%); }
   header::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--beige),var(--terra),var(--terra-dark),var(--terra),var(--beige)); }
   .logo-text { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,7vw,48px); color:var(--terra-dark); letter-spacing:.14em; font-weight:500; font-style:italic; }
   .restaurant-name { font-size:10px; color:var(--stone); letter-spacing:.4em; text-transform:uppercase; margin-top:4px; }
   .subtitle { font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:var(--stone); margin-top:3px; font-weight:300; opacity:.7; }
-
   /* ── PROGRESS ── */
   .global-progress { padding:18px 20px 0; max-width:760px; margin:0 auto; }
   .progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
@@ -66,16 +115,14 @@
   .progress-count { font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--terra); font-weight:600; }
   .progress-bar-bg { background:var(--beige3); border-radius:99px; height:5px; overflow:hidden; border:1px solid var(--stone2); }
   .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--terra),var(--terra-dark)); border-radius:99px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%; }
-
-  /* ── DEPT TABS (top level) ── */
+  /* ── DEPT TABS ── */
   .dept-tabs { display:flex; gap:6px; padding:14px 20px 0; max-width:760px; margin:0 auto; overflow-x:auto; scrollbar-width:none; }
   .dept-tabs::-webkit-scrollbar { display:none; }
   .dept-btn { flex-shrink:0; padding:9px 20px; border-radius:99px; border:1px solid var(--stone2); background:var(--beige2); color:var(--text-dim); font-family:'Jost',sans-serif; font-size:13px; font-weight:400; cursor:pointer; transition:all .2s; letter-spacing:.06em; }
   .dept-btn.active { background:var(--terra-dark); border-color:var(--terra-dark); color:var(--beige); font-weight:500; box-shadow:0 4px 14px rgba(140,69,40,.3); }
   .dept-btn .dept-badge { font-size:10px; background:rgba(181,96,58,.1); border-radius:99px; padding:1px 6px; margin-left:4px; color:var(--stone); }
   .dept-btn.active .dept-badge { background:rgba(255,255,255,.15); color:rgba(255,255,255,.8); }
-
-  /* ── SUB TABS (Matin/Après-midi/Soir/Hebdo) ── */
+  /* ── SUB TABS ── */
   .sub-tabs-wrap { display:flex; align-items:center; gap:8px; padding:10px 20px 0; max-width:760px; margin:0 auto; }
   .sub-tabs { display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; flex:1; }
   .sub-tabs::-webkit-scrollbar { display:none; }
@@ -88,7 +135,6 @@
   .add-sub-btn { flex-shrink:0; background:var(--terra); border:none; color:var(--beige); width:30px; height:30px; border-radius:50%; font-size:18px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .2s; }
   body.manager .add-sub-btn { display:flex; }
   .add-sub-btn:hover { background:var(--terra-dark); transform:scale(1.1); }
-
   /* ── SECTIONS ── */
   .sections { max-width:760px; margin:0 auto; padding:14px 20px 110px; }
   .section { display:none; animation:fadeIn .2s ease; }
@@ -107,7 +153,6 @@
   .rename-btn { background:none; border:none; font-size:12px; cursor:pointer; opacity:.3; display:none; font-style:normal; transition:opacity .2s; }
   body.manager .rename-btn { display:inline; }
   .rename-btn:hover { opacity:1; }
-
   /* ── NAME FIELDS ── */
   .name-fields-row { display:flex; gap:8px; margin-bottom:12px; }
   .name-field { display:flex; align-items:center; gap:8px; background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); padding:10px 12px; flex:1; transition:border-color .2s; }
@@ -115,7 +160,6 @@
   .name-field label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--text-dim); font-weight:500; white-space:nowrap; flex-shrink:0; }
   .name-field input { background:transparent; border:none; outline:none; color:var(--text); font-family:'Jost',sans-serif; font-size:13px; width:100%; caret-color:var(--terra); }
   .name-field input::placeholder { color:var(--stone2); }
-
   /* ── CHECKLIST ── */
   .checklist { list-style:none; }
   .checklist li { border-radius:var(--radius); margin-bottom:5px; background:var(--beige2); border:1px solid var(--stone2); transition:all .18s; overflow:hidden; }
@@ -152,7 +196,6 @@
   .task-delete:hover { border-color:var(--terra); color:var(--terra); background:var(--terra-dim); }
   .empty-state { text-align:center; padding:36px 20px; color:var(--text-dim); font-size:13px; opacity:.6; }
   .empty-icon { font-size:28px; margin-bottom:8px; }
-
   /* ── ALL DONE ── */
   .all-done { text-align:center; padding:24px 20px; display:none; }
   .all-done.visible { display:block; }
@@ -160,7 +203,6 @@
   @keyframes pop { from{transform:scale(0)} to{transform:scale(1)} }
   .all-done h3 { font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--vert); margin-bottom:4px; font-weight:500; font-style:italic; }
   .all-done p { font-size:13px; color:var(--text-dim); }
-
   /* ── WEEKLY ── */
   .day-block { background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); margin-bottom:7px; overflow:hidden; }
   .day-header { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; cursor:pointer; transition:background .15s; user-select:none; }
@@ -172,7 +214,7 @@
   .day-block.open .day-chevron { transform:rotate(180deg); }
   .day-tasks { display:none; padding:0 12px 10px; }
   .day-block.open .day-tasks { display:block; }
-  .day-task-item { display:flex; align-items:center; gap:8px; padding:8px 8px; border-radius:7px; margin-bottom:3px; transition:background .15s; border:1px solid transparent; }
+  .day-task-item { display:flex; align-items:center; gap:8px; padding:8px; border-radius:7px; margin-bottom:3px; transition:background .15s; border:1px solid transparent; }
   .day-task-item:hover { background:var(--beige3); border-color:var(--terra-border); }
   .day-task-item.fully-done .day-task-text { text-decoration:line-through; color:var(--text-dim); }
   .day-task-checks { display:flex; gap:4px; flex-shrink:0; }
@@ -189,7 +231,6 @@
   .day-add-btn { display:none; align-items:center; gap:5px; padding:6px 8px; border-radius:7px; margin-top:5px; background:none; border:1px dashed var(--stone2); color:var(--text-dim); font-family:'Jost',sans-serif; font-size:11px; cursor:pointer; width:100%; transition:all .2s; }
   body.manager .day-add-btn { display:flex; }
   .day-add-btn:hover { border-color:var(--terra); color:var(--terra); }
-
   /* ── MODAL ── */
   .modal-overlay { position:fixed; inset:0; background:rgba(58,46,38,.5); display:flex; align-items:flex-end; justify-content:center; z-index:100; opacity:0; pointer-events:none; transition:opacity .2s; }
   .modal-overlay.open { opacity:1; pointer-events:all; }
@@ -207,15 +248,13 @@
   .emoji-picker { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
   .emoji-opt { font-size:22px; cursor:pointer; padding:6px; border-radius:7px; border:2px solid transparent; transition:all .15s; }
   .emoji-opt:hover,.emoji-opt.selected { border-color:var(--terra); background:var(--terra-dim); }
-
-  /* ── DEPT REPORT BAR ── */
+  /* ── REPORT BAR ── */
   .report-bar { position:fixed; bottom:0; left:0; right:0; z-index:40; background:var(--beige); border-top:1px solid var(--stone2); padding:10px 20px; }
   .report-bar-inner { max-width:760px; margin:0 auto; }
   .send-report-btn { width:100%; background:var(--terra); border:none; color:var(--beige); padding:13px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:.08em; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
   .send-report-btn:hover { background:var(--terra-dark); }
   .weekly-send-btn { width:100%; margin-top:14px; background:var(--stone); border:none; color:var(--beige); padding:12px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:12px; font-weight:500; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
   .weekly-send-btn:hover { background:var(--terra); }
-
   /* ── TOAST ── */
   .toast { position:fixed; bottom:75px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--terra-dark); color:var(--beige); padding:11px 22px; border-radius:99px; font-size:13px; font-family:'Jost',sans-serif; z-index:200; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
   .toast.show { transform:translateX(-50%) translateY(0); }
@@ -252,6 +291,7 @@
 <!-- ROLE BADGE -->
 <div class="role-badge" id="role-badge" style="display:none">
   <span class="role-pill" id="role-pill"></span>
+  <span class="sync-dot" id="sync-dot" title="Synchronisé"></span>
   <button class="logout-btn" onclick="logout()">Déconnexion</button>
 </div>
 
@@ -262,7 +302,6 @@
     <div class="restaurant-name">Monaco</div>
     <div class="subtitle">Checklist Mise en Place</div>
   </header>
-
   <div class="global-progress">
     <div class="progress-header">
       <span class="progress-label">Progression globale</span>
@@ -270,17 +309,11 @@
     </div>
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="globalBar"></div></div>
   </div>
-
-  <!-- DEPT TABS -->
   <div class="dept-tabs" id="dept-tabs"></div>
-
-  <!-- SUB TABS -->
   <div class="sub-tabs-wrap">
     <div class="sub-tabs" id="sub-tabs"></div>
-    <button class="add-sub-btn" onclick="openNewSubModal()" title="Nouvel onglet">+</button>
+    <button class="add-sub-btn" onclick="openNewSubModal()">+</button>
   </div>
-
-  <!-- SECTIONS -->
   <div class="sections" id="sections-container"></div>
 </div>
 
@@ -291,230 +324,101 @@
   </div>
 </div>
 
-<!-- MODAL: ADD TASK -->
+<!-- MODALS -->
 <div class="modal-overlay" id="modal-add-task" onclick="if(event.target.id==='modal-add-task')closeModal('modal-add-task')">
-  <div class="modal">
-    <h3>Nouvelle tâche</h3>
-    <span class="modal-label">Description</span>
+  <div class="modal"><h3>Nouvelle tâche</h3><span class="modal-label">Description</span>
     <input type="text" id="add-task-input" placeholder="Description..." onkeydown="if(event.key==='Enter')confirmAddTask()">
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal('modal-add-task')">Annuler</button>
-      <button class="modal-confirm" onclick="confirmAddTask()">Ajouter</button>
-    </div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('modal-add-task')">Annuler</button><button class="modal-confirm" onclick="confirmAddTask()">Ajouter</button></div>
   </div>
 </div>
-
-<!-- MODAL: EDIT TASK -->
 <div class="modal-overlay" id="modal-edit-task" onclick="if(event.target.id==='modal-edit-task')closeModal('modal-edit-task')">
-  <div class="modal">
-    <h3>Modifier la tâche</h3>
+  <div class="modal"><h3>Modifier la tâche</h3>
     <input type="text" id="edit-task-input" onkeydown="if(event.key==='Enter')confirmEditTask()">
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal('modal-edit-task')">Annuler</button>
-      <button class="modal-confirm" onclick="confirmEditTask()">Enregistrer</button>
-    </div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('modal-edit-task')">Annuler</button><button class="modal-confirm" onclick="confirmEditTask()">Enregistrer</button></div>
   </div>
 </div>
-
-<!-- MODAL: RENAME SUB -->
 <div class="modal-overlay" id="modal-rename-sub" onclick="if(event.target.id==='modal-rename-sub')closeModal('modal-rename-sub')">
-  <div class="modal">
-    <h3>Renommer l'onglet</h3>
+  <div class="modal"><h3>Renommer l'onglet</h3>
     <div class="emoji-picker" id="emoji-rename">
-      <span class="emoji-opt" onclick="pickEmoji(this,'rename')">🌅</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">☀️</span>
-      <span class="emoji-opt" onclick="pickEmoji(this,'rename')">🌇</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">🌙</span>
-      <span class="emoji-opt" onclick="pickEmoji(this,'rename')">📅</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">📋</span>
-      <span class="emoji-opt" onclick="pickEmoji(this,'rename')">✅</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">⭐</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'rename')">🌅</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">☀️</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">🌇</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">🌙</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">📅</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">📋</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">✅</span><span class="emoji-opt" onclick="pickEmoji(this,'rename')">⭐</span>
     </div>
     <input type="text" id="rename-sub-input" onkeydown="if(event.key==='Enter')confirmRenameSub()">
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal('modal-rename-sub')">Annuler</button>
-      <button class="modal-confirm" onclick="confirmRenameSub()">Enregistrer</button>
-    </div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('modal-rename-sub')">Annuler</button><button class="modal-confirm" onclick="confirmRenameSub()">Enregistrer</button></div>
   </div>
 </div>
-
-<!-- MODAL: NEW SUB -->
 <div class="modal-overlay" id="modal-new-sub" onclick="if(event.target.id==='modal-new-sub')closeModal('modal-new-sub')">
-  <div class="modal">
-    <h3>Nouvel onglet</h3>
+  <div class="modal"><h3>Nouvel onglet</h3>
     <div class="emoji-picker" id="emoji-new">
-      <span class="emoji-opt" onclick="pickEmoji(this,'new')">🌅</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">☀️</span>
-      <span class="emoji-opt" onclick="pickEmoji(this,'new')">🌇</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">🌙</span>
-      <span class="emoji-opt" onclick="pickEmoji(this,'new')">📅</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">📋</span>
-      <span class="emoji-opt" onclick="pickEmoji(this,'new')">✅</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">⭐</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'new')">🌅</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">☀️</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">🌇</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">🌙</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">📅</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">📋</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">✅</span><span class="emoji-opt" onclick="pickEmoji(this,'new')">⭐</span>
     </div>
     <input type="text" id="new-sub-input" placeholder="Ex: Nuit, Fermeture..." onkeydown="if(event.key==='Enter')confirmNewSub()">
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal('modal-new-sub')">Annuler</button>
-      <button class="modal-confirm" onclick="confirmNewSub()">Créer</button>
-    </div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('modal-new-sub')">Annuler</button><button class="modal-confirm" onclick="confirmNewSub()">Créer</button></div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════
-// DATA
-// ══════════════════════════════════════════════
-const CODES = {employee:'0000',manager:'2026'};
-const EMAILJS_SERVICE='service_yw9i4oh', EMAILJS_TEMPLATE='template_3o72gvv';
-const SVG = '<svg width="9" height="7" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const CODES={employee:'0000',manager:'2026'};
+const EMAILJS_SERVICE='service_yw9i4oh',EMAILJS_TEMPLATE='template_3o72gvv';
+const SVG='<svg width="9" height="7" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const DAYS=['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
 const DAY_LABELS={lundi:'Lundi',mardi:'Mardi',mercredi:'Mercredi',jeudi:'Jeudi',vendredi:'Vendredi',samedi:'Samedi',dimanche:'Dimanche'};
 const DAY_ICONS={lundi:'🟤',mardi:'🟠',mercredi:'🟡',jeudi:'🟢',vendredi:'🔵',samedi:'🟣',dimanche:'⚪'};
-const TODAY = DAYS[new Date().getDay()===0?6:new Date().getDay()-1];
+const TODAY=DAYS[new Date().getDay()===0?6:new Date().getDay()-1];
 
-// Default departments
-const DEFAULT_DEPTS = [
-  { id:'salle', name:'🍽️ Salle' },
-  { id:'bar',   name:'🍸 Bar'   },
-  { id:'accueil', name:'🛎️ Accueil' },
-];
-
-// Default sub-tabs per dept
-const DEFAULT_SUBS = {
-  salle:   [{id:'s_matin',emoji:'🌅',name:'Matin'},{id:'s_aprem',emoji:'☀️',name:'Après-midi'},{id:'s_soir',emoji:'🌇',name:'Soir'},{id:'s_hebdo',emoji:'📅',name:'Hebdo'}],
-  bar:     [{id:'b_matin',emoji:'🌅',name:'Matin'},{id:'b_aprem',emoji:'☀️',name:'Après-midi'},{id:'b_soir',emoji:'🌇',name:'Soir'},{id:'b_hebdo',emoji:'📅',name:'Hebdo'}],
-  accueil: [{id:'a_matin',emoji:'🌅',name:'Matin'},{id:'a_aprem',emoji:'☀️',name:'Après-midi'},{id:'a_soir',emoji:'🌇',name:'Soir'},{id:'a_hebdo',emoji:'📅',name:'Hebdo'}],
+const DEFAULT_DEPTS=[{id:'salle',name:'🍽️ Salle'},{id:'bar',name:'🍸 Bar'},{id:'accueil',name:'🛎️ Accueil'}];
+const DEFAULT_SUBS={
+  salle:[{id:'s_matin',emoji:'🌅',name:'Matin'},{id:'s_aprem',emoji:'☀️',name:'Après-midi'},{id:'s_soir',emoji:'🌇',name:'Soir'},{id:'s_hebdo',emoji:'📅',name:'Hebdo'}],
+  bar:[{id:'b_matin',emoji:'🌅',name:'Matin'},{id:'b_aprem',emoji:'☀️',name:'Après-midi'},{id:'b_soir',emoji:'🌇',name:'Soir'},{id:'b_hebdo',emoji:'📅',name:'Hebdo'}],
+  accueil:[{id:'a_matin',emoji:'🌅',name:'Matin'},{id:'a_aprem',emoji:'☀️',name:'Après-midi'},{id:'a_soir',emoji:'🌇',name:'Soir'},{id:'a_hebdo',emoji:'📅',name:'Hebdo'}],
 };
-
-// Pre-loaded tasks for Salle
-const PRESET_TASKS = {
-  s_matin:[
-    {text:'Allumer machine à verre'},{text:'Dresser terrasse'},{text:'Ranger poubelle verre'},
-    {text:'Retourner verre salle'},{text:'Vérifier salle'},{text:'Dresser comptoir'},
-    {text:'Vérifier sucrier'},{text:'Vérifier menthe'},{text:'Vérifier lait'},
-    {text:'Vérifier frigo eau'},{text:'Vérifier cocktail signature'},{text:'Vérifier console'},
-    {text:'Remplir étagère serviette'},{text:'Remplir étagère nappe'},{text:'Plier nappe'},
-    {text:'Plier serviette'},{text:'Ouvrir porte et rideau'},{text:'Faire les bougeoires'},
-    {text:'Faire les couverts'},{text:'Vérifier toilette'},{text:'Nettoyer pass'},
-    {text:'Faire carcasse de la salle'},{text:'Nettoyer plateaux'},
-  ],
-  s_aprem:[
-    {text:'Remplir console'},{text:'Vider vide papier'},{text:'Remplir étagère serviette'},
-    {text:'Remplir étagère nappe'},{text:'Nettoyer hublot'},{text:'Nettoyer machine à café'},
-    {text:'Remplir machine à café'},{text:'Remplir eau'},{text:'Remplir cocktail signature'},
-    {text:'Vérifier frigo citron, menthe, lait'},{text:'Vérifier sucrier'},{text:'Sortir les vides'},
-    {text:'Préparer la carcasse'},{text:'Vérifier les tables'},{text:'Ranger le linge'},
-    {text:'Passez le balai'},{text:'Faire les bougies'},{text:'Nettoyer plateaux'},
-    {text:'Refaire vasque à vin'},{text:'Tcheck VAE'},
-  ],
-  s_soir:[
-    {text:'Remplir les consoles'},{text:'Remplir les frigos eau'},{text:'Changer cocktail signature'},
-    {text:'Nettoyer machine à café'},{text:'Faire les dates'},{text:'Remplir les laits'},
-    {text:'Vider poubelle machine à café'},{text:'Redresser salle'},{text:'Retourner les verres'},
-    {text:'De dresser la terrasse'},{text:'Faire le linge'},{text:'Nettoyer frigo bar'},
-    {text:'Nettoyer frigo cave'},{text:'Nettoyer iPad et iPhone'},{text:'Brancher iPad et iPhone'},
-    {text:'Vider poubelle à papier'},{text:'Nettoyer pass'},{text:'Nettoyer plateaux'},
-    {text:'Nettoyer console'},{text:'Faire les vides'},{text:'Ranger bougie'},
-    {text:'Sortir les poubelles de la plonge'},{text:'Rentrer console terrasse'},
-    {text:'Fermer les portes'},{text:'Fermer les rideaux'},{text:'Tcheck VAE'},
-    {text:'Préparer redresse terrasse (x32)'},
-  ],
-  a_matin:[
-    {text:'Lumière : lunch avec toilette 13%'},
-    {text:'Musique : Spotify salle + toilette'},
-    {text:'Desk : tout nettoyer (iPad et téléphone inclus), ranger les menus et les contrôler'},
-    {text:'Nettoyer les armoires / vitres si besoin'},
-    {text:'Extérieur : nettoyer le menu et insérer la batterie'},
-    {text:'Rideaux : ranger les rideaux de l\'entrée et les rideaux automatiques blancs'},
-    {text:'Contrôler les menus dessert dans les consoles'},
-    {text:'Nettoyer les ports addition (console) et les remplir avec les cartes de visite'},
-    {text:'Toilettes : contrôler et remplir les oshibori et le savon pour les mains'},
-    {text:'Contrôler Open Table (jamais de réservation sur unavailable table quand possible)'},
-    {text:'Faire la carcasse avec les serveurs et les informer en avance pour les informations sur les clients'},
-    {text:'Menu : imprimer si besoin (pour la personne à 10h)'},
-    {text:'Mail : contrôler et répondre'},
-    {text:'Confirmation midi si à 10h — confirmation soir si à 12h'},
-  ],
-  a_aprem:[
-    {text:'Vidéo à envoyer sur le groupe dans le moment où il y\'a plus de monde'},
-    {text:'Passer à récupérer les menus à chaque fois qu\'on installe quelqu\'un et les contrôler — ranger / jeter'},
-    {text:'Contrôler vitres et miroirs'},
-    {text:'Contrôler chaque 15 minutes les toilettes (oshibori / papier toilette)'},
-    {text:'Imprimer menus dès que possible et calme'},
-    {text:'Appeler les réservations du soir si pas fait le matin'},
-    {text:'Allumer lumières bar à 16h'},
-    {text:'Nettoyer les portes cartes à fin du service avant le service du soir'},
-    {text:'Nettoyer le menu d\'extérieur'},
-    {text:'Organiser la carcasse et passer les infos aux serveurs'},
-  ],
-  a_soir:[
-    {text:'Récupérer tous les menus, les contrôler et les ranger'},
-    {text:'Ranger et nettoyer le desk'},
-    {text:'Mettre les iPad et téléphone en charge'},
-    {text:'Mettre toutes les tables en "Finish"'},
-    {text:'Vérifier les toilettes'},
-    {text:'Vider poubelle armoire'},
-    {text:'Ranger, nettoyer le menu d\'extérieur et mettre en charge la batterie au desk'},
-  ],
-  b_matin:[
-    {text:'Allumer le lave vaisselle et checker la propreté'},
-    {text:'Ouverture frigos bar'},
-    {text:'Vérification remplissage soft + vins'},
-    {text:'Ramener de la salle 6 liteaux propres'},
-    {text:'Vérification tablette chargée'},
-    {text:'Vérification TPE chargé'},
-    {text:'Vérification réception de commande sur le quai de livraison'},
-    {text:'Dépôt des BL/factures dans la panière attitrée'},
-    {text:'Découpe de fruits (orange, lime, citrons jaunes)'},
-    {text:'Vérification remplissage pipettes'},
-    {text:'Contrôle nettoyage des tables'},
-    {text:'Préparer les bougies'},
-    {text:'Effectuer mise en place des eaux (Panna + San P)'},
-    {text:'Ajouter articles potentiels de la veille à la 195'},
-  ],
-  b_soir:[
-    {text:'Lavage matériel à la main'},
-    {text:'Nettoyage des speedrails - bouteilles cocktails, dessous de celles-ci'},
-    {text:'Jeter les garnitures'},
-    {text:'MEP des grilles de stations au lave-vaisselle et séchage'},
-    {text:'S\'assurer que tous les verres soient nettoyés'},
-    {text:'Vérifier les étiquettes DLC et JUS'},
-    {text:'Laver les vitres et les joints des frigos'},
-    {text:'Recharger les frigos pour le service suivant'},
-    {text:'Nettoyer les tables bar + comptoir avec le produit adapté'},
-    {text:'Nettoyage des plateaux de services'},
-    {text:'Nettoyager les chaises + banquettes si besoin'},
-    {text:'Nettoyage filtres machines à verres + éteindre cette dernière'},
-    {text:'Vider/nettoyer les poubelles bars'},
-    {text:'Laver lavettes/microfibres'},
-    {text:'Fermer les frigos bar'},
-    {text:'Fermer les frigos arrières cuisine'},
-  ],
+const PRESET_TASKS={
+  s_matin:[{text:'Allumer machine à verre'},{text:'Dresser terrasse'},{text:'Ranger poubelle verre'},{text:'Retourner verre salle'},{text:'Vérifier salle'},{text:'Dresser comptoir'},{text:'Vérifier sucrier'},{text:'Vérifier menthe'},{text:'Vérifier lait'},{text:'Vérifier frigo eau'},{text:'Vérifier cocktail signature'},{text:'Vérifier console'},{text:'Remplir étagère serviette'},{text:'Remplir étagère nappe'},{text:'Plier nappe'},{text:'Plier serviette'},{text:'Ouvrir porte et rideau'},{text:'Faire les bougeoires'},{text:'Faire les couverts'},{text:'Vérifier toilette'},{text:'Nettoyer pass'},{text:'Faire carcasse de la salle'},{text:'Nettoyer plateaux'}],
+  s_aprem:[{text:'Remplir console'},{text:'Vider vide papier'},{text:'Remplir étagère serviette'},{text:'Remplir étagère nappe'},{text:'Nettoyer hublot'},{text:'Nettoyer machine à café'},{text:'Remplir machine à café'},{text:'Remplir eau'},{text:'Remplir cocktail signature'},{text:'Vérifier frigo citron, menthe, lait'},{text:'Vérifier sucrier'},{text:'Sortir les vides'},{text:'Préparer la carcasse'},{text:'Vérifier les tables'},{text:'Ranger le linge'},{text:'Passez le balai'},{text:'Faire les bougies'},{text:'Nettoyer plateaux'},{text:'Refaire vasque à vin'},{text:'Tcheck VAE'}],
+  s_soir:[{text:'Remplir les consoles'},{text:'Remplir les frigos eau'},{text:'Changer cocktail signature'},{text:'Nettoyer machine à café'},{text:'Faire les dates'},{text:'Remplir les laits'},{text:'Vider poubelle machine à café'},{text:'Redresser salle'},{text:'Retourner les verres'},{text:'De dresser la terrasse'},{text:'Faire le linge'},{text:'Nettoyer frigo bar'},{text:'Nettoyer frigo cave'},{text:'Nettoyer iPad et iPhone'},{text:'Brancher iPad et iPhone'},{text:'Vider poubelle à papier'},{text:'Nettoyer pass'},{text:'Nettoyer plateaux'},{text:'Nettoyer console'},{text:'Faire les vides'},{text:'Ranger bougie'},{text:'Sortir les poubelles de la plonge'},{text:'Rentrer console terrasse'},{text:'Fermer les portes'},{text:'Fermer les rideaux'},{text:'Tcheck VAE'},{text:'Préparer redresse terrasse (x32)'}],
+  a_matin:[{text:'Lumière : lunch avec toilette 13%'},{text:'Musique : Spotify salle + toilette'},{text:"Desk : tout nettoyer (iPad et téléphone inclus), ranger les menus et les contrôler"},{text:'Nettoyer les armoires / vitres si besoin'},{text:"Extérieur : nettoyer le menu et insérer la batterie"},{text:"Rideaux : ranger les rideaux de l'entrée et les rideaux automatiques blancs"},{text:'Contrôler les menus dessert dans les consoles'},{text:'Nettoyer les ports addition (console) et les remplir avec les cartes de visite'},{text:'Toilettes : contrôler et remplir les oshibori et le savon pour les mains'},{text:'Contrôler Open Table (jamais de réservation sur unavailable table quand possible)'},{text:'Faire la carcasse avec les serveurs et les informer en avance pour les informations sur les clients'},{text:'Menu : imprimer si besoin (pour la personne à 10h)'},{text:'Mail : contrôler et répondre'},{text:'Confirmation midi si à 10h — confirmation soir si à 12h'}],
+  a_aprem:[{text:"Vidéo à envoyer sur le groupe dans le moment où il y'a plus de monde"},{text:"Passer à récupérer les menus à chaque fois qu'on installe quelqu'un et les contrôler — ranger / jeter"},{text:'Contrôler vitres et miroirs'},{text:'Contrôler chaque 15 minutes les toilettes (oshibori / papier toilette)'},{text:'Imprimer menus dès que possible et calme'},{text:'Appeler les réservations du soir si pas fait le matin'},{text:'Allumer lumières bar à 16h'},{text:'Nettoyer les portes cartes à fin du service avant le service du soir'},{text:"Nettoyer le menu d'extérieur"},{text:'Organiser la carcasse et passer les infos aux serveurs'}],
+  a_soir:[{text:'Récupérer tous les menus, les contrôler et les ranger'},{text:'Ranger et nettoyer le desk'},{text:'Mettre les iPad et téléphone en charge'},{text:'Mettre toutes les tables en "Finish"'},{text:'Vérifier les toilettes'},{text:'Vider poubelle armoire'},{text:"Ranger, nettoyer le menu d'extérieur et mettre en charge la batterie au desk"}],
+  b_matin:[{text:'Allumer le lave vaisselle et checker la propreté'},{text:'Ouverture frigos bar'},{text:'Vérification remplissage soft + vins'},{text:'Ramener de la salle 6 liteaux propres'},{text:'Vérification tablette chargée'},{text:'Vérification TPE chargé'},{text:'Vérification réception de commande sur le quai de livraison'},{text:'Dépôt des BL/factures dans la panière attitrée'},{text:'Découpe de fruits (orange, lime, citrons jaunes)'},{text:'Vérification remplissage pipettes'},{text:'Contrôle nettoyage des tables'},{text:'Préparer les bougies'},{text:'Effectuer mise en place des eaux (Panna + San P)'},{text:'Ajouter articles potentiels de la veille à la 195'}],
+  b_soir:[{text:'Lavage matériel à la main'},{text:'Nettoyage des speedrails - bouteilles cocktails, dessous de celles-ci'},{text:'Jeter les garnitures'},{text:'MEP des grilles de stations au lave-vaisselle et séchage'},{text:"S'assurer que tous les verres soient nettoyés"},{text:'Vérifier les étiquettes DLC et JUS'},{text:'Laver les vitres et les joints des frigos'},{text:'Recharger les frigos pour le service suivant'},{text:'Nettoyer les tables bar + comptoir avec le produit adapté'},{text:'Nettoyage des plateaux de services'},{text:'Nettoyager les chaises + banquettes si besoin'},{text:'Nettoyage filtres machines à verres + éteindre cette dernière'},{text:'Vider/nettoyer les poubelles bars'},{text:'Laver lavettes/microfibres'},{text:'Fermer les frigos bar'},{text:'Fermer les frigos arrières cuisine'}],
 };
+const DEFAULT_WEEKLY_TASKS={lundi:['Nettoyer pieds de tables et pieds de chaises','Faire les couverts avec produit argenterie'],mardi:['Remplir et nettoyer sels et poivres','Vider les plateformes avec les décorations et les nettoyer'],mercredi:['Nettoyage du vestiaire et toilettes staff','Nettoyage de la machine à café et moulin'],jeudi:['Nettoyage vitre du comptoir','Nettoyage du miroir et LED au dessus du comptoir'],vendredi:['Nettoyer le dessus des portes ainsi que les contours','Nettoyer les murs de la plonge'],samedi:['Vider les plateformes avec décoration et les nettoyer','Nettoyer les sacs à fond au sel'],dimanche:['Nettoyer les théières avec le produit à argenterie']};
 
-const DEFAULT_WEEKLY_TASKS = {
-  lundi:['Nettoyer pieds de tables et pieds de chaises','Faire les couverts avec produit argenterie'],
-  mardi:['Remplir et nettoyer sels et poivres','Vider les plateformes avec les décorations et les nettoyer'],
-  mercredi:['Nettoyage du vestiaire et toilettes staff','Nettoyage de la machine à café et moulin'],
-  jeudi:['Nettoyage vitre du comptoir','Nettoyage du miroir et LED au dessus du comptoir'],
-  vendredi:['Nettoyer le dessus des portes ainsi que les contours','Nettoyer les murs de la plonge'],
-  samedi:['Vider les plateformes avec décoration et les nettoyer','Nettoyer les sacs à fond au sel'],
-  dimanche:['Nettoyer les théières avec le produit à argenterie'],
-};
-
-// ══════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════
+// ── STATE ──
 let state={};
-try{const s=localStorage.getItem('zephyr_v7');if(s)state=JSON.parse(s);}catch(e){}
-function save(){try{localStorage.setItem('zephyr_v7',JSON.stringify(state));}catch(e){}}
+let ignoreNextSnapshot=false;
+let saveTimeout=null;
 
 function getDepts(){if(!state.depts)state.depts=JSON.parse(JSON.stringify(DEFAULT_DEPTS));return state.depts;}
 function getSubs(deptId){if(!state.subs)state.subs={};if(!state.subs[deptId])state.subs[deptId]=JSON.parse(JSON.stringify(DEFAULT_SUBS[deptId]||[]));return state.subs[deptId];}
 function getTasks(subId){if(!state.tasks)state.tasks={};if(!state.tasks[subId])state.tasks[subId]=PRESET_TASKS[subId]?JSON.parse(JSON.stringify(PRESET_TASKS[subId])):[];return state.tasks[subId];}
-function isHebdo(subId){return subId.endsWith('_hebdo')||subId==='s_hebdo'||subId==='b_hebdo'||subId==='a_hebdo';}
+function isHebdo(subId){return subId.endsWith('_hebdo');}
 function getWeeklyData(deptId){if(!state.weekly)state.weekly={};if(!state.weekly[deptId])state.weekly[deptId]=deptId==='salle'?JSON.parse(JSON.stringify(DEFAULT_WEEKLY_TASKS)):{lundi:[],mardi:[],mercredi:[],jeudi:[],vendredi:[],samedi:[],dimanche:[]};return state.weekly[deptId];}
 function getWeeklyDone(deptId){if(!state.weeklyDone)state.weeklyDone={};if(!state.weeklyDone[deptId])state.weeklyDone[deptId]={};return state.weeklyDone[deptId];}
 
-// ══════════════════════════════════════════════
-// LOGIN
-// ══════════════════════════════════════════════
+// ── SAVE: Firebase + localStorage ──
+function save(){
+  localStorage.setItem('zephyr_local',JSON.stringify(state));
+  setSyncing(true);
+  ignoreNextSnapshot=true;
+  if(saveTimeout) clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(async()=>{
+    if(window.fbSave){
+      await window.fbSave(state);
+      setSyncing(false);
+    }
+  },800);
+}
+
+function setSyncing(s){
+  const dot=document.getElementById('sync-dot');
+  if(dot) dot.className='sync-dot'+(s?' syncing':'');
+}
+
+// ── LOGIN ──
 let selectedRole='employee',currentPin='',currentUser='',currentRole='';
 let activeDept='salle',activeSub='s_matin';
+let unsubFirebase=null;
 
 function selectRole(r){selectedRole=r;document.getElementById('role-btn-employee').classList.toggle('active',r==='employee');document.getElementById('role-btn-manager').classList.toggle('active',r==='manager');currentPin='';updateDots();document.getElementById('login-error').textContent='';}
 function pinPress(d){if(currentPin.length>=4)return;currentPin+=d;updateDots();if(currentPin.length===4)setTimeout(tryLogin,150);}
@@ -522,7 +426,7 @@ function pinDelete(){currentPin=currentPin.slice(0,-1);updateDots();}
 function pinClear(){currentPin='';updateDots();}
 function updateDots(){for(let i=0;i<4;i++)document.getElementById('dot-'+i).classList.toggle('filled',i<currentPin.length);}
 
-function tryLogin(){
+async function tryLogin(){
   const name=document.getElementById('login-name').value.trim();
   if(!name){document.getElementById('login-error').textContent='Veuillez entrer votre prénom.';currentPin='';updateDots();return;}
   if(currentPin===CODES[selectedRole]){
@@ -535,14 +439,39 @@ function tryLogin(){
     pill.textContent=currentRole==='manager'?'🔑 Manager — '+currentUser:'👤 '+currentUser;
     pill.className='role-pill'+(currentRole==='employee'?' employee':'');
     document.body.className=currentRole;
+
+    // Load from Firebase first
+    showToast('Chargement...');
+    const fbData = await window.fbLoad?.();
+    if(fbData) { state=fbData; }
+    else {
+      const local=localStorage.getItem('zephyr_local');
+      if(local) state=JSON.parse(local);
+    }
+
     initApp();
+    startFirebaseListener();
   } else {
     document.getElementById('login-error').textContent='Code incorrect.';
     currentPin='';updateDots();
     const c=document.querySelector('.login-card');c.style.animation='none';setTimeout(()=>{c.style.animation='shake .3s ease';},10);
   }
 }
+
+function startFirebaseListener(){
+  if(!window.fbListen)return;
+  unsubFirebase=window.fbListen((remoteState)=>{
+    if(ignoreNextSnapshot){ignoreNextSnapshot=false;return;}
+    state=remoteState;
+    localStorage.setItem('zephyr_local',JSON.stringify(state));
+    // Re-render current view
+    renderDeptTabs();renderSubTabs();renderCurrentSection();updateGlobal();
+    showToast('✨ Mis à jour en temps réel');
+  });
+}
+
 function logout(){
+  if(unsubFirebase){unsubFirebase();unsubFirebase=null;}
   currentRole='';currentUser='';currentPin='';document.body.className='';
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
@@ -553,50 +482,33 @@ function logout(){
   updateDots();
 }
 
-// ══════════════════════════════════════════════
-// RENDER DEPT TABS
-// ══════════════════════════════════════════════
+// ── RENDER DEPT TABS ──
 function renderDeptTabs(){
   const depts=getDepts();
   const c=document.getElementById('dept-tabs');c.innerHTML='';
   depts.forEach(dept=>{
     const btn=document.createElement('button');
     btn.className='dept-btn'+(dept.id===activeDept?' active':'');
-    const {total,done}=getDeptProgress(dept.id);
+    const{total,done}=getDeptProgress(dept.id);
     btn.innerHTML=`${dept.name} <span class="dept-badge">${done}/${total}</span>`;
     btn.onclick=()=>showDept(dept.id);
     c.appendChild(btn);
   });
   updateReportBtn();
 }
-
 function getDeptProgress(deptId){
-  const subs=getSubs(deptId);
-  let total=0,done=0;
+  const subs=getSubs(deptId);let total=0,done=0;
   subs.forEach(sub=>{
-    if(isHebdo(sub.id)){
-      const data=getWeeklyData(deptId),dd=getWeeklyDone(deptId);
-      DAYS.forEach(day=>{const tasks=data[day]||[],sa=dd['staff_'+day]||[],ma=dd['manager_'+day]||[];total+=tasks.length;done+=tasks.filter((_,i)=>sa[i]&&ma[i]).length;});
-    } else {
-      const r=countSection(sub.id);total+=r.total;done+=r.checked;
-    }
+    if(isHebdo(sub.id)){const data=getWeeklyData(deptId),dd=getWeeklyDone(deptId);DAYS.forEach(day=>{const tasks=data[day]||[],sa=dd['staff_'+day]||[],ma=dd['manager_'+day]||[];total+=tasks.length;done+=tasks.filter((_,i)=>sa[i]&&ma[i]).length;});}
+    else{const r=countSection(sub.id);total+=r.total;done+=r.checked;}
   });
   return{total,done};
 }
+function showDept(deptId){activeDept=deptId;const subs=getSubs(deptId);activeSub=subs[0]?.id||'';renderDeptTabs();renderSubTabs();renderCurrentSection();}
 
-function showDept(deptId){
-  activeDept=deptId;
-  const subs=getSubs(deptId);
-  activeSub=subs[0]?.id||'';
-  renderDeptTabs();renderSubTabs();renderCurrentSection();
-}
-
-// ══════════════════════════════════════════════
-// RENDER SUB TABS
-// ══════════════════════════════════════════════
+// ── RENDER SUB TABS ──
 function renderSubTabs(){
-  const subs=getSubs(activeDept);
-  const c=document.getElementById('sub-tabs');c.innerHTML='';
+  const subs=getSubs(activeDept);const c=document.getElementById('sub-tabs');c.innerHTML='';
   subs.forEach(sub=>{
     const btn=document.createElement('button');
     let badge='';
@@ -609,54 +521,28 @@ function renderSubTabs(){
     c.appendChild(btn);
   });
 }
+function getHebdoProgress(deptId){const data=getWeeklyData(deptId),dd=getWeeklyDone(deptId);let total=0,done=0;DAYS.forEach(day=>{const tasks=data[day]||[],sa=dd['staff_'+day]||[],ma=dd['manager_'+day]||[];total+=tasks.length;done+=tasks.filter((_,i)=>sa[i]&&ma[i]).length;});return{total,done};}
+function showSub(subId){activeSub=subId;renderSubTabs();renderCurrentSection();}
 
-function getHebdoProgress(deptId){
-  const data=getWeeklyData(deptId),dd=getWeeklyDone(deptId);
-  let total=0,done=0;
-  DAYS.forEach(day=>{const tasks=data[day]||[],sa=dd['staff_'+day]||[],ma=dd['manager_'+day]||[];total+=tasks.length;done+=tasks.filter((_,i)=>sa[i]&&ma[i]).length;});
-  return{total,done};
-}
-
-function showSub(subId){
-  activeSub=subId;
-  renderSubTabs();renderCurrentSection();
-}
-
-// ══════════════════════════════════════════════
-// RENDER SECTION
-// ══════════════════════════════════════════════
+// ── RENDER SECTION ──
 function renderCurrentSection(){
-  const subs=getSubs(activeDept);
-  const sub=subs.find(s=>s.id===activeSub);
-  if(!sub)return;
-  const c=document.getElementById('sections-container');
-  c.innerHTML='';
-
-  if(isHebdo(sub.id)){
-    renderWeeklySection(activeDept);
-  } else {
-    renderChecklistSection(sub);
-  }
+  const subs=getSubs(activeDept);const sub=subs.find(s=>s.id===activeSub);if(!sub)return;
+  const c=document.getElementById('sections-container');c.innerHTML='';
+  if(isHebdo(sub.id))renderWeeklySection(activeDept);
+  else renderChecklistSection(sub);
 }
 
 function renderChecklistSection(sub){
   const c=document.getElementById('sections-container');
   const tasks=getTasks(sub.id);
-  const sa=state['staff_'+sub.id]||[], ma=state['manager_'+sub.id]||[];
+  const sa=state['staff_'+sub.id]||[],ma=state['manager_'+sub.id]||[];
   const names=state.names||{};
-  const {checked,total}=countSection(sub.id);
-
+  const{checked,total}=countSection(sub.id);
   const sec=document.createElement('div');
-  sec.className='section active';
-  sec.id='section-'+sub.id;
-
+  sec.className='section active';sec.id='section-'+sub.id;
   sec.innerHTML=`
     <div class="section-header">
-      <div class="section-title">
-        <span>${sub.emoji}</span>
-        <span id="sec-title-${sub.id}">${sub.name}</span>
-        <button class="rename-btn" onclick="openRenameSub('${sub.id}')">✏️</button>
-      </div>
+      <div class="section-title"><span>${sub.emoji}</span><span>${sub.name}</span><button class="rename-btn" onclick="openRenameSub('${sub.id}')">✏️</button></div>
       <div class="header-actions">
         <span class="section-progress" id="prog-${sub.id}">${checked} / ${total}</span>
         <button class="reset-btn" onclick="resetSection('${sub.id}')">Réinit.</button>
@@ -664,78 +550,42 @@ function renderChecklistSection(sub){
       </div>
     </div>
     <div class="name-fields-row">
-      <div class="name-field">
-        <label>👤 Employé</label>
-        <input type="text" id="ns-${sub.id}" placeholder="Prénom..." oninput="saveName('${sub.id}','staff',this.value)" value="${names['staff_'+sub.id]||''}" autocomplete="off">
-      </div>
-      <div class="name-field" style="border-left:2px solid var(--bleu)">
-        <label style="color:var(--bleu)">✓ Manager</label>
-        <input type="text" id="nm-${sub.id}" placeholder="Prénom..." oninput="saveName('${sub.id}','manager',this.value)" value="${names['manager_'+sub.id]||''}" autocomplete="off">
-      </div>
+      <div class="name-field"><label>👤 Employé</label><input type="text" id="ns-${sub.id}" placeholder="Prénom..." oninput="saveName('${sub.id}','staff',this.value)" value="${names['staff_'+sub.id]||''}" autocomplete="off"></div>
+      <div class="name-field" style="border-left:2px solid var(--bleu)"><label style="color:var(--bleu)">✓ Manager</label><input type="text" id="nm-${sub.id}" placeholder="Prénom..." oninput="saveName('${sub.id}','manager',this.value)" value="${names['manager_'+sub.id]||''}" autocomplete="off"></div>
     </div>
     <ul class="checklist" id="list-${sub.id}"></ul>
-    <div class="all-done" id="done-${sub.id}">
-      <div class="all-done-icon">✅</div><h3>${sub.name} complet !</h3><p>Toutes les tâches effectuées et validées.</p>
-    </div>`;
+    <div class="all-done" id="done-${sub.id}"><div class="all-done-icon">✅</div><h3>${sub.name} complet !</h3><p>Toutes les tâches effectuées et validées.</p></div>`;
   c.appendChild(sec);
-
-  // Pre-fill name
-  const si=document.getElementById('ns-'+sub.id);
-  const mi=document.getElementById('nm-'+sub.id);
-  if(currentRole==='employee'&&si&&!si.value) si.value=currentUser;
-  if(currentRole==='manager'&&mi&&!mi.value) mi.value=currentUser;
-
+  const si=document.getElementById('ns-'+sub.id);const mi=document.getElementById('nm-'+sub.id);
+  if(currentRole==='employee'&&si&&!si.value)si.value=currentUser;
+  if(currentRole==='manager'&&mi&&!mi.value)mi.value=currentUser;
   renderChecklist(sub.id);
 }
 
 function renderChecklist(subId){
   const tasks=getTasks(subId);
-  const sa=state['staff_'+subId]||[], ma=state['manager_'+subId]||[];
-  const ul=document.getElementById('list-'+subId);
-  if(!ul)return;
+  const sa=state['staff_'+subId]||[],ma=state['manager_'+subId]||[];
+  const ul=document.getElementById('list-'+subId);if(!ul)return;
   ul.innerHTML='';
-
-  if(tasks.length===0){
-    ul.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div>Aucune tâche — appuie sur + pour en ajouter</div>`;
-    updateBadge(subId);return;
-  }
-
+  if(tasks.length===0){ul.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div>Aucune tâche — appuie sur + pour en ajouter</div>`;updateBadge(subId);return;}
   tasks.forEach((task,i)=>{
     const li=document.createElement('li');
     if(sa[i]&&ma[i])li.classList.add('task-fully-done');
     li.innerHTML=`<div class="task-row">
-      <div class="task-arrows">
-        <button class="arrow-btn" onclick="moveTask('${subId}',${i},-1)" ${i===0?'disabled':''}>▲</button>
-        <button class="arrow-btn" onclick="moveTask('${subId}',${i},1)" ${i===tasks.length-1?'disabled':''}>▼</button>
-      </div>
+      <div class="task-arrows"><button class="arrow-btn" onclick="moveTask('${subId}',${i},-1)" ${i===0?'disabled':''}>▲</button><button class="arrow-btn" onclick="moveTask('${subId}',${i},1)" ${i===tasks.length-1?'disabled':''}>▼</button></div>
       <div class="task-checks">
-        <div class="check-wrap${sa[i]?' staff-done':''}" onclick="toggleStaff('${subId}',${i},this)">
-          <div class="check-circle">${SVG}</div><span class="check-label">Équipe</span>
-        </div>
-        <div class="check-wrap${ma[i]?' manager-done':''}" onclick="toggleManager('${subId}',${i},this)">
-          <div class="check-circle">${SVG}</div><span class="check-label" style="color:var(--bleu)">Manager</span>
-        </div>
+        <div class="check-wrap${sa[i]?' staff-done':''}" onclick="toggleStaff('${subId}',${i},this)"><div class="check-circle">${SVG}</div><span class="check-label">Équipe</span></div>
+        <div class="check-wrap${ma[i]?' manager-done':''}" onclick="toggleManager('${subId}',${i},this)"><div class="check-circle">${SVG}</div><span class="check-label" style="color:var(--bleu)">Manager</span></div>
       </div>
-      <div class="task-content">
-        <div class="item-text">${task.text}</div>
-        <div class="task-badges">
-          <span class="badge-staff${sa[i]?' show':''}">✓ Équipe</span>
-          <span class="badge-manager${ma[i]?' show':''}">✓ Manager</span>
-        </div>
-      </div>
-      <div class="task-actions">
-        <button class="task-edit" onclick="openEditTask('${subId}',${i})">✏️</button>
-        <button class="task-delete" onclick="deleteTask('${subId}',${i})">×</button>
-      </div>
+      <div class="task-content"><div class="item-text">${task.text}</div><div class="task-badges"><span class="badge-staff${sa[i]?' show':''}">✓ Équipe</span><span class="badge-manager${ma[i]?' show':''}">✓ Manager</span></div></div>
+      <div class="task-actions"><button class="task-edit" onclick="openEditTask('${subId}',${i})">✏️</button><button class="task-delete" onclick="deleteTask('${subId}',${i})">×</button></div>
     </div>`;
     ul.appendChild(li);
   });
   updateBadge(subId);
 }
 
-// ══════════════════════════════════════════════
-// CHECK LOGIC
-// ══════════════════════════════════════════════
+// ── CHECK LOGIC ──
 function toggleStaff(subId,idx,el){
   el.classList.toggle('staff-done');
   const li=el.closest('li');
@@ -757,10 +607,7 @@ function saveSectionState(subId){
   items.forEach(li=>{const ws=li.querySelectorAll('.check-wrap');s.push(ws[0]?.classList.contains('staff-done')||false);m.push(ws[1]?.classList.contains('manager-done')||false);});
   state['staff_'+subId]=s;state['manager_'+subId]=m;save();
 }
-function countSection(subId){
-  const tasks=getTasks(subId),sa=state['staff_'+subId]||[],ma=state['manager_'+subId]||[];
-  return{checked:tasks.filter((_,i)=>sa[i]&&ma[i]).length,total:tasks.length};
-}
+function countSection(subId){const tasks=getTasks(subId),sa=state['staff_'+subId]||[],ma=state['manager_'+subId]||[];return{checked:tasks.filter((_,i)=>sa[i]&&ma[i]).length,total:tasks.length};}
 function updateBadge(subId){
   const{checked,total}=countSection(subId);
   const b=document.getElementById('sbadge-'+subId);if(b)b.textContent=checked+'/'+total;
@@ -769,8 +616,7 @@ function updateBadge(subId){
   renderSubTabs();renderDeptTabs();
 }
 function updateGlobal(){
-  let tc=0,ta=0;
-  getDepts().forEach(dept=>{const p=getDeptProgress(dept.id);tc+=p.done;ta+=p.total;});
+  let tc=0,ta=0;getDepts().forEach(dept=>{const p=getDeptProgress(dept.id);tc+=p.done;ta+=p.total;});
   document.getElementById('globalCount').textContent=tc+' / '+ta;
   document.getElementById('globalBar').style.width=(ta>0?(tc/ta*100):0)+'%';
 }
@@ -782,25 +628,28 @@ function resetSection(subId){
 function moveTask(subId,idx,dir){
   const tasks=getTasks(subId),sa=state['staff_'+subId]||[],ma=state['manager_'+subId]||[];
   const ni=idx+dir;if(ni<0||ni>=tasks.length)return;
-  [tasks[idx],tasks[ni]]=[tasks[ni],tasks[idx]];
-  [sa[idx],sa[ni]]=[sa[ni]||false,sa[idx]||false];[ma[idx],ma[ni]]=[ma[ni]||false,ma[idx]||false];
+  [tasks[idx],tasks[ni]]=[tasks[ni],tasks[idx]];[sa[idx],sa[ni]]=[sa[ni]||false,sa[idx]||false];[ma[idx],ma[ni]]=[ma[ni]||false,ma[idx]||false];
   if(!state.tasks)state.tasks={};state.tasks[subId]=tasks;state['staff_'+subId]=sa;state['manager_'+subId]=ma;
   save();renderChecklist(subId);
 }
 
-// ══════════════════════════════════════════════
-// ADD/EDIT/DELETE
-// ══════════════════════════════════════════════
+// ── ADD/EDIT/DELETE ──
 let addTarget='',editTarget='',editIdx=-1;
 function openAddTask(subId){addTarget=subId;document.getElementById('add-task-input').value='';openModal('modal-add-task');setTimeout(()=>document.getElementById('add-task-input').focus(),300);}
 function confirmAddTask(){
   const text=document.getElementById('add-task-input').value.trim();if(!text)return;
   getTasks(addTarget).push({text});save();renderChecklist(addTarget);closeModal('modal-add-task');showToast('Tâche ajoutée ✓');
 }
-function openEditTask(subId,idx){editTarget=subId;editIdx=idx;document.getElementById('edit-task-input').value=getTasks(subId)[idx].text;openModal('modal-edit-task');setTimeout(()=>document.getElementById('edit-task-input').focus(),300);}
+function openEditTask(subId,idx){
+  editTarget=subId;editIdx=idx;
+  document.getElementById('edit-task-input').value=getTasks(subId)[idx].text;
+  openModal('modal-edit-task');setTimeout(()=>document.getElementById('edit-task-input').focus(),300);
+}
 function confirmEditTask(){
   const text=document.getElementById('edit-task-input').value.trim();if(!text)return;
-  getTasks(editTarget)[editIdx].text=text;save();renderChecklist(editTarget);closeModal('modal-edit-task');showToast('Tâche modifiée ✓');
+  getTasks(editTarget)[editIdx].text=text;
+  if(!state.tasks)state.tasks={};state.tasks[editTarget]=getTasks(editTarget);
+  save();renderChecklist(editTarget);closeModal('modal-edit-task');showToast('Tâche modifiée ✓');
 }
 function deleteTask(subId,idx){
   const tasks=getTasks(subId),sa=state['staff_'+subId]||[],ma=state['manager_'+subId]||[];
@@ -808,27 +657,19 @@ function deleteTask(subId,idx){
   if(!state.tasks)state.tasks={};state.tasks[subId]=tasks;state['staff_'+subId]=sa;state['manager_'+subId]=ma;
   save();renderChecklist(subId);updateGlobal();
 }
-
-// ══════════════════════════════════════════════
-// NAMES
-// ══════════════════════════════════════════════
 function saveName(subId,role,value){if(!state.names)state.names={};state.names[role+'_'+subId]=value;save();}
 
-// ══════════════════════════════════════════════
-// SUB TAB MANAGEMENT
-// ══════════════════════════════════════════════
+// ── SUB TAB MANAGEMENT ──
 let emojiRename='🌅',emojiNew='🌅',renameSubTarget='';
 function pickEmoji(el,type){
   const picker=type==='rename'?'emoji-rename':'emoji-new';
   document.querySelectorAll('#'+picker+' .emoji-opt').forEach(e=>e.classList.remove('selected'));
   el.classList.add('selected');
-  if(type==='rename')emojiRename=el.textContent; else emojiNew=el.textContent;
+  if(type==='rename')emojiRename=el.textContent;else emojiNew=el.textContent;
 }
 function openRenameSub(subId){
-  renameSubTarget=subId;
-  const subs=getSubs(activeDept),sub=subs.find(s=>s.id===subId);
-  document.getElementById('rename-sub-input').value=sub?sub.name:'';
-  emojiRename=sub?sub.emoji:'🌅';
+  renameSubTarget=subId;const subs=getSubs(activeDept),sub=subs.find(s=>s.id===subId);
+  document.getElementById('rename-sub-input').value=sub?sub.name:'';emojiRename=sub?sub.emoji:'🌅';
   document.querySelectorAll('#emoji-rename .emoji-opt').forEach(e=>e.classList.toggle('selected',e.textContent===emojiRename));
   openModal('modal-rename-sub');setTimeout(()=>document.getElementById('rename-sub-input').focus(),300);
 }
@@ -838,76 +679,41 @@ function confirmRenameSub(){
   if(sub){sub.name=name;sub.emoji=emojiRename;}
   save();closeModal('modal-rename-sub');renderSubTabs();renderCurrentSection();showToast('Onglet renommé ✓');
 }
-function openNewSubModal(){
-  document.getElementById('new-sub-input').value='';emojiNew='🌅';
-  document.querySelectorAll('#emoji-new .emoji-opt').forEach((e,i)=>e.classList.toggle('selected',i===0));
-  openModal('modal-new-sub');setTimeout(()=>document.getElementById('new-sub-input').focus(),300);
-}
+function openNewSubModal(){document.getElementById('new-sub-input').value='';emojiNew='🌅';document.querySelectorAll('#emoji-new .emoji-opt').forEach((e,i)=>e.classList.toggle('selected',i===0));openModal('modal-new-sub');setTimeout(()=>document.getElementById('new-sub-input').focus(),300);}
 function confirmNewSub(){
   const name=document.getElementById('new-sub-input').value.trim();if(!name)return;
-  const id=activeDept+'_'+Date.now();
-  const subs=getSubs(activeDept);
-  const hebdoIdx=subs.findIndex(s=>isHebdo(s.id));
-  const newSub={id,emoji:emojiNew,name};
-  if(hebdoIdx>=0)subs.splice(hebdoIdx,0,newSub); else subs.push(newSub);
+  const id=activeDept+'_'+Date.now();const subs=getSubs(activeDept);const hebdoIdx=subs.findIndex(s=>isHebdo(s.id));
+  const newSub={id,emoji:emojiNew,name};if(hebdoIdx>=0)subs.splice(hebdoIdx,0,newSub);else subs.push(newSub);
   if(!state.tasks)state.tasks={};state.tasks[id]=[];
   save();activeSub=id;closeModal('modal-new-sub');renderSubTabs();renderCurrentSection();showToast('Onglet créé ✓');
 }
 
-// ══════════════════════════════════════════════
-// WEEKLY
-// ══════════════════════════════════════════════
+// ── WEEKLY ──
 function renderWeeklySection(deptId){
-  const c=document.getElementById('sections-container');
-  const sec=document.createElement('div');
-  sec.className='section active';
-  sec.innerHTML=`
-    <div class="section-header">
-      <div class="section-title"><span>📅</span><span>Tâches hebdo</span></div>
-      <div class="header-actions">
-        <button class="reset-btn" onclick="resetWeekly('${deptId}')">Réinit.</button>
-      </div>
-    </div>
+  const c=document.getElementById('sections-container');const sec=document.createElement('div');sec.className='section active';
+  sec.innerHTML=`<div class="section-header"><div class="section-title"><span>📅</span><span>Tâches hebdo</span></div><div class="header-actions"><button class="reset-btn" onclick="resetWeekly('${deptId}')">Réinit.</button></div></div>
     <div id="weekly-container-${deptId}"></div>
     <button class="weekly-send-btn" onclick="sendWeeklyReport('${deptId}')">📧 Rapport hebdo — ${getDepts().find(d=>d.id===deptId)?.name||deptId}</button>`;
-  c.appendChild(sec);
-  renderWeekly(deptId);
+  c.appendChild(sec);renderWeekly(deptId);
 }
-
 function renderWeekly(deptId){
   const data=getWeeklyData(deptId),done=getWeeklyDone(deptId);
-  const c=document.getElementById('weekly-container-'+deptId);if(!c)return;
-  c.innerHTML='';
+  const c=document.getElementById('weekly-container-'+deptId);if(!c)return;c.innerHTML='';
   DAYS.forEach(day=>{
     const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];
     const fd=tasks.filter((_,i)=>sa[i]&&ma[i]).length;
-    const block=document.createElement('div');
-    block.className='day-block'+(day===TODAY?' open':'');
-    block.innerHTML=`<div class="day-header" onclick="this.parentElement.classList.toggle('open')">
-      <div class="day-title-wrap"><span>${DAY_ICONS[day]}</span><span class="day-name">${DAY_LABELS[day]}</span><span class="day-count" id="dcnt-${deptId}-${day}">${fd}/${tasks.length}${day===TODAY?' — Aujourd\'hui':''}</span></div>
-      <span class="day-chevron">▾</span></div>
-      <div class="day-tasks" id="dtasks-${deptId}-${day}"></div>`;
-    c.appendChild(block);
-    renderDayTasks(deptId,day);
+    const block=document.createElement('div');block.className='day-block'+(day===TODAY?' open':'');
+    block.innerHTML=`<div class="day-header" onclick="this.parentElement.classList.toggle('open')"><div class="day-title-wrap"><span>${DAY_ICONS[day]}</span><span class="day-name">${DAY_LABELS[day]}</span><span class="day-count" id="dcnt-${deptId}-${day}">${fd}/${tasks.length}${day===TODAY?' — Aujourd\'hui':''}</span></div><span class="day-chevron">▾</span></div><div class="day-tasks" id="dtasks-${deptId}-${day}"></div>`;
+    c.appendChild(block);renderDayTasks(deptId,day);
   });
 }
 function renderDayTasks(deptId,day){
   const data=getWeeklyData(deptId),done=getWeeklyDone(deptId);
   const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];
-  const c=document.getElementById('dtasks-'+deptId+'-'+day);if(!c)return;
-  c.innerHTML='';
+  const c=document.getElementById('dtasks-'+deptId+'-'+day);if(!c)return;c.innerHTML='';
   tasks.forEach((t,i)=>{
-    const sd=sa[i]||false,md=ma[i]||false;
-    const item=document.createElement('div');
-    item.className='day-task-item'+(sd&&md?' fully-done':'');
-    item.innerHTML=`<div class="day-task-checks">
-      <div class="day-check-wrap${sd?' staff-done':''}" onclick="toggleDayStaff('${deptId}','${day}',${i})">
-        <div class="day-task-circle">${sd?SVG:''}</div><span class="day-check-label">Équipe</span></div>
-      <div class="day-check-wrap${md?' manager-done':''}" onclick="toggleDayManager('${deptId}','${day}',${i})">
-        <div class="day-task-circle">${md?SVG:''}</div><span class="day-check-label" style="color:var(--bleu)">Mgr</span></div>
-    </div>
-    <div class="day-task-text" style="flex:1">${t}</div>
-    <button class="day-task-delete" onclick="deleteDayTask('${deptId}','${day}',${i})">×</button>`;
+    const sd=sa[i]||false,md=ma[i]||false;const item=document.createElement('div');item.className='day-task-item'+(sd&&md?' fully-done':'');
+    item.innerHTML=`<div class="day-task-checks"><div class="day-check-wrap${sd?' staff-done':''}" onclick="toggleDayStaff('${deptId}','${day}',${i})"><div class="day-task-circle">${sd?SVG:''}</div><span class="day-check-label">Équipe</span></div><div class="day-check-wrap${md?' manager-done':''}" onclick="toggleDayManager('${deptId}','${day}',${i})"><div class="day-task-circle">${md?SVG:''}</div><span class="day-check-label" style="color:var(--bleu)">Mgr</span></div></div><div class="day-task-text" style="flex:1">${t}</div><button class="day-task-delete" onclick="deleteDayTask('${deptId}','${day}',${i})">×</button>`;
     c.appendChild(item);
   });
   const btn=document.createElement('button');btn.className='day-add-btn';btn.innerHTML='+ Ajouter';btn.onclick=()=>addDayTask(deptId,day);c.appendChild(btn);
@@ -919,73 +725,39 @@ function addDayTask(deptId,day){const text=prompt('Nouvelle tâche pour '+DAY_LA
 function updateDayCount(deptId,day){const data=getWeeklyData(deptId),d=getWeeklyDone(deptId);const tasks=data[day]||[],sa=d['staff_'+day]||[],ma=d['manager_'+day]||[];const fd=tasks.filter((_,i)=>sa[i]&&ma[i]).length;const cnt=document.getElementById('dcnt-'+deptId+'-'+day);if(cnt)cnt.textContent=fd+'/'+tasks.length+(day===TODAY?' — Aujourd\'hui':'');}
 function resetWeekly(deptId){if(!state.weeklyDone)state.weeklyDone={};state.weeklyDone[deptId]={};save();renderWeekly(deptId);showToast('Hebdo réinitialisé ✓');}
 
-// ══════════════════════════════════════════════
-// REPORT BTN
-// ══════════════════════════════════════════════
-function updateReportBtn(){
-  const dept=getDepts().find(d=>d.id===activeDept);
-  const btn=document.getElementById('report-btn');
-  if(btn&&dept)btn.textContent='📧 Envoyer le rapport — '+dept.name;
-}
-
-// ══════════════════════════════════════════════
-// REPORTS
-// ══════════════════════════════════════════════
+// ── REPORT ──
+function updateReportBtn(){const dept=getDepts().find(d=>d.id===activeDept);const btn=document.getElementById('report-btn');if(btn&&dept)btn.textContent='📧 Envoyer le rapport — '+dept.name;}
 async function sendDeptReport(){
-  const dept=getDepts().find(d=>d.id===activeDept);
-  const subs=getSubs(activeDept);
-  const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  const names=state.names||{};
+  const dept=getDepts().find(d=>d.id===activeDept);const subs=getSubs(activeDept);
+  const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});const names=state.names||{};
   let msg='RAPPORT — '+dept.name.toUpperCase()+'\n'+'='.repeat(40)+'\nDate : '+now+'\n';
-
   subs.forEach(sub=>{
-    if(isHebdo(sub.id)){
-      const data=getWeeklyData(activeDept),done=getWeeklyDone(activeDept);
-      msg+='\n\n── HEBDOMADAIRE ──';
-      DAYS.forEach(day=>{const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];if(tasks.length>0){msg+='\n'+DAY_LABELS[day]+' : '+tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':'❌')+' '+t).join(' | ');}});
-    } else {
-      const tasks=getTasks(sub.id),sa=state['staff_'+sub.id]||[],ma=state['manager_'+sub.id]||[];
-      msg+='\n\n── '+sub.emoji+' '+sub.name.toUpperCase()+' ──\n';
-      msg+='Employé : '+(names['staff_'+sub.id]||'—')+' | Manager : '+(names['manager_'+sub.id]||'—')+'\n';
-      msg+=tasks.length>0?tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t.text).join('\n'):'(aucune tâche)';
-    }
+    if(isHebdo(sub.id)){const data=getWeeklyData(activeDept),done=getWeeklyDone(activeDept);msg+='\n\n── HEBDOMADAIRE ──';DAYS.forEach(day=>{const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];if(tasks.length>0){msg+='\n'+DAY_LABELS[day]+' : '+tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':'❌')+' '+t).join(' | ');}});}
+    else{const tasks=getTasks(sub.id),sa=state['staff_'+sub.id]||[],ma=state['manager_'+sub.id]||[];msg+='\n\n── '+sub.emoji+' '+sub.name.toUpperCase()+' ──\nEmployé : '+(names['staff_'+sub.id]||'—')+' | Manager : '+(names['manager_'+sub.id]||'—')+'\n';msg+=tasks.length>0?tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t.text).join('\n'):'(aucune tâche)';}
   });
   msg+='\n\n— Envoyé depuis l\'application Zephyr Monaco';
-  const subject='Rapport '+dept.name+' — '+now;
   showToast('Envoi en cours...');
-  try{await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'});showToast('✅ Rapport '+dept.name+' envoyé !');}
+  try{await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport '+dept.name+' — '+now,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'});showToast('✅ Rapport '+dept.name+' envoyé !');}
   catch(e){showToast('❌ Erreur : '+(e.text||e.message));}
 }
-
 async function sendWeeklyReport(deptId){
-  const dept=getDepts().find(d=>d.id===deptId);
-  const data=getWeeklyData(deptId),done=getWeeklyDone(deptId);
+  const dept=getDepts().find(d=>d.id===deptId);const data=getWeeklyData(deptId),done=getWeeklyDone(deptId);
   const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  let lines=[];
-  DAYS.forEach(day=>{lines.push('\n— '+DAY_LABELS[day].toUpperCase()+' —');const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];tasks.forEach((t,i)=>lines.push((sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t));});
+  let lines=[];DAYS.forEach(day=>{lines.push('\n— '+DAY_LABELS[day].toUpperCase()+' —');const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];tasks.forEach((t,i)=>lines.push((sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t));});
   const msg='RAPPORT HEBDO — '+dept.name.toUpperCase()+'\n'+'='.repeat(40)+'\nDate : '+now+'\n'+lines.join('\n')+'\n\n— Envoyé depuis l\'application Zephyr Monaco';
   showToast('Envoi en cours...');
   try{await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport Hebdo '+dept.name+' — '+now,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'});showToast('✅ Rapport hebdo envoyé !');}
   catch(e){showToast('❌ Erreur : '+(e.text||e.message));}
 }
 
-// ══════════════════════════════════════════════
-// MODAL HELPERS
-// ══════════════════════════════════════════════
+// ── MODAL / TOAST ──
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
-
-// ══════════════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════════════
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
-// ══════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════
+// ── INIT ──
 function initApp(){
-  activeDept='salle';
-  activeSub=getSubs('salle')[0]?.id||'s_matin';
+  activeDept='salle';activeSub=getSubs('salle')[0]?.id||'s_matin';
   renderDeptTabs();renderSubTabs();renderCurrentSection();updateGlobal();
 }
 </script>
