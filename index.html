@@ -129,12 +129,13 @@
   /* ══ CHECKLIST ══ */
   .checklist { list-style: none; }
   .checklist li { border-radius: var(--radius); margin-bottom: 6px; background: var(--beige2); border: 1px solid var(--stone2); transition: all 0.18s; overflow: hidden; position: relative; }
-  .checklist li.dragging { opacity: 0.4; }
-  .checklist li.drag-over { border-color: var(--terra); background: var(--beige3); }
   .task-row { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; }
-  .drag-handle { color: var(--stone2); font-size: 16px; cursor: grab; align-self: center; padding: 0 4px; display: none; touch-action: none; }
-  body.manager .drag-handle { display: block; }
-  .drag-handle:active { cursor: grabbing; }
+  .task-arrows { display: none; flex-direction: column; gap: 2px; flex-shrink: 0; align-self: center; }
+  body.manager .task-arrows { display: flex; }
+  .arrow-btn { background: none; border: 1px solid var(--stone2); color: var(--stone); width: 22px; height: 22px; border-radius: 5px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; padding: 0; line-height: 1; }
+  .arrow-btn:hover { border-color: var(--terra); color: var(--terra); background: var(--terra-dim); }
+  .arrow-btn:disabled { opacity: 0.2; cursor: default; }
+  .arrow-btn:disabled:hover { border-color: var(--stone2); color: var(--stone); background: none; }
   .task-checks { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; padding-top: 2px; }
   .check-wrap { display: flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; }
   .check-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone); white-space: nowrap; }
@@ -575,7 +576,6 @@ function renderSection(section){
     const li = createTaskEl(section, i, task, staffArr[i], managerArr[i]);
     ul.appendChild(li);
   });
-  if(currentRole === 'manager') initDrag(section);
   updateBadge(section);
 }
 
@@ -585,7 +585,10 @@ function createTaskEl(section, i, task, staffDone, managerDone){
   if(staffDone && managerDone) li.classList.add('task-fully-done');
   li.innerHTML = `
     <div class="task-row">
-      <span class="drag-handle" title="Glisser pour réordonner">⠿</span>
+      <div class="task-arrows">
+        <button class="arrow-btn" onclick="moveTask('${section}',${i},-1)" ${i===0?'disabled':''} title="Monter">▲</button>
+        <button class="arrow-btn" onclick="moveTask('${section}',${i},1)" title="Descendre">▼</button>
+      </div>
       <div class="task-checks">
         <div class="check-wrap${staffDone?' staff-done':''}" onclick="toggleStaff('${section}',${i},this)">
           <div class="check-circle">${SVG}</div>
@@ -609,41 +612,18 @@ function createTaskEl(section, i, task, staffDone, managerDone){
   return li;
 }
 
-// ═══════════════════════════════════════
-// DRAG & DROP (manager only)
-// ═══════════════════════════════════════
-function initDrag(section){
-  const ul = document.getElementById('list-'+section);
-  let dragged = null;
-  ul.querySelectorAll('li').forEach(li => {
-    const handle = li.querySelector('.drag-handle');
-    if(!handle) return;
-    handle.addEventListener('mousedown', () => { li.draggable = true; });
-    handle.addEventListener('touchstart', () => { li.draggable = true; }, {passive:true});
-    li.addEventListener('dragstart', e => { dragged = li; li.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
-    li.addEventListener('dragend', () => { li.classList.remove('dragging'); dragged = null; ul.querySelectorAll('li').forEach(l=>l.classList.remove('drag-over')); li.draggable = false; persistOrder(section); });
-    li.addEventListener('dragover', e => { e.preventDefault(); if(dragged && dragged !== li){ li.classList.add('drag-over'); ul.insertBefore(dragged, li); } });
-    li.addEventListener('dragleave', () => li.classList.remove('drag-over'));
-    li.addEventListener('drop', e => { e.preventDefault(); li.classList.remove('drag-over'); });
-  });
-}
-
-function persistOrder(section){
-  const ul = document.getElementById('list-'+section);
-  const items = ul.querySelectorAll('li');
-  const oldTasks = getTasks(section);
-  const oldStaff = state['staff_'+section] || [];
-  const oldManager = state['manager_'+section] || [];
-  const newTasks=[], newStaff=[], newManager=[];
-  items.forEach(li => {
-    const i = parseInt(li.dataset.idx);
-    newTasks.push(oldTasks[i]);
-    newStaff.push(oldStaff[i]||false);
-    newManager.push(oldManager[i]||false);
-  });
-  state['tasks_'+section] = newTasks;
-  state['staff_'+section] = newStaff;
-  state['manager_'+section] = newManager;
+function moveTask(section, idx, dir){
+  const tasks = getTasks(section);
+  const staffArr = state['staff_'+section]||[];
+  const managerArr = state['manager_'+section]||[];
+  const newIdx = idx + dir;
+  if(newIdx < 0 || newIdx >= tasks.length) return;
+  [tasks[idx], tasks[newIdx]] = [tasks[newIdx], tasks[idx]];
+  [staffArr[idx], staffArr[newIdx]] = [staffArr[newIdx]||false, staffArr[idx]||false];
+  [managerArr[idx], managerArr[newIdx]] = [managerArr[newIdx]||false, managerArr[idx]||false];
+  state['tasks_'+section] = tasks;
+  state['staff_'+section] = staffArr;
+  state['manager_'+section] = managerArr;
   save();
   renderSection(section);
 }
