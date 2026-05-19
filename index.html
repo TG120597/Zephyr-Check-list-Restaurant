@@ -535,7 +535,7 @@ function startFirebaseListener(){
     // Re-render current view
     renderDeptTabs();renderSubTabs();renderCurrentSection();updateGlobal();
     showToast('✨ Sync');
-  });
+  }, (err)=>{ console.log('Firebase listener error:', err); });
 }
 
 function logout(){
