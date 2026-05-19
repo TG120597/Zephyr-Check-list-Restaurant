@@ -278,6 +278,9 @@
   .dept-delete-btn { background:none; border:none; color:rgba(255,255,255,.5); font-size:13px; cursor:pointer; padding:0; line-height:1; display:none; }
   .dept-btn.active .dept-delete-btn { display:inline; }
   .dept-delete-btn:hover { color:#fff; }
+  .undo-dept-btn { flex-shrink:0; background:var(--beige2); border:1px solid var(--stone2); color:var(--text-dim); width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .2s; }
+  body.manager .undo-dept-btn { display:flex; }
+  .undo-dept-btn:hover { border-color:var(--terra); background:var(--terra-dim); }
   .add-dept-btn { flex-shrink:0; background:var(--terra); border:none; color:var(--beige); width:32px; height:32px; border-radius:50%; font-size:20px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .2s; box-shadow:0 2px 8px rgba(181,96,58,.3); }
   body.manager .add-dept-btn { display:flex; }
   .add-dept-btn:hover { background:var(--terra-dark); transform:scale(1.1); }
@@ -294,7 +297,7 @@
   .weekly-send-btn { width:100%; margin-top:14px; background:var(--stone); border:none; color:var(--beige); padding:12px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:12px; font-weight:500; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
   .weekly-send-btn:hover { background:var(--terra); }
   /* ── TOAST ── */
-  .toast { position:fixed; bottom:75px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--terra-dark); color:var(--beige); padding:11px 22px; border-radius:99px; font-size:13px; font-family:'Jost',sans-serif; z-index:200; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
+  .toast { position:fixed; bottom:85px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--terra-dark); color:var(--beige); padding:11px 22px; border-radius:99px; font-size:13px; font-family:'Jost',sans-serif; z-index:200; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; pointer-events:none; }
   .toast.show { transform:translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -349,6 +352,7 @@
   </div>
   <div class="dept-tabs-wrap">
     <div class="dept-tabs" id="dept-tabs"></div>
+    <button class="undo-dept-btn" id="undo-dept-btn" onclick="undoLast()" title="Annuler la dernière suppression" style="opacity:0.3">↩️</button>
     <button class="add-dept-btn" onclick="openNewDeptModal()" title="Nouveau département">+</button>
   </div>
   <div class="sub-tabs-wrap">
@@ -397,10 +401,6 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<div class="undo-toast" id="undo-toast">
-  <span id="undo-msg">Département supprimé</span>
-  <button class="undo-btn-inline" onclick="undoDelete()">Annuler</button>
-</div>
 
 <!-- MODAL: NEW DEPT -->
 <div class="modal-overlay" id="modal-new-dept" onclick="if(event.target.id==='modal-new-dept')closeModal('modal-new-dept')">
@@ -534,7 +534,7 @@ function startFirebaseListener(){
     localStorage.setItem('zephyr_local',JSON.stringify(state));
     // Re-render current view
     renderDeptTabs();renderSubTabs();renderCurrentSection();updateGlobal();
-    showToast('✨ Mis à jour en temps réel');
+    showToast('✨ Sync');
   });
 }
 
@@ -564,25 +564,60 @@ const RULES = [
   { num:10, title:'Soyez gentil', body:"Soyez bienveillant envers les autres et vous recevrez la même chose en retour. La gentillesse est une manière de vivre. C'est une décision consciente concernant la façon dont nous interagissons avec les autres." },
 ];
 
-// ── UNDO SYSTEM ──
-let deletedDept=null, undoTimeout=null;
+// ── UNDO SYSTEM (historique global) ──
+let undoStack = []; // pile des actions annulables
 
-function showUndoToast(msg){
-  document.getElementById('undo-msg').textContent=msg;
-  const t=document.getElementById('undo-toast');t.classList.add('show');
-  if(undoTimeout)clearTimeout(undoTimeout);
-  undoTimeout=setTimeout(()=>{t.classList.remove('show');deletedDept=null;},5000);
+function pushUndo(action){ undoStack.push(action); updateUndoBtn(); }
+
+function undoLast(){
+  if(!undoStack.length){ showToast('Rien à annuler'); return; }
+  const action = undoStack.pop();
+  updateUndoBtn();
+
+  if(action.type === 'delete-dept'){
+    const{dept,subs,tasks,idx}=action;
+    const depts=getDepts(); depts.splice(idx,0,dept);
+    if(!state.subs)state.subs={}; state.subs[dept.id]=subs;
+    if(!state.tasks)state.tasks={}; Object.assign(state.tasks,tasks);
+    save(); activeDept=dept.id;
+    renderDeptTabs(); renderSubTabs(); renderCurrentSection();
+    showToast('✓ Département restauré');
+  }
+  else if(action.type === 'delete-sub'){
+    const{deptId,sub,tasks,staffArr,managerArr,idx}=action;
+    const subs=getSubs(deptId); subs.splice(idx,0,sub);
+    if(!state.tasks)state.tasks={}; state.tasks[sub.id]=tasks;
+    state['staff_'+sub.id]=staffArr; state['manager_'+sub.id]=managerArr;
+    save(); activeSub=sub.id;
+    renderSubTabs(); renderCurrentSection();
+    showToast('✓ Onglet restauré');
+  }
+  else if(action.type === 'delete-task'){
+    const{subId,task,staffVal,managerVal,idx}=action;
+    const tasks=getTasks(subId);
+    const sa=state['staff_'+subId]||[]; const ma=state['manager_'+subId]||[];
+    tasks.splice(idx,0,task); sa.splice(idx,0,staffVal); ma.splice(idx,0,managerVal);
+    if(!state.tasks)state.tasks={}; state.tasks[subId]=tasks;
+    state['staff_'+subId]=sa; state['manager_'+subId]=ma;
+    save(); renderChecklist(subId); updateGlobal();
+    showToast('✓ Tâche restaurée');
+  }
+  else if(action.type === 'delete-day-task'){
+    const{deptId,day,task,staffVal,managerVal,idx}=action;
+    const data=getWeeklyData(deptId); const done=getWeeklyDone(deptId);
+    data[day].splice(idx,0,task);
+    if(!done['staff_'+day])done['staff_'+day]=[];
+    if(!done['manager_'+day])done['manager_'+day]=[];
+    done['staff_'+day].splice(idx,0,staffVal);
+    done['manager_'+day].splice(idx,0,managerVal);
+    save(); renderDayTasks(deptId,day); updateDayCount(deptId,day); updateGlobal();
+    showToast('✓ Tâche hebdo restaurée');
+  }
 }
 
-function undoDelete(){
-  if(!deletedDept)return;
-  const{dept,subs,tasks,idx}=deletedDept;
-  const depts=getDepts();depts.splice(idx,0,dept);
-  if(!state.subs)state.subs={};state.subs[dept.id]=subs;
-  if(!state.tasks)state.tasks={};Object.assign(state.tasks,tasks);
-  save();activeDept=dept.id;renderDeptTabs();renderSubTabs();renderCurrentSection();
-  document.getElementById('undo-toast').classList.remove('show');
-  deletedDept=null;showToast('Département restauré ✓');
+function updateUndoBtn(){
+  const btn=document.getElementById('undo-dept-btn');
+  if(btn){ btn.style.opacity=undoStack.length?'1':'0.3'; btn.title=undoStack.length?'Annuler la dernière suppression':'Rien à annuler'; }
 }
 
 // ── RENDER DEPT TABS ──
@@ -601,8 +636,8 @@ function renderDeptTabs(){
     const btn=document.createElement('button');
     btn.className='dept-btn'+(dept.id===activeDept?' active':'');
     const{total,done}=getDeptProgress(dept.id);
-    const isProtected=['salle','bar','accueil'].includes(dept.id);
-    btn.innerHTML=`${dept.name} <span class="dept-badge">${done}/${total}</span>${currentRole==='manager'&&!isProtected?`<button class="dept-delete-btn" onclick="deleteDept('${dept.id}');event.stopPropagation()" title="Supprimer">✕</button>`:''}`;
+    const isProtected = false;
+    btn.innerHTML=`${dept.name} <span class="dept-badge">${done}/${total}</span>${currentRole==='manager'?`<button class="dept-delete-btn" onclick="deleteDept('${dept.id}');event.stopPropagation()" title="Supprimer">✕</button>`:''}`;
     btn.onclick=()=>showDept(dept.id);
     c.appendChild(btn);
   });
@@ -620,7 +655,14 @@ function getDeptProgress(deptId){
 
 function showDept(deptId){
   activeDept=deptId;
-  if(deptId==='knowledge'){renderDeptTabs();renderKnowledge();return;}
+  if(deptId==='knowledge'){
+    renderDeptTabs();
+    document.querySelector('.sub-tabs-wrap').style.display='none';
+    document.getElementById('report-bar').style.display='none';
+    renderKnowledge();
+    return;
+  }
+  document.getElementById('report-bar').style.display='block';
   const subs=getSubs(deptId);activeSub=subs[0]?.id||'';
   renderDeptTabs();renderSubTabs();renderCurrentSection();
 }
@@ -665,18 +707,16 @@ function confirmNewDept(){
 }
 
 function deleteDept(deptId){
-  const depts=getDepts();const idx=depts.findIndex(d=>d.id===deptId);if(idx<0)return;
+  if(!confirm('Supprimer ce département et toutes ses tâches ?')) return;
+  const depts=getDepts(); const idx=depts.findIndex(d=>d.id===deptId); if(idx<0)return;
   const dept=depts[idx];
   const subs=getSubs(deptId);
-  const tasks={};subs.forEach(s=>{if(state.tasks?.[s.id])tasks[s.id]=state.tasks[s.id];});
-  deletedDept={dept,subs,tasks,idx};
-  depts.splice(idx,1);
-  delete state.subs?.[deptId];
-  save();
-  activeDept=depts[0]?.id||'salle';
-  activeSub=getSubs(activeDept)[0]?.id||'';
-  renderDeptTabs();renderSubTabs();renderCurrentSection();
-  showUndoToast(`"${dept.name}" supprimé`);
+  const tasks={}; subs.forEach(s=>{if(state.tasks?.[s.id])tasks[s.id]=state.tasks[s.id];});
+  pushUndo({type:'delete-dept',dept,subs,tasks,idx});
+  depts.splice(idx,1); delete state.subs?.[deptId]; save();
+  activeDept=depts[0]?.id||'salle'; activeSub=getSubs(activeDept)[0]?.id||'';
+  renderDeptTabs(); renderSubTabs(); renderCurrentSection();
+  showToast('Supprimé — ↩️ pour annuler');
 }
 
 // ── NEW DEPT EMOJI ──
@@ -698,7 +738,8 @@ function renderSubTabs(){
     else{const r=countSection(sub.id);badge=r.checked+'/'+r.total;}
     const isDone=badge.split('/')[0]===badge.split('/')[1]&&badge.split('/')[1]!=='0';
     btn.className='sub-btn'+(sub.id===activeSub?' active':'')+(isDone&&sub.id!==activeSub?' done':'');
-    btn.innerHTML=`${sub.emoji} ${sub.name} <span class="sub-badge" id="sbadge-${sub.id}">${badge}</span>`;
+    const isProtectedSub = false;
+    btn.innerHTML=`${sub.emoji} ${sub.name} <span class="sub-badge" id="sbadge-${sub.id}">${badge}</span>${currentRole==='manager'?`<button style="background:none;border:none;color:inherit;opacity:.6;font-size:12px;cursor:pointer;padding:0 0 0 4px" onclick="deleteSub('${sub.id}');event.stopPropagation()">✕</button>`:''}`;
     btn.onclick=()=>showSub(sub.id);
     c.appendChild(btn);
   });
@@ -835,10 +876,24 @@ function confirmEditTask(){
 }
 function deleteTask(subId,idx){
   const tasks=getTasks(subId),sa=state['staff_'+subId]||[],ma=state['manager_'+subId]||[];
+  pushUndo({type:'delete-task',subId,task:tasks[idx],staffVal:sa[idx]||false,managerVal:ma[idx]||false,idx});
   tasks.splice(idx,1);sa.splice(idx,1);ma.splice(idx,1);
   if(!state.tasks)state.tasks={};state.tasks[subId]=tasks;state['staff_'+subId]=sa;state['manager_'+subId]=ma;
-  save();renderChecklist(subId);updateGlobal();
+  save();renderChecklist(subId);updateGlobal();showToast('Supprimé — ↩️ pour annuler');
 }
+function deleteSub(subId){
+  const subs=getSubs(activeDept); const idx=subs.findIndex(s=>s.id===subId); if(idx<0)return;
+  const sub=subs[idx];
+  const tasks=getTasks(subId);
+  const staffArr=state['staff_'+subId]||[]; const managerArr=state['manager_'+subId]||[];
+  pushUndo({type:'delete-sub',deptId:activeDept,sub,tasks:JSON.parse(JSON.stringify(tasks)),staffArr:[...staffArr],managerArr:[...managerArr],idx});
+  subs.splice(idx,1);
+  save();
+  activeSub=subs[Math.min(idx,subs.length-1)]?.id||'';
+  renderSubTabs(); renderCurrentSection();
+  showToast('Supprimé — ↩️ pour annuler');
+}
+
 function saveName(subId,role,value){if(!state.names)state.names={};state.names[role+'_'+subId]=value;save();}
 
 // ── SUB TAB MANAGEMENT ──
@@ -902,7 +957,19 @@ function renderDayTasks(deptId,day){
 }
 function toggleDayStaff(deptId,day,idx){const d=getWeeklyDone(deptId);if(!d['staff_'+day])d['staff_'+day]=[];d['staff_'+day][idx]=!d['staff_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
 function toggleDayManager(deptId,day,idx){if(currentRole!=='manager'){showToast('Réservé au manager 🔑');return;}const d=getWeeklyDone(deptId);if(!d['manager_'+day])d['manager_'+day]=[];d['manager_'+day][idx]=!d['manager_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
-function deleteDayTask(deptId,day,idx){if(currentRole!=='manager')return;const data=getWeeklyData(deptId),d=getWeeklyDone(deptId);data[day].splice(idx,1);if(d['staff_'+day])d['staff_'+day].splice(idx,1);if(d['manager_'+day])d['manager_'+day].splice(idx,1);save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
+function deleteDayTask(deptId,day,idx){
+  if(currentRole!=='manager')return;
+  const data=getWeeklyData(deptId),d=getWeeklyDone(deptId);
+  const task=data[day][idx];
+  const staffVal=(d['staff_'+day]||[])[idx]||false;
+  const managerVal=(d['manager_'+day]||[])[idx]||false;
+  pushUndo({type:'delete-day-task',deptId,day,task,staffVal,managerVal,idx});
+  data[day].splice(idx,1);
+  if(d['staff_'+day])d['staff_'+day].splice(idx,1);
+  if(d['manager_'+day])d['manager_'+day].splice(idx,1);
+  save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();
+  showToast('Supprimé — ↩️ pour annuler');
+}
 function addDayTask(deptId,day){const text=prompt('Nouvelle tâche pour '+DAY_LABELS[day]+' :');if(!text||!text.trim())return;getWeeklyData(deptId)[day].push(text.trim());save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
 function updateDayCount(deptId,day){const data=getWeeklyData(deptId),d=getWeeklyDone(deptId);const tasks=data[day]||[],sa=d['staff_'+day]||[],ma=d['manager_'+day]||[];const fd=tasks.filter((_,i)=>sa[i]&&ma[i]).length;const cnt=document.getElementById('dcnt-'+deptId+'-'+day);if(cnt)cnt.textContent=fd+'/'+tasks.length+(day===TODAY?' — Aujourd\'hui':'');}
 function resetWeekly(deptId){if(!state.weeklyDone)state.weeklyDone={};state.weeklyDone[deptId]={};save();renderWeekly(deptId);showToast('Hebdo réinitialisé ✓');}
