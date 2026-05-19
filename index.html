@@ -31,9 +31,10 @@
     } catch(e) { console.error('Firebase save error:', e); }
   };
 
-  // Real-time listener
+  let firstSnapshot = true;
   window.fbListen = function(callback) {
     return onSnapshot(DOC, (snap) => {
+      if (firstSnapshot) { firstSnapshot = false; return; }
       if (snap.exists()) {
         try {
           const data = JSON.parse(snap.data().data);
@@ -528,14 +529,18 @@ async function tryLogin(){
 
 function startFirebaseListener(){
   if(!window.fbListen)return;
+  let isFirst=true;
   unsubFirebase=window.fbListen((remoteState)=>{
-    if(ignoreNextSnapshot){ignoreNextSnapshot=false;return;}
+    if(isFirst){isFirst=false;return;}
+    const prevDept=activeDept,prevSub=activeSub;
     state=remoteState;
     localStorage.setItem('zephyr_local',JSON.stringify(state));
-    // Re-render current view
-    renderDeptTabs();renderSubTabs();renderCurrentSection();updateGlobal();
-    showToast('✨ Sync');
-  }, (err)=>{ console.log('Firebase listener error:', err); });
+    activeDept=prevDept;activeSub=prevSub;
+    renderDeptTabs();
+    if(activeDept!=='knowledge'){renderSubTabs();renderCurrentSection();}
+    updateGlobal();
+    setSyncing(true);setTimeout(()=>setSyncing(false),800);
+  });
 }
 
 function logout(){
@@ -1002,12 +1007,39 @@ async function sendWeeklyReport(deptId){
 // ── MODAL / TOAST ──
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  const dur = msg.includes('Sync') ? 1000 : 2500;
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
 
 // ── INIT ──
 function initApp(){
-  activeDept='salle';activeSub=getSubs('salle')[0]?.id||'s_matin';
-  renderDeptTabs();renderSubTabs();renderCurrentSection();updateGlobal();
+  activeDept='salle';
+  activeSub=getSubs('salle')[0]?.id||'s_matin';
+  renderDeptTabs();
+  renderSubTabs();
+  renderCurrentSection();
+  updateGlobal();
+  updateUndoBtn();
+}
+
+function startFirebaseListener(){
+  if(!window.fbListen)return;
+  let isFirst=true;
+  unsubFirebase=window.fbListen((remoteState)=>{
+    if(isFirst){isFirst=false;return;}
+    // Merge: keep local activeDept/Sub, just update data
+    const prevDept=activeDept, prevSub=activeSub;
+    state=remoteState;
+    localStorage.setItem('zephyr_local',JSON.stringify(state));
+    activeDept=prevDept; activeSub=prevSub;
+    renderDeptTabs();
+    if(activeDept!=='knowledge'){renderSubTabs();renderCurrentSection();}
+    updateGlobal();
+    setSyncing(true); setTimeout(()=>setSyncing(false),800);
+  });
 }
 </script>
 </body>
