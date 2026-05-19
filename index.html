@@ -248,7 +248,45 @@
   .emoji-picker { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
   .emoji-opt { font-size:22px; cursor:pointer; padding:6px; border-radius:7px; border:2px solid transparent; transition:all .15s; }
   .emoji-opt:hover,.emoji-opt.selected { border-color:var(--terra); background:var(--terra-dim); }
-  /* ── REPORT BAR ── */
+  /* ── KNOWLEDGE ── */
+  .knowledge-section { padding:4px 0 20px; }
+  .knowledge-hero { background:linear-gradient(135deg,var(--terra-dark),var(--terra)); border-radius:14px; padding:24px 20px; margin-bottom:20px; text-align:center; }
+  .knowledge-hero h2 { font-family:'Cormorant Garamond',serif; font-size:28px; color:var(--beige); font-style:italic; letter-spacing:.08em; margin-bottom:6px; }
+  .knowledge-hero p { font-size:11px; color:rgba(242,237,228,.7); letter-spacing:.2em; text-transform:uppercase; }
+  .rule-card { background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); padding:16px 18px; margin-bottom:10px; transition:all .2s; cursor:pointer; }
+  .rule-card:hover { border-color:var(--terra-border); background:var(--beige3); }
+  .rule-card.open { border-color:var(--terra-border); }
+  .rule-header { display:flex; align-items:center; gap:12px; }
+  .rule-number { font-family:'Cormorant Garamond',serif; font-size:28px; color:var(--terra); font-weight:600; min-width:36px; line-height:1; }
+  .rule-title { font-family:'Jost',sans-serif; font-size:13px; font-weight:500; color:var(--text); letter-spacing:.04em; flex:1; }
+  .rule-chevron { font-size:11px; color:var(--stone); transition:transform .2s; }
+  .rule-card.open .rule-chevron { transform:rotate(180deg); }
+  .rule-body { font-size:13px; color:var(--text-dim); line-height:1.7; margin-top:12px; padding-top:12px; border-top:1px solid var(--stone2); display:none; }
+  .rule-card.open .rule-body { display:block; }
+  .knowledge-footer { text-align:center; padding:20px; font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--terra-dark); font-style:italic; opacity:.8; }
+
+  /* ── DEPT MANAGEMENT ── */
+  .dept-tabs-wrap { display:flex; align-items:center; gap:8px; padding:14px 20px 0; max-width:760px; margin:0 auto; }
+  .dept-tabs { display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; flex:1; }
+  .dept-tabs::-webkit-scrollbar { display:none; }
+  .dept-btn { flex-shrink:0; padding:9px 16px; border-radius:99px; border:1px solid var(--stone2); background:var(--beige2); color:var(--text-dim); font-family:'Jost',sans-serif; font-size:13px; font-weight:400; cursor:pointer; transition:all .2s; letter-spacing:.06em; display:flex; align-items:center; gap:6px; }
+  .dept-btn.active { background:var(--terra-dark); border-color:var(--terra-dark); color:var(--beige); font-weight:500; box-shadow:0 4px 14px rgba(140,69,40,.3); }
+  .dept-btn .dept-badge { font-size:10px; background:rgba(181,96,58,.1); border-radius:99px; padding:1px 6px; color:var(--stone); }
+  .dept-btn.active .dept-badge { background:rgba(255,255,255,.15); color:rgba(255,255,255,.8); }
+  .dept-btn.knowledge-btn { background:var(--beige2); }
+  .dept-btn.knowledge-btn.active { background:var(--terra-dark); }
+  .dept-delete-btn { background:none; border:none; color:rgba(255,255,255,.5); font-size:13px; cursor:pointer; padding:0; line-height:1; display:none; }
+  .dept-btn.active .dept-delete-btn { display:inline; }
+  .dept-delete-btn:hover { color:#fff; }
+  .add-dept-btn { flex-shrink:0; background:var(--terra); border:none; color:var(--beige); width:32px; height:32px; border-radius:50%; font-size:20px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:all .2s; box-shadow:0 2px 8px rgba(181,96,58,.3); }
+  body.manager .add-dept-btn { display:flex; }
+  .add-dept-btn:hover { background:var(--terra-dark); transform:scale(1.1); }
+
+  /* ── UNDO TOAST ── */
+  .undo-toast { position:fixed; bottom:75px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--text); color:var(--beige); padding:12px 20px; border-radius:99px; font-size:13px; font-family:'Jost',sans-serif; z-index:300; transition:transform .3s cubic-bezier(.34,1.56,.64,1); display:flex; align-items:center; gap:12px; white-space:nowrap; }
+  .undo-toast.show { transform:translateX(-50%) translateY(0); }
+  .undo-btn-inline { background:var(--terra); border:none; color:#fff; padding:5px 12px; border-radius:99px; font-size:12px; cursor:pointer; font-family:'Jost',sans-serif; font-weight:500; }
+
   .report-bar { position:fixed; bottom:0; left:0; right:0; z-index:40; background:var(--beige); border-top:1px solid var(--stone2); padding:10px 20px; }
   .report-bar-inner { max-width:760px; margin:0 auto; }
   .send-report-btn { width:100%; background:var(--terra); border:none; color:var(--beige); padding:13px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:.08em; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
@@ -309,7 +347,10 @@
     </div>
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="globalBar"></div></div>
   </div>
-  <div class="dept-tabs" id="dept-tabs"></div>
+  <div class="dept-tabs-wrap">
+    <div class="dept-tabs" id="dept-tabs"></div>
+    <button class="add-dept-btn" onclick="openNewDeptModal()" title="Nouveau département">+</button>
+  </div>
   <div class="sub-tabs-wrap">
     <div class="sub-tabs" id="sub-tabs"></div>
     <button class="add-sub-btn" onclick="openNewSubModal()">+</button>
@@ -356,6 +397,33 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
+<div class="undo-toast" id="undo-toast">
+  <span id="undo-msg">Département supprimé</span>
+  <button class="undo-btn-inline" onclick="undoDelete()">Annuler</button>
+</div>
+
+<!-- MODAL: NEW DEPT -->
+<div class="modal-overlay" id="modal-new-dept" onclick="if(event.target.id==='modal-new-dept')closeModal('modal-new-dept')">
+  <div class="modal">
+    <h3>Nouveau département</h3>
+    <div class="emoji-picker" id="emoji-dept">
+      <span class="emoji-opt" onclick="pickEmoji(this,'dept')">🍽️</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'dept')">🍸</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'dept')">🛎️</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'dept')">🍳</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'dept')">🧹</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'dept')">🎪</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'dept')">🌿</span>
+      <span class="emoji-opt" onclick="pickEmoji(this,'dept')">⭐</span>
+    </div>
+    <span class="modal-label">Nom du département</span>
+    <input type="text" id="new-dept-input" placeholder="Ex: Cuisine, Terrasse..." onkeydown="if(event.key==='Enter')confirmNewDept()">
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('modal-new-dept')">Annuler</button>
+      <button class="modal-confirm" onclick="confirmNewDept()">Créer</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const CODES={employee:'0000',manager:'2026'};
@@ -482,20 +550,65 @@ function logout(){
   updateDots();
 }
 
+// ── KNOWLEDGE DATA ──
+const RULES = [
+  { num:1, title:'Ne soyez jamais en retard', body:"Il s'agit de respect et de professionnalisme. Si vous êtes constamment en retard, vous décevez vos clients, vos collègues et vous-même." },
+  { num:2, title:'Ayez toujours une présentation irréprochable', body:"Cela inspire confiance et donne une première impression positive. Assurez-vous d'être toujours soigné : uniforme propre et bien repassé, chaussures cirées, coiffure nette, peau saine, ongles propres, sans odeur corporelle ni parfum trop prononcé." },
+  { num:3, title:'Traitez les autres comme vous aimeriez être traité', body:"Il s'agit de respect, d'amour et d'empathie. Mettez-vous toujours à la place des autres. Accueillez et accompagnez les nouveaux membres de l'équipe mieux encore que vous-même n'avez été accueilli. Traitez vos clients comme des rois." },
+  { num:4, title:"L'aide n'arrive que si vous la demandez", body:"Chacun est responsable de son propre poste. Lorsqu'un collaborateur n'est pas en mesure de travailler selon les standards requis, il doit demander de l'aide à son manager. Un bon manager anticipe toujours l'aide nécessaire." },
+  { num:5, title:'Restez à votre place. Restez dans votre station', body:"Vous ne pouvez accomplir votre travail que si vous êtes là où vous êtes censé être. Si vous n'êtes pas dans votre station, qui fera votre travail ? Qui s'occupera de vos clients ?" },
+  { num:6, title:'Une seule personne peut être responsable à un moment donné', body:"Le manager est la seule personne responsable à tout moment. Vos décisions doivent être claires, définitives, et vos consignes doivent être précises. Plusieurs responsables peuvent entraîner des instructions contradictoires et de la confusion." },
+  { num:7, title:'Le système est toujours prioritaire', body:"Même si une personne est responsable de sa station, le système en place gouverne toutes les actions. Personne ne peut contourner le système. Si un standard ne fonctionne pas, le problème doit être discuté et validé par l'ensemble des responsables." },
+  { num:8, title:'Aimez ce que vous faites', body:"Si vous aimez ce que vous faites, vous prendrez du plaisir à travailler. Votre enthousiasme sera contagieux. Assumez vos choix, soyez conscient que vous êtes maître de votre destin – et aimez ce que vous faites." },
+  { num:9, title:'Si vous ne savez pas ou en cas de doute : demandez !', body:"Vous êtes la seule personne à savoir si vous possédez les connaissances nécessaires. Si vous ne savez pas : demandez. Ne dites jamais à un client quelque chose dont vous n'êtes pas certain. Dites plutôt : « Permettez-moi de me renseigner pour vous »." },
+  { num:10, title:'Soyez gentil', body:"Soyez bienveillant envers les autres et vous recevrez la même chose en retour. La gentillesse est une manière de vivre. C'est une décision consciente concernant la façon dont nous interagissons avec les autres." },
+];
+
+// ── UNDO SYSTEM ──
+let deletedDept=null, undoTimeout=null;
+
+function showUndoToast(msg){
+  document.getElementById('undo-msg').textContent=msg;
+  const t=document.getElementById('undo-toast');t.classList.add('show');
+  if(undoTimeout)clearTimeout(undoTimeout);
+  undoTimeout=setTimeout(()=>{t.classList.remove('show');deletedDept=null;},5000);
+}
+
+function undoDelete(){
+  if(!deletedDept)return;
+  const{dept,subs,tasks,idx}=deletedDept;
+  const depts=getDepts();depts.splice(idx,0,dept);
+  if(!state.subs)state.subs={};state.subs[dept.id]=subs;
+  if(!state.tasks)state.tasks={};Object.assign(state.tasks,tasks);
+  save();activeDept=dept.id;renderDeptTabs();renderSubTabs();renderCurrentSection();
+  document.getElementById('undo-toast').classList.remove('show');
+  deletedDept=null;showToast('Département restauré ✓');
+}
+
 // ── RENDER DEPT TABS ──
 function renderDeptTabs(){
   const depts=getDepts();
   const c=document.getElementById('dept-tabs');c.innerHTML='';
+
+  // Knowledge tab first
+  const kBtn=document.createElement('button');
+  kBtn.className='dept-btn knowledge-btn'+(activeDept==='knowledge'?' active':'');
+  kBtn.innerHTML='📖 Règles d\'or';
+  kBtn.onclick=()=>showDept('knowledge');
+  c.appendChild(kBtn);
+
   depts.forEach(dept=>{
     const btn=document.createElement('button');
     btn.className='dept-btn'+(dept.id===activeDept?' active':'');
     const{total,done}=getDeptProgress(dept.id);
-    btn.innerHTML=`${dept.name} <span class="dept-badge">${done}/${total}</span>`;
+    const isProtected=['salle','bar','accueil'].includes(dept.id);
+    btn.innerHTML=`${dept.name} <span class="dept-badge">${done}/${total}</span>${currentRole==='manager'&&!isProtected?`<button class="dept-delete-btn" onclick="deleteDept('${dept.id}');event.stopPropagation()" title="Supprimer">✕</button>`:''}`;
     btn.onclick=()=>showDept(dept.id);
     c.appendChild(btn);
   });
   updateReportBtn();
 }
+
 function getDeptProgress(deptId){
   const subs=getSubs(deptId);let total=0,done=0;
   subs.forEach(sub=>{
@@ -504,10 +617,79 @@ function getDeptProgress(deptId){
   });
   return{total,done};
 }
-function showDept(deptId){activeDept=deptId;const subs=getSubs(deptId);activeSub=subs[0]?.id||'';renderDeptTabs();renderSubTabs();renderCurrentSection();}
 
-// ── RENDER SUB TABS ──
+function showDept(deptId){
+  activeDept=deptId;
+  if(deptId==='knowledge'){renderDeptTabs();renderKnowledge();return;}
+  const subs=getSubs(deptId);activeSub=subs[0]?.id||'';
+  renderDeptTabs();renderSubTabs();renderCurrentSection();
+}
+
+// ── KNOWLEDGE RENDER ──
+function renderKnowledge(){
+  const subWrap=document.getElementById('sub-tabs');subWrap.innerHTML='';
+  document.querySelector('.sub-tabs-wrap').style.display='none';
+  const c=document.getElementById('sections-container');c.innerHTML='';
+  const sec=document.createElement('div');sec.className='section active';
+  sec.innerHTML=`<div class="knowledge-section">
+    <div class="knowledge-hero"><h2>Les 10 Règles d'Oswald's</h2><p>Les règles d'or de la restauration</p></div>
+    ${RULES.map(r=>`<div class="rule-card" onclick="this.classList.toggle('open')">
+      <div class="rule-header"><span class="rule-number">${r.num}</span><span class="rule-title">${r.title}</span><span class="rule-chevron">▾</span></div>
+      <div class="rule-body">${r.body}</div>
+    </div>`).join('')}
+    <div class="knowledge-footer">« Le succès de ces 10 règles repose simplement sur la COMMUNICATION et la CONFIANCE. »</div>
+  </div>`;
+  c.appendChild(sec);
+}
+
+// ── ADD / DELETE DEPT ──
+let emojiDept='🍽️';
+function openNewDeptModal(){
+  document.getElementById('new-dept-input').value='';emojiDept='🍽️';
+  document.querySelectorAll('#emoji-dept .emoji-opt').forEach((e,i)=>e.classList.toggle('selected',i===0));
+  openModal('modal-new-dept');setTimeout(()=>document.getElementById('new-dept-input').focus(),300);
+}
+function confirmNewDept(){
+  const name=document.getElementById('new-dept-input').value.trim();if(!name)return;
+  const id='dept_'+Date.now();
+  const depts=getDepts();depts.push({id,name:emojiDept+' '+name});
+  if(!state.subs)state.subs={};
+  state.subs[id]=[
+    {id:id+'_matin',emoji:'🌅',name:'Matin'},
+    {id:id+'_aprem',emoji:'☀️',name:'Après-midi'},
+    {id:id+'_soir',emoji:'🌇',name:'Soir'},
+    {id:id+'_hebdo',emoji:'📅',name:'Hebdo'},
+  ];
+  save();activeDept=id;closeModal('modal-new-dept');renderDeptTabs();
+  activeSub=state.subs[id][0].id;renderSubTabs();renderCurrentSection();showToast('Département créé ✓');
+}
+
+function deleteDept(deptId){
+  const depts=getDepts();const idx=depts.findIndex(d=>d.id===deptId);if(idx<0)return;
+  const dept=depts[idx];
+  const subs=getSubs(deptId);
+  const tasks={};subs.forEach(s=>{if(state.tasks?.[s.id])tasks[s.id]=state.tasks[s.id];});
+  deletedDept={dept,subs,tasks,idx};
+  depts.splice(idx,1);
+  delete state.subs?.[deptId];
+  save();
+  activeDept=depts[0]?.id||'salle';
+  activeSub=getSubs(activeDept)[0]?.id||'';
+  renderDeptTabs();renderSubTabs();renderCurrentSection();
+  showUndoToast(`"${dept.name}" supprimé`);
+}
+
+// ── NEW DEPT EMOJI ──
+function pickEmoji(el,type){
+  const picker=type==='rename'?'emoji-rename':type==='new'?'emoji-new':type==='dept'?'emoji-dept':'emoji-new';
+  document.querySelectorAll('#'+picker+' .emoji-opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  if(type==='rename')emojiRename=el.textContent;
+  else if(type==='new')emojiNew=el.textContent;
+  else if(type==='dept')emojiDept=el.textContent;
+}
 function renderSubTabs(){
+  document.querySelector('.sub-tabs-wrap').style.display='flex';
   const subs=getSubs(activeDept);const c=document.getElementById('sub-tabs');c.innerHTML='';
   subs.forEach(sub=>{
     const btn=document.createElement('button');
