@@ -298,7 +298,7 @@
   .weekly-send-btn { width:100%; margin-top:14px; background:var(--stone); border:none; color:var(--beige); padding:12px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:12px; font-weight:500; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
   .weekly-send-btn:hover { background:var(--terra); }
   /* ── TOAST ── */
-  .toast { position:fixed; bottom:85px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--terra-dark); color:var(--beige); padding:11px 22px; border-radius:99px; font-size:13px; font-family:'Jost',sans-serif; z-index:200; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; pointer-events:none; }
+  .toast { position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-80px); background:rgba(58,46,38,.92); color:var(--beige); padding:10px 20px; border-radius:99px; font-size:12px; font-family:'Jost',sans-serif; z-index:500; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; pointer-events:none; letter-spacing:.04em; }
   .toast.show { transform:translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -510,12 +510,11 @@ async function tryLogin(){
     document.body.className=currentRole;
 
     // Load from Firebase first
-    showToast('Chargement...');
     const fbData = await window.fbLoad?.();
     if(fbData) { state=fbData; }
     else {
       const local=localStorage.getItem('zephyr_local');
-      if(local) state=JSON.parse(local);
+      if(local) try{state=JSON.parse(local);}catch(e){}
     }
 
     initApp();
@@ -541,6 +540,11 @@ function startFirebaseListener(){
     updateGlobal();
     setSyncing(true);setTimeout(()=>setSyncing(false),800);
   });
+}
+
+function setSyncing(s){
+  const dot=document.getElementById('sync-dot');
+  if(dot) dot.className='sync-dot'+(s?' syncing':'');
 }
 
 function logout(){
