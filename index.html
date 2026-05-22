@@ -291,6 +291,14 @@
   .undo-toast.show { transform:translateX(-50%) translateY(0); }
   .undo-btn-inline { background:var(--terra); border:none; color:#fff; padding:5px 12px; border-radius:99px; font-size:12px; cursor:pointer; font-family:'Jost',sans-serif; font-weight:500; }
 
+  /* ── NOTES ── */
+  .notes-block { margin-top:16px; background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); overflow:hidden; transition:border-color .2s; }
+  .notes-block:focus-within { border-color:var(--terra-border); }
+  .notes-header { display:flex; align-items:center; gap:8px; padding:10px 14px 6px; }
+  .notes-label { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-dim); font-weight:500; }
+  .notes-textarea { width:100%; background:transparent; border:none; outline:none; resize:none; font-family:'Jost',sans-serif; font-size:13px; color:var(--text); padding:4px 14px 14px; line-height:1.6; caret-color:var(--terra); min-height:70px; }
+  .notes-textarea::placeholder { color:var(--stone2); font-style:italic; }
+
   .report-bar { position:fixed; bottom:0; left:0; right:0; z-index:40; background:var(--beige); border-top:1px solid var(--stone2); padding:10px 20px; }
   .report-bar-inner { max-width:760px; margin:0 auto; }
   .send-report-btn { width:100%; background:var(--terra); border:none; color:var(--beige); padding:13px 20px; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:.08em; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
@@ -786,7 +794,11 @@ function renderChecklistSection(sub){
       <div class="name-field" style="border-left:2px solid var(--bleu)"><label style="color:var(--bleu)">✓ Manager</label><input type="text" id="nm-${sub.id}" placeholder="Prénom..." oninput="saveName('${sub.id}','manager',this.value)" value="${names['manager_'+sub.id]||''}" autocomplete="off"></div>
     </div>
     <ul class="checklist" id="list-${sub.id}"></ul>
-    <div class="all-done" id="done-${sub.id}"><div class="all-done-icon">✅</div><h3>${sub.name} complet !</h3><p>Toutes les tâches effectuées et validées.</p></div>`;
+    <div class="all-done" id="done-${sub.id}"><div class="all-done-icon">✅</div><h3>${sub.name} complet !</h3><p>Toutes les tâches effectuées et validées.</p></div>
+    <div class="notes-block">
+      <div class="notes-header"><span>📝</span><span class="notes-label">Observations & notes</span></div>
+      <textarea class="notes-textarea" id="notes-${sub.id}" placeholder="Indiquer ici les tâches non effectuées et la raison..." oninput="saveNote('${sub.id}',this.value)">${(state.notes&&state.notes[sub.id])||''}</textarea>
+    </div>`;
   c.appendChild(sec);
   const si=document.getElementById('ns-'+sub.id);const mi=document.getElementById('nm-'+sub.id);
   if(currentRole==='employee'&&si&&!si.value)si.value=currentUser;
@@ -874,11 +886,13 @@ function confirmAddTask(){
 }
 function openEditTask(subId,idx){
   editTarget=subId;editIdx=idx;
+  editDayTarget={deptId:'',day:'',idx:-1};
   document.getElementById('edit-task-input').value=getTasks(subId)[idx].text;
   openModal('modal-edit-task');setTimeout(()=>document.getElementById('edit-task-input').focus(),300);
 }
 function confirmEditTask(){
   const text=document.getElementById('edit-task-input').value.trim();if(!text)return;
+  if(editDayTarget.idx>=0){confirmEditDayTask();return;}
   getTasks(editTarget)[editIdx].text=text;
   if(!state.tasks)state.tasks={};state.tasks[editTarget]=getTasks(editTarget);
   save();renderChecklist(editTarget);closeModal('modal-edit-task');showToast('Tâche modifiée ✓');
@@ -904,6 +918,7 @@ function deleteSub(subId){
 }
 
 function saveName(subId,role,value){if(!state.names)state.names={};state.names[role+'_'+subId]=value;save();}
+function saveNote(subId,value){if(!state.notes)state.notes={};state.notes[subId]=value;save();}
 
 // ── SUB TAB MANAGEMENT ──
 let emojiRename='🌅',emojiNew='🌅',renameSubTarget='';
@@ -958,11 +973,33 @@ function renderDayTasks(deptId,day){
   const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];
   const c=document.getElementById('dtasks-'+deptId+'-'+day);if(!c)return;c.innerHTML='';
   tasks.forEach((t,i)=>{
-    const sd=sa[i]||false,md=ma[i]||false;const item=document.createElement('div');item.className='day-task-item'+(sd&&md?' fully-done':'');
-    item.innerHTML=`<div class="day-task-checks"><div class="day-check-wrap${sd?' staff-done':''}" onclick="toggleDayStaff('${deptId}','${day}',${i})"><div class="day-task-circle">${sd?SVG:''}</div><span class="day-check-label">Équipe</span></div><div class="day-check-wrap${md?' manager-done':''}" onclick="toggleDayManager('${deptId}','${day}',${i})"><div class="day-task-circle">${md?SVG:''}</div><span class="day-check-label" style="color:var(--bleu)">Mgr</span></div></div><div class="day-task-text" style="flex:1">${t}</div><button class="day-task-delete" onclick="deleteDayTask('${deptId}','${day}',${i})">×</button>`;
+    const sd=sa[i]||false,md=ma[i]||false;
+    const item=document.createElement('div');
+    item.className='day-task-item'+(sd&&md?' fully-done':'');
+    item.innerHTML=`<div class="day-task-checks">
+      <div class="day-check-wrap${sd?' staff-done':''}" onclick="toggleDayStaff('${deptId}','${day}',${i})"><div class="day-task-circle">${sd?SVG:''}</div><span class="day-check-label">Équipe</span></div>
+      <div class="day-check-wrap${md?' manager-done':''}" onclick="toggleDayManager('${deptId}','${day}',${i})"><div class="day-task-circle">${md?SVG:''}</div><span class="day-check-label" style="color:var(--bleu)">Mgr</span></div>
+    </div>
+    <div class="day-task-text" style="flex:1">${t}</div>
+    <button class="task-edit" onclick="openEditDayTask('${deptId}','${day}',${i})" style="display:${currentRole==='manager'?'flex':'none'}">✏️</button>
+    <button class="day-task-delete" onclick="deleteDayTask('${deptId}','${day}',${i})">×</button>`;
     c.appendChild(item);
   });
   const btn=document.createElement('button');btn.className='day-add-btn';btn.innerHTML='+ Ajouter';btn.onclick=()=>addDayTask(deptId,day);c.appendChild(btn);
+}
+
+let editDayTarget={deptId:'',day:'',idx:-1};
+function openEditDayTask(deptId,day,idx){
+  editDayTarget={deptId,day,idx};
+  document.getElementById('edit-task-input').value=getWeeklyData(deptId)[day][idx];
+  openModal('modal-edit-task');
+  setTimeout(()=>document.getElementById('edit-task-input').focus(),300);
+}
+function confirmEditDayTask(){
+  const text=document.getElementById('edit-task-input').value.trim();if(!text)return;
+  const{deptId,day,idx}=editDayTarget;
+  getWeeklyData(deptId)[day][idx]=text;
+  save();renderDayTasks(deptId,day);closeModal('modal-edit-task');showToast('Tâche modifiée ✓');
 }
 function toggleDayStaff(deptId,day,idx){const d=getWeeklyDone(deptId);if(!d['staff_'+day])d['staff_'+day]=[];d['staff_'+day][idx]=!d['staff_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
 function toggleDayManager(deptId,day,idx){if(currentRole!=='manager'){showToast('Réservé au manager 🔑');return;}const d=getWeeklyDone(deptId);if(!d['manager_'+day])d['manager_'+day]=[];d['manager_'+day][idx]=!d['manager_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
@@ -991,7 +1028,13 @@ async function sendDeptReport(){
   let msg='RAPPORT — '+dept.name.toUpperCase()+'\n'+'='.repeat(40)+'\nDate : '+now+'\n';
   subs.forEach(sub=>{
     if(isHebdo(sub.id)){const data=getWeeklyData(activeDept),done=getWeeklyDone(activeDept);msg+='\n\n── HEBDOMADAIRE ──';DAYS.forEach(day=>{const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];if(tasks.length>0){msg+='\n'+DAY_LABELS[day]+' : '+tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':'❌')+' '+t).join(' | ');}});}
-    else{const tasks=getTasks(sub.id),sa=state['staff_'+sub.id]||[],ma=state['manager_'+sub.id]||[];msg+='\n\n── '+sub.emoji+' '+sub.name.toUpperCase()+' ──\nEmployé : '+(names['staff_'+sub.id]||'—')+' | Manager : '+(names['manager_'+sub.id]||'—')+'\n';msg+=tasks.length>0?tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t.text).join('\n'):'(aucune tâche)';}
+    else{
+      const tasks=getTasks(sub.id),sa=state['staff_'+sub.id]||[],ma=state['manager_'+sub.id]||[];
+      msg+='\n\n── '+sub.emoji+' '+sub.name.toUpperCase()+' ──\nEmployé : '+(names['staff_'+sub.id]||'—')+' | Manager : '+(names['manager_'+sub.id]||'—')+'\n';
+      msg+=tasks.length>0?tasks.map((t,i)=>(sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t.text).join('\n'):'(aucune tâche)';
+      const note=state.notes?.[sub.id];
+      if(note&&note.trim()) msg+='\n\n📝 Observations : '+note.trim();
+    }
   });
   msg+='\n\n— Envoyé depuis l\'application Zephyr Monaco';
   showToast('Envoi en cours...');
