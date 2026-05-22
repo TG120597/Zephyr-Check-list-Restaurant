@@ -229,6 +229,8 @@
   .day-task-delete { background:none; border:none; color:var(--stone2); font-size:15px; cursor:pointer; display:none; transition:color .2s; }
   body.manager .day-task-delete { display:block; }
   .day-task-delete:hover { color:var(--terra); }
+  .day-task-edit-btn { display:none; }
+  body.manager .day-task-edit-btn { display:flex; }
   .day-add-btn { display:none; align-items:center; gap:5px; padding:6px 8px; border-radius:7px; margin-top:5px; background:none; border:1px dashed var(--stone2); color:var(--text-dim); font-family:'Jost',sans-serif; font-size:11px; cursor:pointer; width:100%; transition:all .2s; }
   body.manager .day-add-btn { display:flex; }
   .day-add-btn:hover { border-color:var(--terra); color:var(--terra); }
@@ -879,6 +881,7 @@ function moveTask(subId,idx,dir){
 
 // ── ADD/EDIT/DELETE ──
 let addTarget='',editTarget='',editIdx=-1;
+let editDayTarget={deptId:'',day:'',idx:-1};
 function openAddTask(subId){addTarget=subId;document.getElementById('add-task-input').value='';openModal('modal-add-task');setTimeout(()=>document.getElementById('add-task-input').focus(),300);}
 function confirmAddTask(){
   const text=document.getElementById('add-task-input').value.trim();if(!text)return;
@@ -981,16 +984,16 @@ function renderDayTasks(deptId,day){
       <div class="day-check-wrap${md?' manager-done':''}" onclick="toggleDayManager('${deptId}','${day}',${i})"><div class="day-task-circle">${md?SVG:''}</div><span class="day-check-label" style="color:var(--bleu)">Mgr</span></div>
     </div>
     <div class="day-task-text" style="flex:1">${t}</div>
-    <button class="task-edit" onclick="openEditDayTask('${deptId}','${day}',${i})" style="display:${currentRole==='manager'?'flex':'none'}">✏️</button>
+    <button class="task-edit day-task-edit-btn" onclick="openEditDayTask('${deptId}','${day}',${i})">✏️</button>
     <button class="day-task-delete" onclick="deleteDayTask('${deptId}','${day}',${i})">×</button>`;
     c.appendChild(item);
   });
   const btn=document.createElement('button');btn.className='day-add-btn';btn.innerHTML='+ Ajouter';btn.onclick=()=>addDayTask(deptId,day);c.appendChild(btn);
 }
 
-let editDayTarget={deptId:'',day:'',idx:-1};
 function openEditDayTask(deptId,day,idx){
   editDayTarget={deptId,day,idx};
+  editTarget=''; editIdx=-1;
   document.getElementById('edit-task-input').value=getWeeklyData(deptId)[day][idx];
   openModal('modal-edit-task');
   setTimeout(()=>document.getElementById('edit-task-input').focus(),300);
