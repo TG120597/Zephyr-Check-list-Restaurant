@@ -154,6 +154,12 @@
   .rename-btn { background:none; border:none; font-size:12px; cursor:pointer; opacity:.3; display:none; font-style:normal; transition:opacity .2s; }
   body.manager .rename-btn { display:inline; }
   .rename-btn:hover { opacity:1; }
+  /* Bar : coches uniquement */
+  body.bar .reset-btn,body.bar .add-task-btn,body.bar .rename-btn,
+  body.bar .task-edit,body.bar .task-delete,body.bar .task-arrows,
+  body.bar .add-sub-btn,body.bar .undo-dept-btn,body.bar .add-dept-btn,
+  body.bar .dept-delete-btn,body.bar .day-task-delete,
+  body.bar .day-task-edit-btn,body.bar .day-add-btn { display:none !important; }
   /* ── NAME FIELDS ── */
   .name-fields-row { display:flex; gap:8px; margin-bottom:12px; }
   .name-field { display:flex; align-items:center; gap:8px; background:var(--beige2); border:1px solid var(--stone2); border-radius:var(--radius); padding:10px 12px; flex:1; transition:border-color .2s; }
@@ -323,6 +329,7 @@
     <div class="role-selector">
       <button class="role-btn active" onclick="selectRole('employee')" id="role-btn-employee">👤 Employé</button>
       <button class="role-btn" onclick="selectRole('manager')" id="role-btn-manager">🔑 Manager</button>
+      <button class="role-btn" onclick="selectRole('bar')" id="role-btn-bar">🍸 Bar</button>
     </div>
     <input class="login-name-input" id="login-name" type="text" placeholder="Votre prénom..." autocomplete="off">
     <span class="pin-label">Code PIN</span>
@@ -448,7 +455,7 @@
 </div>
 
 <script>
-const CODES={employee:'0000',manager:'2026'};
+const CODES={employee:'0000',manager:'2026',bar:'1996'};
 const EMAILJS_SERVICE='service_yw9i4oh',EMAILJS_TEMPLATE='template_3o72gvv';
 const SVG='<svg width="9" height="7" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const DAYS=['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
@@ -510,7 +517,13 @@ let selectedRole='employee',currentPin='',currentUser='',currentRole='';
 let activeDept='salle',activeSub='s_matin';
 let unsubFirebase=null;
 
-function selectRole(r){selectedRole=r;document.getElementById('role-btn-employee').classList.toggle('active',r==='employee');document.getElementById('role-btn-manager').classList.toggle('active',r==='manager');currentPin='';updateDots();document.getElementById('login-error').textContent='';}
+function selectRole(r){
+  selectedRole=r;
+  document.getElementById('role-btn-employee').classList.toggle('active',r==='employee');
+  document.getElementById('role-btn-manager').classList.toggle('active',r==='manager');
+  document.getElementById('role-btn-bar').classList.toggle('active',r==='bar');
+  currentPin='';updateDots();document.getElementById('login-error').textContent='';
+}
 function pinPress(d){if(currentPin.length>=4)return;currentPin+=d;updateDots();if(currentPin.length===4)setTimeout(tryLogin,150);}
 function pinDelete(){currentPin=currentPin.slice(0,-1);updateDots();}
 function pinClear(){currentPin='';updateDots();}
@@ -520,14 +533,17 @@ async function tryLogin(){
   const name=document.getElementById('login-name').value.trim();
   if(!name){document.getElementById('login-error').textContent='Veuillez entrer votre prénom.';currentPin='';updateDots();return;}
   if(currentPin===CODES[selectedRole]){
-    currentRole=selectedRole;currentUser=name;
+    currentRole = selectedRole==='manager' ? 'manager' : selectedRole==='bar' ? 'bar' : 'employee';
+    currentUser=name;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
     document.getElementById('report-bar').style.display='block';
     document.getElementById('role-badge').style.display='flex';
     const pill=document.getElementById('role-pill');
-    pill.textContent=currentRole==='manager'?'🔑 Manager — '+currentUser:'👤 '+currentUser;
-    pill.className='role-pill'+(currentRole==='employee'?' employee':'');
+    if(selectedRole==='manager') pill.textContent='🔑 Manager — '+currentUser;
+    else if(selectedRole==='bar') pill.textContent='🍸 Bar — '+currentUser;
+    else pill.textContent='👤 '+currentUser;
+    pill.className='role-pill'+(currentRole==='employee'||currentRole==='bar'?' employee':'');
     document.body.className=currentRole;
 
     // Load from Firebase first
@@ -813,7 +829,7 @@ function renderChecklistSection(sub){
     </div>
     <div class="name-fields-row">
       <div class="name-field"><label>👤 Employé</label><input type="text" id="ns-${sub.id}" placeholder="Prénom..." oninput="saveName('${sub.id}','staff',this.value)" value="${names['staff_'+sub.id]||''}" autocomplete="off"></div>
-      <div class="name-field" style="border-left:2px solid var(--bleu)"><label style="color:var(--bleu)">✓ Manager</label><input type="text" id="nm-${sub.id}" placeholder="Prénom..." oninput="saveName('${sub.id}','manager',this.value)" value="${names['manager_'+sub.id]||''}" autocomplete="off"></div>
+      <div class="name-field" style="border-left:2px solid var(--bleu)"><label style="color:var(--bleu)">✓ ${selectedRole==='bar'?'Resp. Fermeture':'Manager'}</label><input type="text" id="nm-${sub.id}" placeholder="Prénom..." oninput="saveName('${sub.id}','manager',this.value)" value="${names['manager_'+sub.id]||''}" autocomplete="off"></div>
     </div>
     <ul class="checklist" id="list-${sub.id}"></ul>
     <div class="all-done" id="done-${sub.id}"><div class="all-done-icon">✅</div><h3>${sub.name} complet !</h3><p>Toutes les tâches effectuées et validées.</p></div>
@@ -841,7 +857,7 @@ function renderChecklist(subId){
       <div class="task-arrows"><button class="arrow-btn" onclick="moveTask('${subId}',${i},-1)" ${i===0?'disabled':''}>▲</button><button class="arrow-btn" onclick="moveTask('${subId}',${i},1)" ${i===tasks.length-1?'disabled':''}>▼</button></div>
       <div class="task-checks">
         <div class="check-wrap${sa[i]?' staff-done':''}" onclick="toggleStaff('${subId}',${i},this)"><div class="check-circle">${SVG}</div><span class="check-label">Équipe</span></div>
-        <div class="check-wrap${ma[i]?' manager-done':''}" onclick="toggleManager('${subId}',${i},this)"><div class="check-circle">${SVG}</div><span class="check-label" style="color:var(--bleu)">Manager</span></div>
+        <div class="check-wrap${ma[i]?' manager-done':''}" onclick="toggleManager('${subId}',${i},this)"><div class="check-circle">${SVG}</div><span class="check-label" style="color:var(--bleu)">${selectedRole==='bar'?'Fermeture':'Manager'}</span></div>
       </div>
       <div class="task-content"><div class="item-text">${task.text}</div><div class="task-badges"><span class="badge-staff${sa[i]?' show':''}">✓ Équipe</span><span class="badge-manager${ma[i]?' show':''}">✓ Manager</span></div></div>
       <div class="task-actions"><button class="task-edit" onclick="openEditTask('${subId}',${i})">✏️</button><button class="task-delete" onclick="deleteTask('${subId}',${i})">×</button></div>
@@ -860,7 +876,7 @@ function toggleStaff(subId,idx,el){
   saveSectionState(subId);updateBadge(subId);updateGlobal();
 }
 function toggleManager(subId,idx,el){
-  if(currentRole!=='manager'){showToast('Réservé au manager 🔑');return;}
+  if(currentRole!=='manager'&&currentRole!=='bar'){showToast('Réservé au manager 🔑');return;}
   el.classList.toggle('manager-done');
   const li=el.closest('li');
   li.querySelector('.badge-manager')?.classList.toggle('show',el.classList.contains('manager-done'));
@@ -946,7 +962,7 @@ function deleteSub(subId){
 
 // ── RESTORE DEFAULT SUBS ──
 function restoreDefaultSubs(deptId){
-  if(!confirm('Restaurer les onglets par défaut (Matin, Après-midi, Soir, Hebdo) pour ce département ?')) return;
+  askConfirm('Restaurer les onglets par défaut (Matin, Après-midi, Soir, Hebdo) pour ce département ?', ()=>{
   const prefix = deptId==='salle'?'s':deptId==='bar'?'b':'a';
   if(!state.subs)state.subs={};
   state.subs[deptId]=[
@@ -965,6 +981,7 @@ function restoreDefaultSubs(deptId){
   activeSub=state.subs[deptId][0].id;
   renderSubTabs();renderCurrentSection();
   showToast('Onglets restaurés ✓');
+  });
 }
 
 // ── SUB TAB MANAGEMENT ──
@@ -1049,10 +1066,10 @@ function confirmEditDayTask(){
   save();renderDayTasks(deptId,day);closeModal('modal-edit-task');showToast('Tâche modifiée ✓');
 }
 function toggleDayStaff(deptId,day,idx){const d=getWeeklyDone(deptId);if(!d['staff_'+day])d['staff_'+day]=[];d['staff_'+day][idx]=!d['staff_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
-function toggleDayManager(deptId,day,idx){if(currentRole!=='manager'){showToast('Réservé au manager 🔑');return;}const d=getWeeklyDone(deptId);if(!d['manager_'+day])d['manager_'+day]=[];d['manager_'+day][idx]=!d['manager_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
+function toggleDayManager(deptId,day,idx){if(currentRole!=='manager'&&currentRole!=='bar'){showToast('Réservé au manager 🔑');return;}const d=getWeeklyDone(deptId);if(!d['manager_'+day])d['manager_'+day]=[];d['manager_'+day][idx]=!d['manager_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
 function deleteDayTask(deptId,day,idx){
-  if(!confirm('Supprimer cette tâche ?')) return;
   if(currentRole!=='manager')return;
+  askConfirm('Supprimer cette tâche ?', ()=>{
   const data=getWeeklyData(deptId),d=getWeeklyDone(deptId);
   const task=data[day][idx];
   const staffVal=(d['staff_'+day]||[])[idx]||false;
@@ -1063,6 +1080,7 @@ function deleteDayTask(deptId,day,idx){
   if(d['manager_'+day])d['manager_'+day].splice(idx,1);
   save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();
   showToast('Supprimé — ↩️ pour annuler');
+  });
 }
 function saveName(subId,role,value){if(!state.names)state.names={};state.names[role+'_'+subId]=value;save();}
 function saveNote(subId,value){if(!state.notes)state.notes={};state.notes[subId]=value;save();}
