@@ -368,7 +368,8 @@
   </div>
   <div class="sub-tabs-wrap">
     <div class="sub-tabs" id="sub-tabs"></div>
-    <button class="add-sub-btn" onclick="openNewSubModal()">+</button>
+    <button class="add-sub-btn" onclick="openNewSubModal()" title="Nouvel onglet">+</button>
+    <button class="add-sub-btn" style="background:var(--stone);font-size:13px" onclick="restoreDefaultSubs(activeDept)" title="Restaurer onglets par défaut">↺</button>
   </div>
   <div class="sections" id="sections-container"></div>
 </div>
@@ -413,7 +414,17 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- MODAL: NEW DEPT -->
+<!-- MODAL: CONFIRM DELETE -->
+<div class="modal-overlay" id="modal-confirm" onclick="if(event.target.id==='modal-confirm')cancelConfirm()">
+  <div class="modal" style="padding-bottom:30px">
+    <h3 style="color:var(--terra-dark)">⚠️ Confirmation</h3>
+    <p id="confirm-msg" style="font-size:14px;color:var(--text-dim);margin-bottom:20px;line-height:1.6"></p>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="cancelConfirm()">Annuler</button>
+      <button class="modal-confirm" style="background:#c0392b" onclick="executeConfirm()">Supprimer</button>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="modal-new-dept" onclick="if(event.target.id==='modal-new-dept')closeModal('modal-new-dept')">
   <div class="modal">
     <h3>Nouveau département</h3>
@@ -583,7 +594,15 @@ const RULES = [
   { num:10, title:'Soyez gentil', body:"Soyez bienveillant envers les autres et vous recevrez la même chose en retour. La gentillesse est une manière de vivre. C'est une décision consciente concernant la façon dont nous interagissons avec les autres." },
 ];
 
-// ── UNDO SYSTEM (historique global) ──
+// ── CUSTOM CONFIRM ──
+let confirmCallback = null;
+function askConfirm(msg, cb){
+  confirmCallback = cb;
+  document.getElementById('confirm-msg').textContent = msg;
+  openModal('modal-confirm');
+}
+function executeConfirm(){ closeModal('modal-confirm'); if(confirmCallback){ confirmCallback(); confirmCallback=null; } }
+function cancelConfirm(){ closeModal('modal-confirm'); confirmCallback=null; }
 let undoStack = []; // pile des actions annulables
 
 function pushUndo(action){ undoStack.push(action); updateUndoBtn(); }
@@ -726,7 +745,7 @@ function confirmNewDept(){
 }
 
 function deleteDept(deptId){
-  if(!confirm('Supprimer ce département et toutes ses tâches ?')) return;
+  askConfirm('Supprimer ce département et toutes ses tâches ?', ()=>{
   const depts=getDepts(); const idx=depts.findIndex(d=>d.id===deptId); if(idx<0)return;
   const dept=depts[idx];
   const subs=getSubs(deptId);
@@ -736,6 +755,7 @@ function deleteDept(deptId){
   activeDept=depts[0]?.id||'salle'; activeSub=getSubs(activeDept)[0]?.id||'';
   renderDeptTabs(); renderSubTabs(); renderCurrentSection();
   showToast('Supprimé — ↩️ pour annuler');
+  });
 }
 
 // ── NEW DEPT EMOJI ──
@@ -901,13 +921,16 @@ function confirmEditTask(){
   save();renderChecklist(editTarget);closeModal('modal-edit-task');showToast('Tâche modifiée ✓');
 }
 function deleteTask(subId,idx){
+  askConfirm('Supprimer cette tâche ?', ()=>{
   const tasks=getTasks(subId),sa=state['staff_'+subId]||[],ma=state['manager_'+subId]||[];
   pushUndo({type:'delete-task',subId,task:tasks[idx],staffVal:sa[idx]||false,managerVal:ma[idx]||false,idx});
   tasks.splice(idx,1);sa.splice(idx,1);ma.splice(idx,1);
   if(!state.tasks)state.tasks={};state.tasks[subId]=tasks;state['staff_'+subId]=sa;state['manager_'+subId]=ma;
   save();renderChecklist(subId);updateGlobal();showToast('Supprimé — ↩️ pour annuler');
+  });
 }
 function deleteSub(subId){
+  askConfirm('Supprimer cet onglet et toutes ses tâches ?', ()=>{
   const subs=getSubs(activeDept); const idx=subs.findIndex(s=>s.id===subId); if(idx<0)return;
   const sub=subs[idx];
   const tasks=getTasks(subId);
@@ -918,10 +941,31 @@ function deleteSub(subId){
   activeSub=subs[Math.min(idx,subs.length-1)]?.id||'';
   renderSubTabs(); renderCurrentSection();
   showToast('Supprimé — ↩️ pour annuler');
+  });
 }
 
-function saveName(subId,role,value){if(!state.names)state.names={};state.names[role+'_'+subId]=value;save();}
-function saveNote(subId,value){if(!state.notes)state.notes={};state.notes[subId]=value;save();}
+// ── RESTORE DEFAULT SUBS ──
+function restoreDefaultSubs(deptId){
+  if(!confirm('Restaurer les onglets par défaut (Matin, Après-midi, Soir, Hebdo) pour ce département ?')) return;
+  const prefix = deptId==='salle'?'s':deptId==='bar'?'b':'a';
+  if(!state.subs)state.subs={};
+  state.subs[deptId]=[
+    {id:prefix+'_matin', emoji:'🌅', name:'Matin'},
+    {id:prefix+'_aprem', emoji:'☀️',  name:'Après-midi'},
+    {id:prefix+'_soir',  emoji:'🌇', name:'Soir'},
+    {id:prefix+'_hebdo', emoji:'📅', name:'Hebdo'},
+  ];
+  // Restore preset tasks for missing subs
+  if(!state.tasks)state.tasks={};
+  const soir = prefix+'_soir';
+  const aprem = prefix+'_aprem';
+  if(!state.tasks[soir]  && PRESET_TASKS[soir])  state.tasks[soir]=JSON.parse(JSON.stringify(PRESET_TASKS[soir]));
+  if(!state.tasks[aprem] && PRESET_TASKS[aprem]) state.tasks[aprem]=JSON.parse(JSON.stringify(PRESET_TASKS[aprem]));
+  save();
+  activeSub=state.subs[deptId][0].id;
+  renderSubTabs();renderCurrentSection();
+  showToast('Onglets restaurés ✓');
+}
 
 // ── SUB TAB MANAGEMENT ──
 let emojiRename='🌅',emojiNew='🌅',renameSubTarget='';
@@ -1007,6 +1051,7 @@ function confirmEditDayTask(){
 function toggleDayStaff(deptId,day,idx){const d=getWeeklyDone(deptId);if(!d['staff_'+day])d['staff_'+day]=[];d['staff_'+day][idx]=!d['staff_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
 function toggleDayManager(deptId,day,idx){if(currentRole!=='manager'){showToast('Réservé au manager 🔑');return;}const d=getWeeklyDone(deptId);if(!d['manager_'+day])d['manager_'+day]=[];d['manager_'+day][idx]=!d['manager_'+day][idx];save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
 function deleteDayTask(deptId,day,idx){
+  if(!confirm('Supprimer cette tâche ?')) return;
   if(currentRole!=='manager')return;
   const data=getWeeklyData(deptId),d=getWeeklyDone(deptId);
   const task=data[day][idx];
@@ -1019,12 +1064,23 @@ function deleteDayTask(deptId,day,idx){
   save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();
   showToast('Supprimé — ↩️ pour annuler');
 }
+function saveName(subId,role,value){if(!state.names)state.names={};state.names[role+'_'+subId]=value;save();}
+function saveNote(subId,value){if(!state.notes)state.notes={};state.notes[subId]=value;save();}
 function addDayTask(deptId,day){const text=prompt('Nouvelle tâche pour '+DAY_LABELS[day]+' :');if(!text||!text.trim())return;getWeeklyData(deptId)[day].push(text.trim());save();renderDayTasks(deptId,day);updateDayCount(deptId,day);updateGlobal();}
 function updateDayCount(deptId,day){const data=getWeeklyData(deptId),d=getWeeklyDone(deptId);const tasks=data[day]||[],sa=d['staff_'+day]||[],ma=d['manager_'+day]||[];const fd=tasks.filter((_,i)=>sa[i]&&ma[i]).length;const cnt=document.getElementById('dcnt-'+deptId+'-'+day);if(cnt)cnt.textContent=fd+'/'+tasks.length+(day===TODAY?' — Aujourd\'hui':'');}
 function resetWeekly(deptId){if(!state.weeklyDone)state.weeklyDone={};state.weeklyDone[deptId]={};save();renderWeekly(deptId);showToast('Hebdo réinitialisé ✓');}
 
 // ── REPORT ──
+async function sendToAll(subject, message){
+  showToast('Envoi en cours...');
+  try{
+    await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {subject, message, name: currentUser||'Zephyr'});
+    showToast('✅ Rapport envoyé !');
+  } catch(e){ showToast('❌ Erreur : '+(e.text||e.message)); }
+}
+
 function updateReportBtn(){const dept=getDepts().find(d=>d.id===activeDept);const btn=document.getElementById('report-btn');if(btn&&dept)btn.textContent='📧 Envoyer le rapport — '+dept.name;}
+
 async function sendDeptReport(){
   const dept=getDepts().find(d=>d.id===activeDept);const subs=getSubs(activeDept);
   const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});const names=state.names||{};
@@ -1040,18 +1096,15 @@ async function sendDeptReport(){
     }
   });
   msg+='\n\n— Envoyé depuis l\'application Zephyr Monaco';
-  showToast('Envoi en cours...');
-  try{await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport '+dept.name+' — '+now,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'});showToast('✅ Rapport '+dept.name+' envoyé !');}
-  catch(e){showToast('❌ Erreur : '+(e.text||e.message));}
+  await sendToAll('Rapport '+dept.name+' — '+now, msg);
 }
+
 async function sendWeeklyReport(deptId){
   const dept=getDepts().find(d=>d.id===deptId);const data=getWeeklyData(deptId),done=getWeeklyDone(deptId);
   const now=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   let lines=[];DAYS.forEach(day=>{lines.push('\n— '+DAY_LABELS[day].toUpperCase()+' —');const tasks=data[day]||[],sa=done['staff_'+day]||[],ma=done['manager_'+day]||[];tasks.forEach((t,i)=>lines.push((sa[i]&&ma[i]?'✅':sa[i]?'⚠️':'❌')+' '+t));});
   const msg='RAPPORT HEBDO — '+dept.name.toUpperCase()+'\n'+'='.repeat(40)+'\nDate : '+now+'\n'+lines.join('\n')+'\n\n— Envoyé depuis l\'application Zephyr Monaco';
-  showToast('Envoi en cours...');
-  try{await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{subject:'Rapport Hebdo '+dept.name+' — '+now,message:msg,name:currentUser||'Zephyr',email:'restaurant@zephyrmonaco.com'});showToast('✅ Rapport hebdo envoyé !');}
-  catch(e){showToast('❌ Erreur : '+(e.text||e.message));}
+  await sendToAll('Rapport Hebdo '+dept.name+' — '+now, msg);
 }
 
 // ── MODAL / TOAST ──
